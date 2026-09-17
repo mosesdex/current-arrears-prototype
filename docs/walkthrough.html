@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Current — Arrears Platform Prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --ink:   #2b1f1d;
+  --ink-2: #5b4c49;
+  --ink-3: #857571;
+  --line:  #e2dbd9;
+  --line-2:#c9c0bd;
+  --wash:  #faf8f7;
+  --brand: #8f2a21;
+  --brand-wash: #fbf1ef;
+  --care:  #5a3a86;
+  --care-wash: #f4f0fa;
+  --ok:    #2f6b45;
+  --ok-wash: #eef6f1;
+  --warn:  #8a5a14;
+  --warn-wash: #fdf5e8;
+  --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --sans:  'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --mono:  'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+
+@page { size: A4; margin: 17mm 16mm 22mm; }
+
+* { box-sizing: border-box; }
+html { font-size: 10.5pt; }
+body {
+  margin: 0; color: var(--ink); background: #fff;
+  font-family: var(--serif); line-height: 1.52;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+
+
+h1, h2, h3, h4 { margin: 0; break-after: avoid; text-wrap: balance; }
+p { margin: 0 0 2.6mm; orphans: 3; widows: 3; }
+p:last-child { margin-bottom: 0; }
+b, strong { font-weight: 600; }
+em { font-style: italic; }
+code { font-family: var(--mono); font-size: 0.86em; }
+
+/* ---------- cover ---------- */
+.cover { border-bottom: 1.5pt solid var(--ink); padding-bottom: 6mm; margin-bottom: 7mm; }
+.cover .eyebrow {
+  font-family: var(--mono); font-size: 8pt; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--brand); margin-bottom: 4mm;
+}
+.cover h1 {
+  font-size: 30pt; font-weight: 500; letter-spacing: -0.02em; line-height: 1.05;
+}
+.cover .deck {
+  font-size: 13pt; line-height: 1.45; color: var(--ink-2);
+  margin-top: 4mm; max-width: 42em;
+}
+.cover .meta {
+  display: flex; gap: 10mm; flex-wrap: wrap; margin-top: 6mm;
+  font-family: var(--sans); font-size: 8.5pt;
+}
+.cover .meta div { min-width: 0; }
+.cover .meta dt {
+  font-family: var(--mono); font-size: 7.5pt; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 1mm;
+}
+.cover .meta dd { margin: 0; color: var(--ink); font-weight: 500; }
+.cover .meta a { color: var(--brand); text-decoration: none; }
+
+/* ---------- sections ---------- */
+section { break-inside: auto; }
+section + section { margin-top: 7mm; }
+.newpage { break-before: page; }
+h2 {
+  font-size: 15pt; font-weight: 600; letter-spacing: -0.012em;
+  padding-bottom: 2mm; border-bottom: 0.75pt solid var(--line-2); margin-bottom: 3.5mm;
+}
+h2 .n {
+  font-family: var(--mono); font-size: 9pt; font-weight: 500;
+  color: var(--brand); margin-right: 3mm; letter-spacing: 0;
+}
+h3 {
+  font-family: var(--sans); font-size: 10pt; font-weight: 600;
+  margin: 5mm 0 2mm; letter-spacing: -0.005em;
+}
+h4 {
+  font-family: var(--mono); font-size: 7.5pt; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3); margin: 4mm 0 2mm;
+}
+.lead { font-size: 11.5pt; line-height: 1.5; color: var(--ink-2); }
+.lead b { color: var(--ink); }
+
+/* ---------- tables ---------- */
+table {
+  width: 100%; border-collapse: collapse; margin: 3mm 0;
+  font-family: var(--sans); font-size: 8.5pt; break-inside: avoid;
+}
+th {
+  text-align: left; font-family: var(--mono); font-size: 7pt;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3);
+  font-weight: 500; padding: 0 2.5mm 1.5mm 0; border-bottom: 0.75pt solid var(--line-2);
+  vertical-align: bottom;
+}
+td {
+  padding: 1.8mm 2.5mm 1.8mm 0; border-bottom: 0.4pt solid var(--line);
+  vertical-align: top; line-height: 1.4;
+}
+th:last-child, td:last-child { padding-right: 0; }
+tr:last-child td { border-bottom: 0; }
+td b { font-weight: 600; }
+.mono-cell { font-family: var(--mono); font-size: 7.8pt; white-space: nowrap; }
+
+/* ---------- steps ---------- */
+ol.steps { margin: 3mm 0; padding: 0; list-style: none; counter-reset: s; }
+ol.steps > li {
+  position: relative; padding-left: 9mm; margin-bottom: 3.4mm;
+  counter-increment: s; break-inside: avoid;
+}
+ol.steps > li::before {
+  content: counter(s); position: absolute; left: 0; top: 0.2mm;
+  width: 6mm; height: 6mm; border-radius: 1mm;
+  background: var(--ink); color: #fff;
+  font-family: var(--mono); font-size: 8pt; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+}
+ol.steps > li .t { font-family: var(--sans); font-size: 9.5pt; font-weight: 600; display: block; margin-bottom: 1mm; }
+ol.steps > li .d { font-size: 10pt; color: var(--ink-2); line-height: 1.48; }
+ol.steps > li .d b { color: var(--ink); }
+.where {
+  font-family: var(--mono); font-size: 7.5pt; color: var(--ink-3);
+  display: block; margin-top: 1.2mm;
+}
+
+ul.plain { margin: 2.5mm 0; padding-left: 5mm; }
+ul.plain li { margin-bottom: 2mm; }
+ul.plain li::marker { color: var(--line-2); }
+
+/* ---------- callouts ---------- */
+.box {
+  padding: 3.5mm 4mm; margin: 3.5mm 0; border: 0.75pt solid var(--line-2);
+  background: var(--wash); break-inside: avoid;
+}
+.box h4 { margin-top: 0; }
+.box p { font-size: 10pt; }
+.box.brand { border-color: #e4c2bd; background: var(--brand-wash); }
+.box.brand h4 { color: var(--brand); }
+.box.care { border-color: #cdc0e2; background: var(--care-wash); }
+.box.care h4 { color: var(--care); }
+.box.warn { border-color: #e6cfa4; background: var(--warn-wash); }
+.box.warn h4 { color: var(--warn); }
+
+.pull {
+  font-size: 12.5pt; line-height: 1.4; font-weight: 500;
+  padding: 0 0 0 5mm; margin: 4.5mm 0;
+  border-left: 1.5pt solid var(--brand); break-inside: avoid;
+}
+
+.tag {
+  display: inline-block; font-family: var(--sans); font-size: 7.5pt; font-weight: 600;
+  padding: 0.4mm 1.8mm; border-radius: 1mm; vertical-align: 0.4mm; white-space: nowrap;
+}
+.tag.ok { background: var(--ok-wash); color: var(--ok); }
+.tag.no { background: var(--brand-wash); color: var(--brand); }
+.tag.care { background: var(--care-wash); color: var(--care); }
+.tag.warn { background: var(--warn-wash); color: var(--warn); }
+
+.cols { column-count: 2; column-gap: 8mm; }
+.cols > * { break-inside: avoid; }
+.end {
+  margin-top: 8mm; padding-top: 4mm; border-top: 1.5pt solid var(--ink);
+  font-family: var(--sans); font-size: 8.5pt; color: var(--ink-2);
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="eyebrow">Prototype walkthrough · September 2026</div>
+  <h1>Current</h1>
+  <div class="deck">An interactive prototype of a collections and customer-communication
+  platform for a UK energy supplier — what it is, what it is arguing, and how to
+  walk a client through it in ten minutes.</div>
+  <div class="meta">
+    <div><dt>Open it</dt><dd><a href="https://mosesdex.github.io/current-arrears-prototype/">mosesdex.github.io/current-arrears-prototype</a></dd></div>
+    <div><dt>Source</dt><dd><a href="https://github.com/mosesdex/current-arrears-prototype">github.com/mosesdex/current-arrears-prototype</a></dd></div>
+    <div><dt>Surfaces</dt><dd>Agent workspace · Admin console · Customer app</dd></div>
+    <div><dt>Data</dt><dd>Entirely invented</dd></div>
+  </div>
+</div>
+
+<section>
+<h2><span class="n">01</span>What this is</h2>
+<p class="lead">A supplier contacts customers in arrears by text through a third-party
+conversational-messaging platform. That platform went down for two to four weeks.
+The immediate problem was that outbound collections messaging stopped. <b>The more
+serious problem is what the outage exposed about the arrangement underneath it.</b></p>
+
+<p>The instinct after a vendor outage is to buy a more capable vendor. This prototype
+argues the opposite: that the layer which failed was not the carrier network — the UK
+carrier layer is served by more than thirty tier-one aggregators and is already
+redundant — but the application sitting on top of it. The vendor <em>was</em> the
+workflow, so there was nothing to fail over to.</p>
+
+<p>So the proposition is not a better messaging supplier. It is owning four things the
+supplier should never have been renting: <b>the conversation state, the suppression
+list, the audit trail, and the message templates.</b> Once those are yours, a
+provider becomes a routing decision rather than a dependency, and a month-long
+outage degrades to a change of routing weight.</p>
+
+<div class="box brand">
+<h4>What the prototype is not</h4>
+<p>It has no backend, no authentication and no persistence — state lives in the page
+and resets when you reload it. Nothing is connected to a real customer, a real meter
+or a real provider. It exists to make a set of arguments inspectable and clickable,
+not to be deployed.</p>
+</div>
+</section>
+
+<section>
+<h2><span class="n">02</span>The three surfaces</h2>
+<p>Switch between them from the tabs at the top of the page. Each answers a different
+question about the same system.</p>
+
+<table>
+<thead><tr><th style="width:24%">Surface</th><th style="width:26%">Whose screen it is</th><th>What it is there to show</th></tr></thead>
+<tbody>
+<tr><td><b>Agent workspace</b></td><td>A collections agent handling live conversations</td>
+<td>That the rules protecting customers are enforced in the product rather than written in a policy document — most visibly, that the composer can be blocked by policy rather than by permission.</td></tr>
+<tr><td><b>Admin console</b></td><td>An operations manager</td>
+<td>The configuration, oversight and provider-resilience layer: workflow gates, message routing and failover, channels, roles, imports, and the audit trail.</td></tr>
+<tr><td><b>Customer app</b></td><td>The customer in arrears</td>
+<td>The authenticated channel that lets every text message stay thin — and, in the annotation column beside the phone, what each screen has to get right.</td></tr>
+</tbody>
+</table>
+
+<h3>Two controls in the top rail that change everything</h3>
+<p><b>Design notes</b> toggles the annotation layer. On, the prototype explains the rule
+behind each decision — which is what a client needs. Off, it reads as a plain product,
+which is what it would be. Show it both ways.</p>
+<p>The <b>moon</b> icon switches theme. The palette is deliberate and worth a sentence
+when someone asks about colour: red is the arrears signal, and duty-of-care states are
+violet <em>specifically</em> so that a person needing help is never rendered in the same
+colour as a debt.</p>
+</section>
+
+<section>
+<h2><span class="n">03</span>The ten-minute demo</h2>
+<p class="lead">If you have one pass through the prototype, use this order. Each step
+lands one argument, and they build.</p>
+
+<ol class="steps">
+<li><span class="t">Open on the agent workspace and say nothing about the product yet</span>
+<span class="d">Point at the queue. It is sorted by <b>how long the customer has been
+waiting</b>, not by balance. Sorting by balance makes the people least able to pay wait
+longest, so the default sort is a policy decision that happens to look like a
+preference.</span>
+<span class="where">Agent workspace · left pane</span></li>
+
+<li><span class="t">Read the right-hand panel top to bottom on Delyth Morgan</span>
+<span class="d">Duty of care sits <b>above</b> the money. An agent who reads the balance
+first has already framed the conversation, so the ordering of that panel is deliberate
+and is the shortest way to explain what the whole product is trying to be.</span>
+<span class="where">Agent workspace · right pane</span></li>
+
+<li><span class="t">Click Sofia Kaur</span>
+<span class="d">She has disputed the balance, and <b>the composer is gone</b> — replaced
+by a statement of why. Not greyed out because this agent lacks a permission: blocked
+because contesting an amount restricts what may be done with it. Then click Joseph
+Okafor for a second reason (breathing space) and Account 00483990 for a third
+(unconfirmed identity, treated as a possible data breach rather than a wrong
+number).</span>
+<span class="where">Agent workspace · three cases in a row</span></li>
+
+<li><span class="t">Back on Delyth, press Call Delyth — then press Take a payment</span>
+<span class="d">The recording <b>pauses itself</b> and the red dot goes grey. Card and
+security numbers must never reach a recording, and the pause is triggered by the payment
+step opening rather than by the agent remembering. A control that depends on someone
+remembering is not a control.</span>
+<span class="where">Agent workspace · composer · live call bar</span></li>
+
+<li><span class="t">Tick a couple of the five disclosure steps, press End, choose "Welfare call completed"</span>
+<span class="d">The suspension on arrears activity <b>lifts</b>, the case advances a
+stage, and the restriction note in the composer clears. That call is the only thing that
+could have lifted it — no timer, and no manager override.</span>
+<span class="where">Agent workspace · call panel, then the outcome buttons</span></li>
+
+<li><span class="t">Switch the composer to Email and type a subject naming the balance</span>
+<span class="d">Send <b>disables</b>. A subject line is a lock-screen preview exactly like
+an SMS body, so it gets the same minimisation rule. Change it to something neutral and
+Send comes back.</span>
+<span class="where">Agent workspace · composer · Email tab</span></li>
+
+<li><span class="t">Switch to WhatsApp</span>
+<span class="d">Delyth's 24-hour service window closed 31 hours ago, so free text is
+<b>disabled</b> and only a template Meta has already approved can be sent. Scroll the
+template list to the rejected one: submitted as a utility message, re-categorised by
+Meta as marketing. The same clause would convert the whole message into direct
+marketing under UK privacy law. Two unrelated rulebooks, one sentence, the same
+verdict.</span>
+<span class="where">Agent workspace · composer · WhatsApp tab</span></li>
+
+<li><span class="t">Press Draft with AI</span>
+<span class="d">Asked for a payment reminder on this account, <b>the assistant declines
+and says why</b> — and shows the draft it refused to write. The two it does offer are
+both welfare-call wording, one in Welsh because that preference is on the record. Note
+the footer: the model was given four case fields, not the customer's name, address or
+meter number.</span>
+<span class="where">Agent workspace · composer · Draft with AI</span></li>
+
+<li><span class="t">Go to Admin console, then Message routing, and press Advance the scenario five times</span>
+<span class="d">Watch the health score fall <b>while the provider is still returning
+200 OK</b>. That is the failure that hurts and no SLA on the market covers it. The
+circuit opens, the outbox drains to the second provider paced per recipient, and the
+conversation survives because it was never stored at the provider.</span>
+<span class="where">Admin console · Message routing</span></li>
+
+<li><span class="t">Finish on the Customer app, Messages screen</span>
+<span class="d">One thread across text, app, WhatsApp, email and call. This screen is why
+every text message can stay thin: the substance lives behind authentication. Read the
+annotation column beside the phone — it is the client-facing half of the
+prototype.</span>
+<span class="where">Customer app · Messages</span></li>
+</ol>
+
+<div class="box">
+<h4>If you only have two minutes</h4>
+<p>Steps 3, 4 and 6. A composer that blocks itself, a recording that pauses itself, and
+a subject line that refuses to be sent. All three are the same argument: the rule lives
+in the product, not in a training deck.</p>
+</div>
+</section>
+
+<section>
+<h2><span class="n">04</span>The six cases, and what each one is for</h2>
+<p>The queue is not a list of examples. Each case exists to demonstrate one rule, and
+together they cover the reasons a collections conversation should stop.</p>
+
+<table>
+<thead><tr><th style="width:22%">Case</th><th style="width:20%">State</th><th>The rule it demonstrates</th></tr></thead>
+<tbody>
+<tr><td><b>Delyth Morgan</b></td><td><span class="tag care">Care routed</span></td>
+<td>Priority Services Register, medically dependent on electricity, prepayment meter with no top-up for three days. Arrears activity is suspended until a welfare call is completed. Also the only Welsh-language case — Welsh is a Unicode language, so it costs roughly 2.3× per message and that is a floor, not a defect.</td></tr>
+<tr><td><b>Aaron Whitfield</b></td><td><span class="tag ok">Sending allowed</span></td>
+<td>The ordinary case. A Direct Debit return classified as an affordability signal rather than a dead mandate or our own defect, an arrangement agreed across four channels, and a delivery receipt that says <em>operator</em> rather than <em>handset</em>.</td></tr>
+<tr><td><b>Sofia Kaur</b></td><td><span class="tag no">Disputed</span></td>
+<td>Contesting a balance restricts processing to storage and suspends outbound about that balance. Writing to her about the dispute itself is still permitted — and there is an email in the thread doing exactly that.</td></tr>
+<tr><td><b>Joseph Okafor</b></td><td><span class="tag no">Breathing space</span></td>
+<td>A statutory moratorium, day 23 of 60, applied at debt level rather than customer level. Contact goes to his authorised adviser. An agent tried to ring him and the dialler refused before it connected.</td></tr>
+<tr><td><b>Account 00483990</b></td><td><span class="tag no">Identity unconfirmed</span></td>
+<td>"You have the wrong person." Because mobile numbers get reassigned, this is treated as a possible personal data breach rather than a wrong number, and the channel is suppressed immediately.</td></tr>
+<tr><td><b>Estate of L. Fernandes</b></td><td><span class="tag care">Bereavement</span></td>
+<td>A deceased advice code stops every channel instantly with no re-setup prompt — that prompt being the default behaviour of a system that treats a cancelled mandate as a task. The account is also in credit, so it was never eligible for collections at all.</td></tr>
+</tbody>
+</table>
+
+<div class="box care">
+<h4>The point of having six</h4>
+<p>Three of these conversations are open because <b>the platform is stopping them</b>,
+not because an agent is slow. Any response-time target that counted those against a
+person would push somebody to break the rule that is holding them — which is why the
+manager view separates "held by policy" from "waiting for an owner".</p>
+</div>
+</section>
+
+<section>
+<h2><span class="n">05</span>The six channels</h2>
+<p>A channel is a property of a message, not a separate inbox. Two inboxes for one
+customer means two versions of what was said, and the one an ombudsman asks for will be
+the other one.</p>
+
+<table>
+<thead><tr><th style="width:15%">Channel</th><th style="width:30%">Evidence it produces</th><th>What it is honestly for</th></tr></thead>
+<tbody>
+<tr><td><b>Text</b></td><td>Handset receipt at one provider, operator acknowledgement at the rest</td><td>Getting attention, and offering a way back in. Never detail: it lands on a lock screen and possibly a shared device.</td></tr>
+<tr><td><b>App</b></td><td>Read state, behind authentication</td><td>Balance, payment, affordability, documents. The only channel that should carry substance.</td></tr>
+<tr><td><b>WhatsApp</b></td><td><b>Read receipts</b> — the strongest here, though the customer can switch them off</td><td>Structured replies via buttons, documents, and customers who will not open anything else. Additive, never load-bearing.</td></tr>
+<tr><td><b>Email</b></td><td>Delivery to a mailbox, which is not reading</td><td>Confirmations, adviser correspondence, longer explanations. No payment links, ever.</td></tr>
+<tr><td><b>Call</b></td><td>Strongest — a conversation with a record</td><td>Affordability, welfare, anything difficult. The only channel where somebody can say something you did not think to ask about.</td></tr>
+<tr><td><b>Letter</b></td><td>Posting, which is not reading</td><td>Statutory notices, and where nothing else is available.</td></tr>
+</tbody>
+</table>
+
+<div class="pull">No channel here proves a person read anything. One provider's own
+documentation admits a switched-off handset still reports delivered, and an email in a
+spam folder is delivered too — so anything with a statutory deadline keeps a second
+channel in the evidential path rather than trusting a receipt.</div>
+
+<h3>Why WhatsApp is deliberately not load-bearing</h3>
+<p>WhatsApp has the best reach ratio of the six and is the only one that could be
+withdrawn by a decision nobody involved is party to. With text, the short code belongs
+to the supplier, so traffic can move between aggregators. With WhatsApp the provider in
+front is swappable and <b>there is no second WhatsApp behind it.</b> One policy change,
+one template rejection or one quality downgrade and the channel stops.</p>
+<p>Which makes it a near-perfect restatement of the problem this platform was built to
+solve. So it is built as additive by construction: nothing in the collections process
+depends on it, and every template that matters also exists as a letter.</p>
+</section>
+
+<section>
+<h2><span class="n">06</span>The admin console, section by section</h2>
+
+<h3>Operations</h3>
+<p>Contact to outcome, contact success per channel, and the team table. The funnel is
+labelled as the wrong shape for this deliberately: <b>dropping out is not failure</b> —
+a customer who reads a message, sees they are fine and does nothing has been served
+correctly. Contact success is reported per channel because the licence obliges a
+supplier to review its contact methods where contact has not succeeded.</p>
+
+<h3>Team and queues</h3>
+<p>First-reply times as a <b>distribution rather than an average</b>, because an average
+hides the only cases that matter: thirteen people who waited more than an hour disappear
+into a mean of six minutes. Plus who is carrying what, what nobody has picked up, and
+every handover with its reason.</p>
+
+<h3>Message routing</h3>
+<p>Two providers live permanently and a third kept warm. The five-step failover scenario
+is worth clicking through. Health is scored on <b>delivery-derived</b> signals — receipt
+latency and the terminal-delivered ratio against each provider's own baseline — because
+every published SLA in this market measures API availability and none measures delivery.
+One provider's agreement even deems the platform unavailable only during an incident
+affecting <em>multiple</em> customers, so a total outage affecting one supplier alone is
+contractually not downtime.</p>
+
+<h3>Channels</h3>
+<p>What each channel is honestly for, the call and recording policy, email
+authentication, bounce classification, and the WhatsApp problem. Note the calls panel:
+<b>there is no dialler in this design.</b> Predictive dialling produces abandoned calls
+and answer-machine detection produces exactly the silent call the rules exist to
+prevent. Removing the dialler removes the whole category of breach rather than managing
+it down to a permitted percentage.</p>
+
+<h3>Collections workflow</h3>
+<p>Five configurable stages and six gates, of which <b>four cannot be switched off by
+anyone, including an administrator.</b> A configurable compliance control is not a
+compliance control; it is a setting that happens to be correct today.</p>
+
+<h3>Message templates</h3>
+<p>A working linter. Edit the body and the checks re-run: undeclared variables block the
+send, one promotional clause reclassifies the whole message as direct marketing, pressure
+language is flagged as both a conduct risk and counter-productive, and the encoding panel
+shows what a single pasted curly apostrophe costs. Below it, the sender identities that
+are blocked at operator level — <code>Energy</code>, <code>Bill</code>,
+<code>Payment</code>, <code>Collection</code> — which no change of provider recovers.</p>
+
+<h3>Roles and access</h3>
+<p>Seven roles against sixteen capabilities. Read the administrator column: it can change
+a role definition but cannot read a customer conversation without recording a reason, and
+cannot send a message at all. Separating configuration from operation is what stops the
+most privileged account being the most dangerous one.</p>
+
+<h3>Import</h3>
+<p>Eight illustrative rows with real failure codes. The landline row is the one to pause
+on: UK carriers do not bounce SMS to fixed lines because text-to-speech delivery is
+widespread here, so an arrears message sent to a landline is <b>read aloud to whoever
+answers a shared household phone</b> and returns a delivery receipt. That is an
+unintended disclosure, not a billing error, which is why line type is screened at import
+rather than at send.</p>
+
+<h3>Contact rules and Audit trail</h3>
+<p>Three suppression scopes rather than one flag — because a naive <code>STOP</code>
+handler puts a supplier in breach of its energy licence while it believes it is complying
+with privacy law. And an append-only hash-chained audit trail, because provider retention
+runs from twenty-four hours to three months while limitation on a contract debt is six
+years in England and Wales and five in Scotland, where it extinguishes the obligation
+outright.</p>
+</section>
+
+<section class="newpage">
+<h2><span class="n">07</span>What is deliberately absent</h2>
+<p class="lead">The omissions carry as much of the argument as the features. Each of
+these is a thing a collections platform would normally have.</p>
+
+<table>
+<thead><tr><th style="width:30%">Not in the product</th><th>Why not</th></tr></thead>
+<tbody>
+<tr><td><b>Agent rankings or scores</b></td>
+<td>Case mix is assigned rather than chosen, so the numbers are not comparable — the agent who takes the hardest conversations looks worst on every throughput measure. A league table also moves behaviour towards the measure rather than towards the customer.</td></tr>
+<tr><td><b>Propensity or likelihood-to-pay scoring</b></td>
+<td>It decides how hard to press a person on the basis of a prediction about them. Nothing in this platform scores a customer, and no automated decision is made about anybody.</td></tr>
+<tr><td><b>A predictive or power dialler</b></td>
+<td>Abandoned calls and answer-machine silence are regulatory exposures traded for agent utilisation, on a call about somebody's arrears.</td></tr>
+<tr><td><b>Keystroke or screen-time monitoring</b></td>
+<td>The research on workplace monitoring finds the effect depends entirely on whether people experience it as support or as surveillance. This product picks support.</td></tr>
+<tr><td><b>Any field that could hold bank details</b></td>
+<td>Not a policy that says we do not store them — the schema has nowhere to put them. A policy can be forgotten; a missing column cannot.</td></tr>
+<tr><td><b>Payment links in email</b></td>
+<td>A collections email carrying a link is indistinguishable from the phishing it invites. The body offers a sign-in and nothing else.</td></tr>
+<tr><td><b>Provider-side conversation storage</b></td>
+<td>The single decision everything else rests on. The thread is keyed to the case, never to a phone number and a sender, so switching provider changes a routing attribute and leaves the conversation, the audit trail and the suppression state untouched.</td></tr>
+</tbody>
+</table>
+
+<div class="box warn">
+<h4>One feature that exists specifically to be refused</h4>
+<p>The drafting assistant shows the drafts <b>it declined to write</b>, struck through
+with the reason, rather than hiding them. On a medically dependent account with a
+self-disconnection risk it will not draft a payment request at all. An assistant that
+only ever shows you its successes gives you no way to judge it.</p>
+</div>
+</section>
+
+<section>
+<h2><span class="n">08</span>Scope, limits and provenance</h2>
+
+<h3>Everything you see is invented</h3>
+<p>Every customer, balance, meter reference, conversation and phone number is synthetic.
+Mobile numbers sit inside <code>07700 900000–900999</code> and the single landline inside
+<code>029 2018 0xxx</code> — the ranges the regulator reserves for fiction — so no
+fixture can collide with a real subscriber. The photographs a customer appears to have
+sent are drawn as vector graphics rather than shipped as images, so no real meter or real
+document is in the file. The synthetic-data badge stays visible in the top rail rather
+than hiding in a footer.</p>
+
+<h3>What it cannot do</h3>
+<ul class="plain">
+<li>No backend, authentication or persistence — state resets when the page reloads.</li>
+<li>No real provider is connected. The failover scenario is a scripted sequence, not live telemetry.</li>
+<li>The figures in the admin console are illustrative and internally consistent, not measured.</li>
+<li>The drafting assistant's suggestions are written out in advance. No model is called.</li>
+</ul>
+
+<h3>Where the reasoning lives</h3>
+<p>This prototype is the visible half of a larger piece of work. The research behind it —
+source-cited notes on supplier operations, payment and Direct Debit scheme mechanics, the
+regulatory position, data protection, provider architecture, agent-workspace evidence and
+reliability patterns, together with the architecture decision records and a control
+matrix — sits in a separate private repository. Where that research could not verify
+something, it says so rather than filling the gap.</p>
+
+<div class="end">
+<b>Current — arrears platform prototype.</b> Open at
+mosesdex.github.io/current-arrears-prototype · source at
+github.com/mosesdex/current-arrears-prototype · MIT licensed.
+Built as a prototype for discussion. Not a production system, and not connected to any
+real customer, meter or provider.
+</div>
+</section>
+
+</body>
+</html>

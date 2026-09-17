@@ -6,6 +6,9 @@ step and no dependencies beyond two webfonts.
 
 **[Open the prototype →](https://mosesdex.github.io/current-arrears-prototype/)**
 
+**[Walkthrough (PDF, 8 pages) →](docs/Current-prototype-walkthrough.pdf)** — what it
+is, what it argues, and a ten-minute demo script for showing it to someone.
+
 It covers three surfaces, switchable from the top rail:
 
 | Surface | What it is |
