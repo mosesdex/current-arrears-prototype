@@ -14,6 +14,29 @@ It covers three surfaces, switchable from the top rail:
 | **Admin console** | Operations, message routing and failover, workflow gates, template linting, roles and access, import validation, contact rules, audit trail. |
 | **Customer app** | Seven screens in a device frame: balance, payment, affordability, Direct Debit, circumstances, messages, dispute. |
 
+### Working together on a conversation
+
+- **Typing indicators**, in the app only. SMS has no presence field that could
+  carry "typing", so the indicator exists on the channel where it is true and the
+  interface says so rather than implying otherwise.
+- **Presence on a conversation** — who else is reading it, and who is typing a
+  reply right now, because two agents answering one person in arrears is the
+  failure this prevents.
+- **Assignment and handover.** Reassign from the conversation or from the manager
+  view. Suggestions are ordered by care training first on a care-flagged case and
+  then by who is carrying least, never by who is fastest. A handover moves the
+  whole case and **does not reset the customer's waiting time**.
+- **Photographs from customers** — a meter reading or a tenancy agreement settles
+  in one image what a fortnight of messages cannot. Location metadata is stripped
+  on receipt, readings are transcribed by a person, and an attachment that turns
+  out to be health information routes to a restricted path.
+- **A drafting assistant** that drafts and never sends. It is given only the case
+  fields it needs, every suggestion goes through the same linter as a typed
+  message, the drafts it rejected are shown rather than hidden, and on a
+  care-routed account it declines to write a payment request at all.
+- **Manager statistics** — a first-reply distribution rather than an average, who
+  is carrying what, what nobody has picked up, and every handover with its reason.
+
 Toggle **Design notes** in the top rail to show or hide the annotation layer that
 explains the rule behind each decision. Dark mode follows the operating system
 and can be overridden.

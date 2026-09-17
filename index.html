@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Interactive prototype of a UK energy collections platform: agent workspace, admin console and customer mobile app. Every customer, balance and phone number is synthetic.">
+<meta name="description" content="Interactive prototype of a UK energy collections platform: agent workspace, admin console and customer mobile app. Synthetic data throughout.">
 <meta name="color-scheme" content="light dark">
 <title>Current Arrears Platform</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -261,6 +261,133 @@ body[data-notes="on"] .note { display: flex; }
   text-transform: uppercase; color: var(--ink-3);
 }
 
+/* Default size for every injected icon. Without it, a sprite dropped into a
+   container that has no svg rule of its own renders at the size of its box. */
+.ico { width: 14px; height: 14px; flex: none; }
+
+/* ---------- presence, assignment, typing ---------- */
+.avatar {
+  width: 22px; height: 22px; border-radius: 99px; flex: none;
+  display: grid; place-items: center;
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.02em;
+  font-family: var(--sans); color: var(--on-brand);
+  border: 1.5px solid var(--raised);
+}
+.avatar.sm { width: 18px; height: 18px; font-size: 8.5px; }
+.avatar.lg { width: 27px; height: 27px; font-size: 11px; }
+.stack { display: flex; }
+.stack .avatar + .avatar { margin-left: -6px; }
+
+.presence {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 7px 12px; border-bottom: 1px solid var(--line);
+  background: var(--panel-2); font-size: 11.5px; color: var(--ink-2);
+}
+.presence b { font-weight: 600; color: var(--ink); }
+
+.typing { display: inline-flex; align-items: center; gap: 4px; }
+.typing i {
+  width: 4px; height: 4px; border-radius: 99px; background: currentColor; display: block;
+  animation: blip 1.25s infinite ease-in-out;
+}
+.typing i:nth-child(2) { animation-delay: 0.16s; }
+.typing i:nth-child(3) { animation-delay: 0.32s; }
+@keyframes blip { 0%, 60%, 100% { opacity: 0.28; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-2px); } }
+
+.assign { display: flex; align-items: center; gap: 7px; position: relative; }
+.assign > button {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 8px 3px 4px; font-size: 11.5px; font-weight: 500;
+  background: var(--raised); color: var(--ink-2);
+  border: 1px solid var(--line); border-radius: 99px; cursor: pointer;
+}
+.assign > button:hover { border-color: var(--line-strong); color: var(--ink); }
+.assign-menu {
+  position: absolute; top: calc(100% + 6px); right: 0; z-index: 40; width: 268px;
+  background: var(--raised); border: 1px solid var(--line-strong);
+  border-radius: var(--r); box-shadow: var(--shadow-lg); overflow: hidden;
+}
+.assign-menu h5 { margin: 0; padding: 9px 11px 7px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.assign-menu button {
+  display: flex; align-items: center; gap: 9px; width: 100%; text-align: left;
+  padding: 8px 11px; border: 0; border-top: 1px solid var(--line);
+  background: transparent; cursor: pointer; font-size: 12.5px;
+}
+.assign-menu button:hover { background: var(--panel); }
+.assign-menu .nm { font-weight: 500; }
+.assign-menu .st { font-size: 11px; color: var(--ink-3); margin-top: 1px; }
+.assign-menu .load { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--ink-3); text-align: right; }
+
+/* ---------- attachments ---------- */
+.attach {
+  display: block; padding: 0; margin-top: 7px; border: 0; background: 0; cursor: zoom-in;
+  border-radius: 9px; overflow: hidden; line-height: 0; width: 100%; max-width: 232px;
+}
+.attach svg { width: 100%; height: auto; display: block; border-radius: 9px; }
+.attach-meta {
+  display: flex; align-items: center; gap: 6px; margin-top: 5px;
+  font-family: var(--mono); font-size: 10px; color: var(--ink-3); line-height: 1.4;
+}
+.msg.out .attach { margin-left: auto; }
+.lightbox {
+  position: fixed; inset: 0; z-index: 80; display: none;
+  place-items: center; padding: 28px;
+  background: oklch(0.14 0.01 29 / 0.7); backdrop-filter: blur(3px);
+}
+.lightbox.on { display: grid; }
+.lightbox-inner { max-width: 520px; width: 100%; background: var(--raised); border: 1px solid var(--line-strong); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-lg); }
+.lightbox-inner > svg { width: 100%; height: auto; display: block; }
+.lightbox-foot { padding: 12px 14px; }
+.lightbox-foot h4 { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+.lightbox-foot p { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--ink-2); }
+
+/* ---------- AI draft panel ---------- */
+.ai-panel { border-top: 1px solid var(--line); background: var(--panel); }
+.ai-head { display: flex; align-items: center; gap: 9px; padding: 10px 12px 8px; }
+.ai-head h4 { font-size: 12.5px; font-weight: 600; }
+.ai-head > .ico { width: 15px; height: 15px; color: var(--brand); }
+.ai-head .end { margin-left: auto; display: flex; gap: 7px; align-items: center; }
+.ai-body { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 9px; }
+.ai-option {
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--raised); padding: 11px 12px; text-align: left; width: 100%; cursor: pointer;
+}
+.ai-option:hover { border-color: var(--line-strong); }
+.ai-option[data-refused] { cursor: default; background: var(--panel-2); }
+.ai-option .why {
+  display: flex; align-items: center; gap: 7px; margin-bottom: 7px;
+  font-size: 11.5px; font-weight: 600; color: var(--ink-2);
+}
+.ai-option .why .pill { font-weight: 600; }
+.ai-option .dr { font-size: 13px; line-height: 1.5; color: var(--ink); }
+.ai-option[data-refused] .dr { color: var(--ink-3); text-decoration: line-through; text-decoration-thickness: 1px; }
+.ai-option .fo { display: flex; align-items: center; gap: 9px; margin-top: 8px; flex-wrap: wrap; font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); }
+.ai-ground {
+  display: flex; gap: 9px; padding: 10px 12px; margin: 0 12px 12px;
+  background: var(--info-wash); border: 1px solid var(--info-line);
+  border-radius: var(--r); font-size: 12px; line-height: 1.5; color: var(--ink-2);
+}
+.ai-ground svg { width: 14px; height: 14px; flex: none; margin-top: 2px; color: var(--info); }
+.ai-ground b { color: var(--ink); font-weight: 600; }
+.ai-ground code { font-size: 11px; }
+
+/* ---------- manager stats ---------- */
+.dist { display: flex; align-items: flex-end; gap: 4px; height: 92px; }
+.dist-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 5px; height: 100%; }
+.dist-col .b { width: 100%; border-radius: 3px 3px 0 0; min-height: 2px; }
+.dist-col .t { font-family: var(--mono); font-size: 9.5px; color: var(--ink-3); white-space: nowrap; }
+.dist-col .v { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--ink-2); }
+.sla-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 12.5px; }
+.sla-row:last-child { border-bottom: 0; }
+.sla-row .nm { font-weight: 500; }
+.sla-row .end { margin-left: auto; display: flex; align-items: center; gap: 9px; }
+
+/* Interaction polish: everything clickable acknowledges the click. */
+.chip, .tmpl, .ghost, .btn, .m-btn, .m-row, .m-opt, .toggle, .screen-list button, .switch button, .assign > button, .ai-option, .q button {
+  transition: background-color 0.13s ease-out, border-color 0.13s ease-out, color 0.13s ease-out;
+}
+.btn:active, .m-btn:active { transform: translateY(0.5px); }
+
 /* ---------- app chrome (shared by workspace + admin) ---------- */
 .app {
   display: grid; grid-template-columns: 214px 1fr;
@@ -305,7 +432,7 @@ body[data-notes="on"] .note { display: flex; }
   position: sticky; top: 0; z-index: 4; flex: none;
   padding: 9px 12px; background: var(--panel); border-bottom: 1px solid var(--line);
 }
-.pane-head .row { display: flex; align-items: center; gap: 8px; }
+.pane-head .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .pane-head h3 { font-size: 12.5px; font-weight: 600; }
 
 .chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
@@ -326,7 +453,7 @@ body[data-notes="on"] .note { display: flex; }
 }
 .q button:hover { background: var(--panel); }
 .q [aria-current="true"] { background: var(--brand-wash); box-shadow: inset 2px 0 0 var(--brand); }
-.q .l1 { display: flex; align-items: baseline; gap: 8px; }
+.q .l1 { display: flex; align-items: center; gap: 7px; }
 .q .nm { font-size: 13px; font-weight: 600; letter-spacing: -0.005em; }
 .q .wait { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--brand-ink); font-weight: 500; }
 .q .l2 { display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 11.5px; color: var(--ink-3); }
@@ -718,6 +845,9 @@ img { max-width: 100%; }
   <g id="i-wifi"><path d="M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 20 0M12 20h.01"/></g>
   <g id="i-git"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"/><path d="M12 12v3"/></g>
   <g id="i-swap"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></g>
+  <g id="i-sparkle"><path d="M12 3l1.9 4.6L18.5 9.5 13.9 11.4 12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></g>
+  <g id="i-camera"><path d="M14.5 4h-5L8 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4z"/><circle cx="12" cy="13" r="3.5"/></g>
+  <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 19 7a4 4 0 0 1-3 3.87"/></g>
   <g id="i-scale"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></g>
  </defs>
 </svg>
@@ -773,6 +903,7 @@ img { max-width: 100%; }
               <button class="chip" aria-pressed="false" data-f="care">Care flagged</button>
               <button class="chip" aria-pressed="false" data-f="blocked">Send blocked</button>
               <button class="chip" aria-pressed="false" data-f="waiting">Awaiting reply</button>
+              <button class="chip" aria-pressed="false" data-f="mine">Unassigned</button>
             </div>
           </div>
           <ul class="q" id="queue"></ul>
@@ -782,6 +913,7 @@ img { max-width: 100%; }
           <div class="pane-head">
             <div class="row" id="conv-head"></div>
           </div>
+          <div class="presence" id="presence" style="display:none"></div>
           <div class="thread" id="thread"></div>
           <div class="composer" id="composer"></div>
         </div>
@@ -791,6 +923,8 @@ img { max-width: 100%; }
     </div>
   </div>
 </main>
+
+<div class="lightbox" id="lightbox"><div class="lightbox-inner" id="lightbox-inner"></div></div>
 
 <!-- ============ SURFACE 2: ADMIN CONSOLE ============ -->
 <main class="surface" id="s-admin" role="tabpanel" aria-labelledby="t-admin">
@@ -802,6 +936,7 @@ img { max-width: 100%; }
       </div>
       <div class="nav-group lbl">Oversight</div>
       <button data-sec="ops" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-activity"/></svg>Operations</button>
+      <button data-sec="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-users"/></svg>Team and queues<span class="count" id="nav-unassigned">1</span></button>
       <button data-sec="providers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-swap"/></svg>Message routing</button>
       <button data-sec="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-git"/></svg>Audit trail</button>
       <div class="nav-group lbl">Configure</div>
@@ -867,7 +1002,7 @@ img { max-width: 100%; }
 const $  = (s, r) => (r || document).querySelector(s);
 const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const ic = (n, w) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 1.8) + '" stroke-linecap="round" stroke-linejoin="round"><use href="#i-' + n + '"/></svg>';
+const ic = (n, w) => '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 1.8) + '" stroke-linecap="round" stroke-linejoin="round"><use href="#i-' + n + '"/></svg>';
 const gbp = (n) => '£' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 /* Emphasis only — the copy is authored, never parsed from user input. */
 const md = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`(.+?)`/g, '<code class="mono">$1</code>');
@@ -903,6 +1038,7 @@ const CASES = [
       { k: 'sys', tone: 'care', i: 'care', b: '**Priority Services Register match on account creation.** Care state resolved before any collections stage could open. The gate fails closed: if the register cannot be read, nothing is sent.' },
       { k: 'out', b: 'Hello Delyth. We can see your electricity account ending 3112 is behind. We would rather help than chase — reply HELP and we will call you, or see your options in the app. Reply STOP to opt out of marketing.', at: 'Mon 09:14', st: 'delivered_handset', seg: 2, agent: 'Automated · care-approved template' },
       { k: 'in', b: 'I am not ignoring it. Money is very tight and the oxygen machine has to stay on overnight, I cannot let the meter run out. Can someone ring me', at: 'Mon 11:02' },
+      { k: 'in', b: 'This is what it says now', at: 'Mon 11:03', img: 'meter', cap: 'Meter reading, sent from the app' },
       { k: 'sys', tone: 'warn', i: 'alert', b: '**Routed out of the collections workflow to the care queue.** Self-disconnection risk on a medically dependent account. Arrears activity on this account is suspended until a welfare call is completed — the case cannot advance a stage while this holds.' },
     ],
     allow: true,
@@ -936,6 +1072,7 @@ const CASES = [
     thread: [
       { k: 'out', b: 'Hello Sofia. There is £268.90 outstanding on your energy account ending 9934. You can see the detail and pay in the app.', at: 'Fri 09:02', st: 'delivered_handset', seg: 1, agent: 'Automated · reminder template' },
       { k: 'in', b: 'This is not my usage. I moved out of that flat in March and I have the tenancy agreement to prove it', at: 'Fri 09:48' },
+      { k: 'in', b: 'Here it is', at: 'Fri 09:50', img: 'tenancy', cap: 'Tenancy agreement, sent from the app' },
       { k: 'sys', tone: 'warn', i: 'ban', b: '**Balance marked disputed from the inbound message.** Processing is restricted to storage while the dispute stands, and outbound contact about this balance is suspended. The restriction cannot be lifted without a recorded confirmation that Sofia was told it had been.' },
     ],
     allow: false,
@@ -1007,6 +1144,126 @@ const CASES = [
 
 const STAGES = ['Pre-arrears notice', 'Reminder', 'Ability to pay', 'Arrangement', 'Formal notice'];
 
+/* ---------- people ----------
+   Avatar colours deliberately exclude red. Red is the arrears signal in this
+   product and must never also mean "a person". */
+const AGENTS = {
+  RV: { n: 'Rhiannon Vaughan', r: 'Collections agent', c: 'var(--chart-2)', load: 12, state: 'Available' },
+  TB: { n: 'Tomas Belu', r: 'Collections agent', c: 'var(--ok)', load: 19, state: 'Available' },
+  AN: { n: 'Asha Nair', r: 'Senior agent · care trained', c: 'var(--care)', load: 8, state: 'On a call' },
+  MN: { n: 'Maja Nowak', r: 'Senior agent · care trained', c: 'var(--warn)', load: 7, state: 'Available' },
+  MO: { n: 'Marcus Obi', r: 'Operations manager', c: 'var(--info)', load: 0, state: 'Managing' },
+  BER: { n: 'Bereavement team', r: 'Specialist queue', c: 'var(--ink-3)', load: 4, state: 'Queue' },
+};
+const av = (k, cls) => '<span class="avatar ' + (cls || '') + '" style="background:' + AGENTS[k].c + '" title="' + esc(AGENTS[k].n) + '">' + esc(k.slice(0, 2)) + '</span>';
+
+/* ---------- photographs customers send ----------
+   Drawn rather than shipped: a prototype must not carry a real photograph of a
+   real meter or a real document. */
+function photo(kind) {
+  if (kind === 'meter') {
+    return '<svg viewBox="0 0 320 240" role="img" aria-label="Photograph of an electricity meter display showing 48192">'
+      + '<rect width="320" height="240" fill="#6b6560"/><rect x="18" y="14" width="284" height="212" rx="10" fill="#d8d2c8"/>'
+      + '<rect x="18" y="14" width="284" height="60" rx="10" fill="#c3bcb1"/>'
+      + '<text x="34" y="50" font-family="monospace" font-size="15" fill="#4a453f" font-weight="bold">ELECTRICITY</text>'
+      + '<rect x="34" y="92" width="252" height="66" rx="6" fill="#2b2f2c"/>'
+      + '<rect x="42" y="100" width="236" height="50" rx="4" fill="#8ea38d"/>'
+      + '<text x="160" y="137" text-anchor="middle" font-family="monospace" font-size="38" font-weight="bold" fill="#1f231f" letter-spacing="5">48192</text>'
+      + '<text x="34" y="182" font-family="monospace" font-size="12" fill="#5a544d">kWh  SERIAL K09 4471 882</text>'
+      + '<rect x="228" y="172" width="58" height="16" rx="3" fill="#a8302a"/>'
+      + '<text x="257" y="184" text-anchor="middle" font-family="monospace" font-size="9" fill="#fff" font-weight="bold">MPAN</text>'
+      + '<rect x="0" y="0" width="320" height="240" fill="url(#gl)"/>'
+      + '<defs><linearGradient id="gl" x1="0" y1="0" x2="1" y2="1">'
+      + '<stop offset="0" stop-color="#fff" stop-opacity="0.16"/><stop offset="0.5" stop-color="#fff" stop-opacity="0"/>'
+      + '<stop offset="1" stop-color="#000" stop-opacity="0.13"/></linearGradient></defs></svg>';
+  }
+  return '<svg viewBox="0 0 320 240" role="img" aria-label="Photograph of a tenancy agreement">'
+    + '<rect width="320" height="240" fill="#7d7873"/><rect x="26" y="10" width="268" height="224" rx="3" fill="#f4f1ec"/>'
+    + '<text x="46" y="44" font-family="serif" font-size="14" font-weight="bold" fill="#2e2b28">ASSURED SHORTHOLD TENANCY</text>'
+    + '<rect x="46" y="58" width="150" height="5" rx="2" fill="#b9b3ab"/>'
+    + '<rect x="46" y="84" width="228" height="4" rx="2" fill="#cdc7bf"/><rect x="46" y="96" width="210" height="4" rx="2" fill="#cdc7bf"/>'
+    + '<rect x="46" y="108" width="228" height="4" rx="2" fill="#cdc7bf"/><rect x="46" y="120" width="120" height="4" rx="2" fill="#cdc7bf"/>'
+    + '<rect x="46" y="142" width="228" height="1" fill="#ddd7cf"/>'
+    + '<text x="46" y="164" font-family="monospace" font-size="11" fill="#2e2b28" font-weight="bold">Term ends: 28 March 2026</text>'
+    + '<rect x="46" y="176" width="190" height="4" rx="2" fill="#cdc7bf"/>'
+    + '<path d="M50 212q14-18 26-4t22-10 20 8" stroke="#2b3d6b" stroke-width="2.2" fill="none" stroke-linecap="round"/>'
+    + '<rect x="0" y="0" width="320" height="240" fill="url(#gl2)"/>'
+    + '<defs><linearGradient id="gl2" x1="0" y1="0" x2="1" y2="1">'
+    + '<stop offset="0" stop-color="#fff" stop-opacity="0.2"/><stop offset="0.6" stop-color="#fff" stop-opacity="0"/>'
+    + '<stop offset="1" stop-color="#000" stop-opacity="0.16"/></linearGradient></defs></svg>';
+}
+
+/* ---------- assignment, presence, service level ----------
+   Held beside the cases rather than inside them: who is looking at a
+   conversation is live state, not part of the record. */
+const META = {
+  'C-88104': { assignee: 'AN', watchers: ['RV'], firstReply: 9 },
+  'C-88097': { assignee: 'RV', watchers: [], firstReply: 7 },
+  'C-88112': { assignee: 'TB', watchers: ['RV'], typingBy: 'TB', firstReply: null },
+  'C-88090': { assignee: 'MN', watchers: [], firstReply: 7 },
+  'C-88121': { assignee: null, watchers: [], firstReply: null },
+  'C-88066': { assignee: 'BER', watchers: [], firstReply: null },
+};
+const SLA_TARGET = 15; /* minutes to a first reply on an inbound message */
+CASES.forEach((c) => Object.assign(c, { watchers: [], typingBy: null, firstReply: null, reassigned: null }, META[c.id]));
+
+function slaOf(c) {
+  const msgs = c.thread.filter((m) => m.k !== 'sys');
+  const waiting = msgs.length > 0 && msgs[msgs.length - 1].k === 'in';
+  if (!waiting) return { k: 'done', t: c.firstReply != null ? 'Replied in ' + c.firstReply + 'm' : 'No reply needed' };
+  if (!c.allow) return { k: 'held', t: 'Held by policy' };
+  if (c.waitMins > SLA_TARGET * 4) return { k: 'breach', t: 'Waiting ' + c.wait };
+  if (c.waitMins > SLA_TARGET) return { k: 'late', t: 'Waiting ' + c.wait };
+  return { k: 'ok', t: 'Waiting ' + c.wait };
+}
+const SLA_PILL = { ok: 'ok', late: 'warn', breach: 'brand', held: 'info', done: 'mute' };
+
+const ATTACH_INFO = {
+  meter: { t: 'Meter photograph · 1.8 MB · HEIC converted to JPEG',
+    d: 'Location metadata was stripped on receipt. The reading was transcribed by a person, not read automatically — a misread digit on a disputed account is the whole dispute.' },
+  tenancy: { t: 'Tenancy agreement · 2.4 MB · 1 page',
+    d: 'Held against the dispute, not the collections case, and visible only to the team handling it. A document a customer sends to prove one thing routinely contains five others.' },
+};
+
+
+/* ---------- the drafting assistant ----------
+   It drafts. A person edits and sends. Nothing here is ever sent without a
+   human pressing Send, and every draft goes through the same linter as a
+   hand-typed message — including the drafts the assistant itself rejected,
+   which are shown rather than hidden. */
+const AI_DRAFTS = {
+  'C-88097': {
+    ground: ['arrears £184.60', 'return code 0 on 4 Sep', 'customer offered two parts', 'payday 27 Sep'],
+    options: [
+      { label: 'Confirm what he proposed', tone: 'Plain', verdict: 'pass',
+        why: 'He has already named the arrangement. Restating it in his words is the shortest route to agreement.',
+        body: 'That works, Aaron. £92.30 today and £92.30 on 27 September. Nothing else gets added while that holds, and I will send a secure link for the first part now.' },
+      { label: 'Confirm and check it is still affordable', tone: 'Plain, one question', verdict: 'pass',
+        why: 'Adds one check. He offered the amount himself, which is not the same as it being affordable after a bank change.',
+        body: 'That works, Aaron — £92.30 today and £92.30 on 27 September. Before I set it up: is £92.30 definitely manageable this month, now the bank has changed? A smaller first payment is fine if not.' },
+      { label: 'Add urgency to close it today', tone: 'Pressure', verdict: 'refused', refused: true,
+        why: 'Rejected before it was offered. Urgency framing about arrears is a conduct risk, and the trial evidence says it does not even work.',
+        body: 'Aaron, to avoid further action on your account please confirm the £92.30 payment today.' },
+    ],
+  },
+  'C-88104': {
+    ground: ['Priority Services Register: oxygen concentrator', 'prepayment, no top-up for 3 days', 'Welsh preferred', 'arrears £312.40'],
+    refusal: 'Asked for a payment reminder, the assistant declined. On a medically dependent account with a self-disconnection risk, the next action is a welfare call, and a message asking for money would be the wrong thing to send well before it would be the wrong thing to write.',
+    options: [
+      { label: 'Offer the call, in Welsh', tone: 'Care · Welsh', verdict: 'pass',
+        why: 'She asked to be rung and prefers Welsh. Both are on the record, so the draft uses them.',
+        body: 'Helo Delyth. Rwyf am eich ffonio heddiw i drafod y cymorth sydd ar gael a chredyd argyfwng. A fyddai prynhawn heddiw yn gyfleus?' },
+      { label: 'Offer the call, in English', tone: 'Care', verdict: 'pass',
+        why: 'Same content in English, for an agent who cannot follow up in Welsh — offering it and then handling the call in the wrong language is worse than not offering.',
+        body: 'Hello Delyth. I can see the oxygen concentrator on your account. You will not be cut off while we sort this out. I would like to ring you today to go through emergency credit — would this afternoon suit?' },
+      { label: 'Ask for a payment', tone: 'Collections', verdict: 'refused', refused: true,
+        why: 'Not drafted. Arrears activity on this account is suspended until the welfare call is done, so there is no wording that would make this message appropriate.',
+        body: 'Hello Delyth, your account is £312.40 behind. Please top up your meter or contact us to arrange payment.' },
+    ],
+  },
+};
+let aiOpen = false;
+
 /* ---------- GSM-7 segmentation, built without literal control chars ---------- */
 const GSM7 = '@£$¥èéùìòÇ' + String.fromCharCode(10) + 'Øø' + String.fromCharCode(13)
   + 'ÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?'
@@ -1024,7 +1281,28 @@ function segment(text) {
 }
 
 /* ---------- workspace ---------- */
-let current = CASES[0].id, filter = 'all', draft = '';
+let current = CASES[0].id, filter = 'all', draft = '', assignOpen = false;
+
+/* Who to suggest. Care-trained agents first on a care-flagged case, then
+   whoever is carrying the least — never whoever is "fastest", which would
+   route the hardest conversations to the person least able to take time. */
+function assignMenu(c) {
+  const needsCare = c.care.length > 0;
+  const order = Object.keys(AGENTS)
+    .filter((k) => k !== 'MO' && (c.deceased ? k === 'BER' : k !== 'BER'))
+    .sort((a, b) => {
+      const ca = /care trained/.test(AGENTS[a].r) ? 0 : 1, cb = /care trained/.test(AGENTS[b].r) ? 0 : 1;
+      if (needsCare && ca !== cb) return ca - cb;
+      return AGENTS[a].load - AGENTS[b].load;
+    });
+  return '<div class="assign-menu" id="assign-menu"><h5>'
+    + (needsCare ? 'Care-trained first' : 'Least loaded first') + '</h5>'
+    + order.map((k) => '<button data-assign="' + k + '">' + av(k)
+        + '<span><span class="nm">' + esc(AGENTS[k].n) + (k === c.assignee ? ' · now' : '') + '</span>'
+        + '<span class="st">' + esc(AGENTS[k].r) + '</span></span>'
+        + '<span class="load">' + AGENTS[k].load + ' open<br>' + esc(AGENTS[k].state) + '</span></button>').join('')
+    + '</div>';
+}
 
 const filterFns = {
   all: () => true,
@@ -1034,6 +1312,7 @@ const filterFns = {
     const m = c.thread.filter((x) => x.k !== 'sys');
     return m.length === 0 || m[m.length - 1].k !== 'in';
   },
+  mine: (c) => !c.assignee,
 };
 
 function visible() {
@@ -1044,6 +1323,9 @@ function renderQueue() {
   const list = visible();
   $('#q-count').textContent = list.length + (list.length === 1 ? ' case' : ' cases');
   $('#nav-count').textContent = CASES.length;
+  const un = CASES.filter((c) => !c.assignee).length;
+  const badge = $('#nav-unassigned');
+  if (badge) { badge.textContent = un; badge.style.display = un ? '' : 'none'; }
   $('#queue').innerHTML = list.map((c) => {
     const flags = [];
     if (c.deceased) flags.push('<span class="pill care">' + ic('care', 2) + 'Bereavement</span>');
@@ -1057,13 +1339,19 @@ function renderQueue() {
        long they have been waiting. */
     const msgs = c.thread.filter((m) => m.k !== 'sys');
     const inbound = msgs.length > 0 && msgs[msgs.length - 1].k === 'in';
+    const sla = slaOf(c);
+    if (sla.k === 'breach' || sla.k === 'late') flags.unshift('<span class="pill ' + SLA_PILL[sla.k] + '">' + ic('clock', 2) + esc(sla.t) + '</span>');
+    if (!c.assignee) flags.unshift('<span class="pill warn">' + ic('alert', 2) + 'Unassigned</span>');
     return '<li><button data-id="' + c.id + '" aria-current="' + (c.id === current) + '">'
-      + '<span class="l1"><span class="nm">' + esc(c.name) + '</span>'
+      + '<span class="l1">' + (c.assignee ? av(c.assignee, 'sm') : '<span class="avatar sm" style="background:var(--sunk);color:var(--ink-3);border-style:dashed" title="Nobody is looking after this">?</span>')
+      + '<span class="nm">' + esc(c.name) + '</span>'
       + '<span class="wait">' + (inbound ? c.wait : '—') + '</span></span>'
       + '<span class="l2"><span class="dot ' + (c.allow ? 'ok' : 'brand') + '"></span>'
       + '<span class="mono">' + esc(c.acct) + '</span> · ' + esc(c.channel)
       + ' · ' + (c.arrears > 0 ? gbp(c.arrears) + ' behind' : 'in credit') + '</span>'
-      + (inbound ? '<span class="snip">' + esc(c.snippet) + '</span>' : '')
+      + (c.typingBy
+          ? '<span class="snip" style="color:var(--info)"><span class="typing"><i></i><i></i><i></i></span> ' + esc(AGENTS[c.typingBy].n.split(' ')[0]) + ' is replying now</span>'
+          : inbound ? '<span class="snip">' + esc(c.snippet) + '</span>' : '')
       + (flags.length ? '<span class="flags">' + flags.join('') + '</span>' : '')
       + '</button></li>';
   }).join('') || '<li style="padding:18px 12px;font-size:12.5px;color:var(--ink-3)">No cases match this filter.</li>';
@@ -1073,10 +1361,28 @@ function renderConversation() {
   const c = CASES.find((x) => x.id === current);
   if (!c) return;
 
+  const sla = slaOf(c);
   $('#conv-head').innerHTML = '<h3>' + esc(c.name) + '</h3>'
     + '<span class="lbl">' + esc(c.acct) + ' · ' + esc(c.phone) + '</span>'
-    + '<span style="margin-left:auto" class="pill ' + (c.allow ? 'ok' : 'brand') + '">'
-    + (c.allow ? ic('check-circle', 2) + 'Sending allowed' : ic('lock', 2) + 'Sending blocked') + '</span>';
+    + '<span style="margin-left:auto;display:flex;align-items:center;gap:8px">'
+    + '<span class="pill ' + SLA_PILL[sla.k] + '">' + ic('clock', 2) + esc(sla.t) + '</span>'
+    + '<span class="assign"><button id="assign-btn">'
+    + (c.assignee ? av(c.assignee, 'sm') + esc(AGENTS[c.assignee].n.split(' ')[0]) : '<span class="avatar sm" style="background:var(--sunk);color:var(--ink-3);border-style:dashed">?</span>Unassigned')
+    + ic('right', 2) + '</button>' + (assignOpen ? assignMenu(c) : '') + '</span>'
+    + '<span class="pill ' + (c.allow ? 'ok' : 'brand') + '">'
+    + (c.allow ? ic('check-circle', 2) + 'Sending allowed' : ic('lock', 2) + 'Sending blocked') + '</span></span>';
+
+  /* Who else is here. Shown because two agents replying to one person in
+     arrears is the failure this prevents, not because presence is pleasant. */
+  const others = (c.watchers || []).filter((w) => w !== c.assignee);
+  const pres = [];
+  if (c.typingBy) pres.push(av(c.typingBy, 'sm') + '<b>' + esc(AGENTS[c.typingBy].n.split(' ')[0]) + '</b> is typing a reply <span class="typing" style="color:var(--info)"><i></i><i></i><i></i></span>');
+  others.filter((w) => w !== c.typingBy).forEach((w) => pres.push(av(w, 'sm') + '<b>' + esc(AGENTS[w].n.split(' ')[0]) + '</b> is reading this'));
+  $('#presence').innerHTML = pres.length
+    ? pres.map((x) => '<span style="display:inline-flex;align-items:center;gap:6px">' + x + '</span>').join('<span style="color:var(--ink-3)">·</span>')
+      + (c.typingBy ? '<span class="pill warn" style="margin-left:auto">' + ic('alert', 2) + 'Your send will be checked against theirs</span>' : '')
+    : '';
+  $('#presence').style.display = pres.length ? 'flex' : 'none';
 
   $('#thread').innerHTML = c.thread.map((m) => {
     if (m.k === 'sys') {
@@ -1084,7 +1390,11 @@ function renderConversation() {
         + '<span>' + md(m.b) + '</span></div>';
     }
     const st = m.st ? STATUS[m.st] : null;
-    return '<div class="msg ' + m.k + '"><div class="bubble">' + esc(m.b) + '</div>'
+    const att = m.img
+      ? '<button class="attach" data-img="' + m.img + '">' + photo(m.img) + '</button>'
+        + '<div class="attach-meta">' + ic('check', 2.2) + esc(ATTACH_INFO[m.img].t) + '</div>'
+      : '';
+    return '<div class="msg ' + m.k + '"><div class="bubble">' + esc(m.b) + '</div>' + att
       + '<div class="meta">' + (m.agent ? esc(m.agent) + ' · ' : '') + esc(m.at)
       + (m.seg ? ' · ' + m.seg + (m.seg === 1 ? ' segment' : ' segments') : '')
       + (st ? ' · <span class="pill ' + st.p + '" title="' + esc(st.d) + '">' + esc(st.t) + '</span>' : '')
@@ -1110,11 +1420,39 @@ function renderComposer(c) {
     (c.composerNote ? '<div class="note ' + c.composerNote.tone + '" style="margin:10px 12px 0">' + ic('care', 1.9) + '<span>' + md(c.composerNote.b) + '</span></div>' : '')
     + '<div class="composer-tools"><span class="lbl">Templates</span>'
     + c.tmpls.map((t, i) => '<button class="tmpl" data-t="' + i + '">' + esc(t) + '</button>').join('')
+    + (AI_DRAFTS[c.id] ? '<button class="ghost" id="ai-btn" aria-pressed="' + aiOpen + '" style="margin-left:auto">'
+        + ic('sparkle', 1.8) + (aiOpen ? 'Hide drafts' : 'Draft with AI') + '</button>' : '')
     + '</div>'
+    + (aiOpen && AI_DRAFTS[c.id] ? aiPanel(c) : '')
     + '<textarea id="ta" placeholder="Write to ' + esc(c.name.split(' ')[0]) + '…">' + esc(draft) + '</textarea>'
+    + '<div id="typing-hint"></div>'
     + '<div class="composer-foot"><span class="seg" id="segout"></span>'
     + '<button class="btn" id="send">' + ic('send', 2) + 'Send</button></div>';
   updateSeg();
+
+function aiPanel(c) {
+  const d = AI_DRAFTS[c.id];
+  return '<div class="ai-panel"><div class="ai-head">' + ic('sparkle', 1.8)
+    + '<h4>Suggested drafts</h4>'
+    + '<span class="end"><span class="pill mute">You send it, not the model</span></span></div>'
+    + (d.refusal ? '<div class="ai-ground care" style="background:var(--care-wash);border-color:var(--care-line)">' + ic('care', 1.9)
+        + '<span>' + esc(d.refusal) + '</span></div>' : '')
+    + '<div class="ai-body">'
+    + d.options.map((o, i) => '<button class="ai-option" ' + (o.refused ? 'data-refused="1" disabled' : 'data-ai="' + i + '"') + '>'
+        + '<span class="why">' + esc(o.label)
+        + '<span class="pill ' + (o.verdict === 'pass' ? 'ok' : 'brand') + '">'
+        + (o.verdict === 'pass' ? ic('check-circle', 2) + 'Linter passes' : ic('ban', 2) + 'Rejected')
+        + '</span><span class="pill mute">' + esc(o.tone) + '</span></span>'
+        + '<span class="dr">' + esc(o.body) + '</span>'
+        + '<span class="fo">' + (o.refused ? esc(o.why) : segment(o.body).segments + ' segments · ' + esc(o.why)) + '</span>'
+        + '</button>').join('')
+    + '</div>'
+    + '<div class="ai-ground">' + ic('eye', 1.9)
+    + '<span><b>What the model was given:</b> ' + d.ground.map((g) => '<code class="mono">' + esc(g) + '</code>').join(', ')
+    + '. Not the name, not the address, not the meter number, not the conversation history beyond this case. '
+    + '<b>A draft is never sent automatically</b>, it is inserted for you to edit, it passes through the same linter as anything you type, '
+    + 'and the audit trail records that the wording started as a suggestion.</span></div></div>';
+}
 }
 
 const TEMPLATE_BODIES = {
@@ -1142,6 +1480,17 @@ function updateSeg() {
     + '<span class="' + (s.unicode ? 'over' : '') + '">' + (s.unicode ? 'UCS-2 · 70 per segment' : 'GSM-7 · 160 per segment') + '</span>'
     + (s.unicode && s.outside.length ? '<span class="over">outside GSM-7: ' + esc(s.outside.slice(0, 4).join(' ')) + '</span>' : '')
     + (bad.length ? bad.map((b) => '<span class="pill ' + b[0] + '">' + esc(b[1]) + '</span>').join('') : '');
+  const hint = $('#typing-hint');
+  if (hint) {
+    /* Presence is a channel capability, not a product decision. There is no
+       presence channel in SMS at all — no protocol field carries "typing" —
+       so promising it there would be a lie told by the interface. */
+    hint.innerHTML = ta.value.length === 0 ? '' :
+      '<div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-3)">'
+      + '<span class="typing" style="color:var(--info)"><i></i><i></i><i></i></span>'
+      + '<span><b style="color:var(--ink-2);font-weight:600">' + esc(c.name.split(' ')[0]) + ' can see you are typing in the app.</b> '
+      + 'Not by text — SMS has no field that could carry it, so the app is the only channel where this is true.</span></div>';
+  }
   const send = $('#send');
   if (send) send.disabled = ta.value.trim().length === 0 || bad.some((b) => b[0] === 'brand');
   if (c && c.careRoute && s.unicode) { /* Welsh is expected here, not a defect */ }
@@ -1328,6 +1677,17 @@ function note(html, tone) {
   return '<div class="note ' + (tone || '') + '">' + ic(tone === 'care' ? 'care' : 'info', 1.9) + '<span>' + html + '</span></div>';
 }
 
+let aiUsed = false;
+const AUDIT = [
+  ['17 Sep 09:41:02', 'Message accepted by provider', 'Case C-88097 · Sinch · ref 01JMQ8… · rendered body stored verbatim', '8f2a…c104'],
+  ['17 Sep 09:41:06', 'Delivery receipt: operator', 'Raw provider status retained alongside our canonical status. We never upgrade the claim.', 'c104…91bd'],
+  ['17 Sep 09:39:30', 'Photograph received and scanned', 'Case C-88104 · meter image · location metadata stripped · reading transcribed by a person', '91bd…6a12'],
+  ['17 Sep 09:38:15', 'Care route applied', 'Case C-88104 · self-disconnection risk · arrears activity suspended', '6a12…4f70'],
+  ['17 Sep 09:22:48', 'Dispute recorded from inbound', 'Case C-88112 · processing restricted to storage · outbound suspended on this balance', '4f70…2ae9'],
+  ['17 Sep 06:04:11', 'Breathing space applied', 'Case C-88090 · from the statutory register · applied at debt level · day 1 of 60', '2ae9…77c3'],
+  ['17 Sep 05:50:00', 'Workflow version 7 published', 'Approved by two people · 1,204 open cases remain pinned to version 6', '77c3…1a05'],
+];
+
 let failover = 0; /* 0 steady, 1 degrading, 2 circuit open, 3 draining, 4 settled */
 const FAILOVER_STEPS = [
   { t: 'Steady state', d: 'Sinch carries production. Infobip carries a continuous slice of live traffic — a real canary, not a synthetic ping — so its credentials, sender registration and delivery pipeline are known-good at all times.', share: [82, 15, 3], circuit: 'closed', health: [97, 94, 91] },
@@ -1370,6 +1730,73 @@ Object.assign(SECTIONS, {
           + kv('Activated through', 'Both providers, concurrently') + kv('Alphanumeric senders', 'Not used')
           + '</dl>'
           + note('The short code is held in the supplier\'s own name, so it can be activated through whichever aggregator is carrying traffic — and the customer\'s thread survives a failover intact. <b>Alphanumeric sender IDs are one-way</b>, so they cannot carry a reply or a working STOP, and nearly every word this programme would want — <code class="mono">Energy</code>, <code class="mono">Bill</code>, <code class="mono">Payment</code>, <code class="mono">Collection</code> — is blocked at operator level, which no change of provider recovers.'))
+      + '</div>';
+    },
+  },
+
+  team: {
+    title: 'Team and queues', sub: 'Live · service level is 15 minutes to a first reply',
+    body: () => {
+      const waiting = CASES.filter((c) => { const m = c.thread.filter((x) => x.k !== 'sys'); return m.length && m[m.length - 1].k === 'in'; });
+      const unassigned = CASES.filter((c) => !c.assignee);
+      const over = waiting.filter((c) => c.waitMins > SLA_TARGET && c.allow);
+      const dist = [['<5m', 41], ['5–15m', 96], ['15–30m', 38], ['30–60m', 17], ['1–4h', 9], ['4h+', 4]];
+      const distMax = Math.max(...dist.map((d) => d[1]));
+      return '<p class="lede">What a manager needs is <b>where to put people next</b>, not a ranking of the people they already have. Every figure on this screen answers a staffing question: who is free, what is waiting, and which conversations nobody has picked up.</p>'
+      + '<div class="grid g4">'
+      + stat('Waiting on us', String(waiting.length), over.length + ' past the 15-minute target')
+      + stat('Nobody assigned', String(unassigned.length), unassigned.length ? 'Longest has waited ' + unassigned[0].wait : 'All covered')
+      + stat('Median first reply', '6m', 'Across 205 replies today')
+      + stat('Care routed today', '14%', 'Of conversations handled')
+      + '</div>'
+      + '<div class="grid g2">'
+      + box('Time to a first reply', 'Today · 205 replies', '<div class="dist">'
+          + dist.map((d) => '<div class="dist-col"><span class="v">' + d[1] + '</span>'
+              + '<span class="b" style="height:' + Math.round(d[1] / distMax * 74) + 'px;background:'
+              + (d[0] === '1–4h' || d[0] === '4h+' ? 'var(--chart-1)' : d[0] === '15–30m' || d[0] === '30–60m' ? 'var(--chart-3)' : 'var(--chart-2)')
+              + '"></span><span class="t">' + esc(d[0]) + '</span></div>').join('')
+          + '</div>'
+          + '<div class="legend" style="margin-top:11px"><span><i style="background:var(--chart-2)"></i>Within target</span><span><i style="background:var(--chart-3)"></i>Late</span><span><i style="background:var(--chart-1)"></i>Well past</span></div>'
+          + note('A distribution rather than an average. <b>An average first-reply time hides the only cases that matter</b> — the thirteen people who waited more than an hour disappear into a mean of six minutes, and they are exactly who a manager should be reassigning.'))
+      + box('Who is carrying what', 'Assign from the conversation, or here', Object.keys(AGENTS).filter((k) => k !== 'MO').map((k) =>
+          '<div class="sla-row">' + av(k) + '<span><span class="nm">' + esc(AGENTS[k].n) + '</span>'
+          + '<span style="display:block;font-size:11px;color:var(--ink-3)">' + esc(AGENTS[k].r) + '</span></span>'
+          + '<span class="end"><span class="pill ' + (AGENTS[k].state === 'Available' ? 'ok' : 'mute') + '">' + esc(AGENTS[k].state) + '</span>'
+          + '<span class="mono" style="font-size:11.5px;color:var(--ink-2);min-width:52px;text-align:right">' + AGENTS[k].load + ' open</span></span></div>').join('')
+          + note('Suggestions are ordered by <b>care training first on a care-flagged case, then by who is carrying least</b> — never by who is fastest. Routing the hardest conversations to the quickest responder is how a queue punishes the people who take the time those conversations need.', 'care'))
+      + '</div>'
+      + box('Waiting longest', 'Reassign anything nobody has picked up', '<div class="tscroll"><table><thead><tr><th>Case</th><th>Customer</th><th>Assigned</th><th>Waiting</th><th>State</th><th>Why it is still open</th></tr></thead><tbody>'
+        + [...CASES].sort((a, b) => b.waitMins - a.waitMins).map((c) => {
+            const sla = slaOf(c);
+            return '<tr><td class="code">' + esc(c.id) + '</td><td>' + esc(c.name) + '</td>'
+              + '<td>' + (c.assignee ? '<span style="display:inline-flex;align-items:center;gap:6px">' + av(c.assignee, 'sm') + esc(AGENTS[c.assignee].n.split(' ')[0]) + '</span>' : '<span class="pill warn">' + ic('alert', 2) + 'Nobody</span>') + '</td>'
+              + '<td class="num">' + esc(c.wait) + '</td>'
+              + '<td><span class="pill ' + SLA_PILL[sla.k] + '">' + esc(sla.t) + '</span></td>'
+              + '<td>' + esc(c.allow ? (c.assignee ? 'Being handled' : 'Waiting for an owner') : c.block.t) + '</td></tr>';
+          }).join('')
+        + '</tbody></table></div>'
+        + note('Three of these are open because <b>the platform is stopping them</b>, not because an agent is slow — a dispute, a breathing space moratorium and an unconfirmed identity. Counting those against a response target would push someone to break the rule that is holding them.'))
+      + box('Handovers today', 'Every reassignment, with its reason', '<ul class="audit">'
+        + [['09:36', 'Unassigned to Asha Nair', 'Care-flagged and waiting 41 minutes · picked up by a manager'],
+           ['09:04', 'Tomas Belu to Maja Nowak', 'Customer disclosed a health condition mid-conversation · needed a care-trained agent'],
+           ['08:52', 'Ben Osei to the bereavement team', 'Deceased advice code received · every channel stopped first'],
+           ['08:20', 'Craig Duthie to Tomas Belu', 'End of shift · 6 open conversations moved together with their notes']]
+          .map((r) => '<li><time>' + r[0] + '</time><div class="what"><b>' + esc(r[1]) + '</b><div class="why">' + esc(r[2]) + '</div></div></li>').join('')
+        + '</ul>'
+        + note('A handover moves the <b>whole case</b> — care state, affordability record, conversation and audit trail — and <b>does not reset the customer\'s waiting time</b>. A reassignment that restarted the clock would make a manager\'s intervention look like progress while the person waited exactly as long.'))
+      + '<div class="grid g2">'
+      + box('What is not here', 'On purpose', '<ul class="rule-list">'
+        + [['No agent ranking or score', 'Case mix is assigned, not chosen, so the numbers are not comparable. The agent who takes the hardest conversations looks worst on every throughput measure.'],
+           ['No individual league table', 'A league table changes behaviour towards the measure rather than towards the customer.'],
+           ['No monitoring of keystrokes or screen time', 'Research on workplace monitoring finds the effect depends entirely on whether people see it as support or surveillance. This product picks support.'],
+           ['No automatic penalty for a missed target', 'A missed target opens a staffing question, and three of the six cases above are held by policy rather than by anybody being slow.']]
+          .map((r) => '<li>' + ic('ban', 2.2) + '<span><b>' + esc(r[0]) + '</b> — ' + esc(r[1]) + '</span></li>').join('')
+        + '</ul>')
+      + box('Contact volume this week', 'By day', barChart([
+          { name: 'Inbound from customers', color: 'var(--chart-2)', data: [['Mon', 412], ['Tue', 388], ['Wed', 451], ['Thu', 502], ['Fri', 478]] },
+          { name: 'Replies from us', color: 'var(--chart-3)', data: [['Mon', 398], ['Tue', 377], ['Wed', 442], ['Thu', 486], ['Fri', 461]] },
+        ], { label: 'Inbound messages and replies by day', max: 600 })
+        + note('Plotted on <b>one scale</b>. The gap between the two series is the backlog, and it is only readable because both are measured the same way — a second axis would let any gap be drawn as any size.'))
       + '</div>';
     },
   },
@@ -1554,14 +1981,9 @@ Object.assign(SECTIONS, {
   audit: {
     title: 'Audit trail', sub: 'Append-only · hash-chained · 5-year retention',
     body: () => '<p class="lede">Provider retention runs from twenty-four hours to three months. Ombudsman referrals arrive years later and limitation on a contract debt is six years. <b>No provider on the market keeps a collections conversation for as long as we may be required to produce it</b>, so everything is persisted here at the moment of receipt.</p>'
-      + box('Recent entries', 'Every row is immutable', '<ul class="audit">'
-        + [['17 Sep 09:41:02', 'Message accepted by provider', 'Case C-88097 · Sinch · ref 01JMQ8… · rendered body stored verbatim', '8f2a…c104'],
-           ['17 Sep 09:41:06', 'Delivery receipt: operator', 'Raw provider status retained alongside our canonical status. We never upgrade the claim.', 'c104…91bd'],
-           ['17 Sep 09:38:15', 'Care route applied', 'Case C-88104 · self-disconnection risk · arrears activity suspended', '91bd…4f70'],
-           ['17 Sep 09:22:48', 'Dispute recorded from inbound', 'Case C-88112 · processing restricted to storage · outbound suspended on this balance', '4f70…2ae9'],
-           ['17 Sep 06:04:11', 'Breathing space applied', 'Case C-88090 · from the statutory register · applied at debt level · day 1 of 60', '2ae9…77c3'],
-           ['17 Sep 05:50:00', 'Workflow version 7 published', 'Approved by two people · 1,204 open cases remain pinned to version 6', '77c3…1a05']]
-          .map((r) => '<li><time>' + r[0] + '</time><div class="what"><b>' + esc(r[1]) + '</b><div class="why">' + esc(r[2]) + '</div><div class="hashchain">' + r[3] + '</div></div></li>').join('')
+      + box('Recent entries', 'Every row is immutable · newest first', '<ul class="audit">'
+        + AUDIT.map((r) => '<li><time>' + esc(r[0]) + '</time><div class="what"><b>' + esc(r[1]) + '</b><div class="why">' + esc(r[2]) + '</div>'
+            + (r[3] ? '<div class="hashchain">' + esc(r[3]) + '</div>' : '<div class="hashchain">pending — hashed on the next block</div>') + '</div></li>').join('')
         + '</ul>'
         + note('Each entry carries the hash of the one before it, so a deletion or an edit anywhere in the chain is detectable rather than merely discouraged. <b>Retention differs by nation:</b> limitation is six years in England and Wales but five in Scotland, where it extinguishes the obligation outright rather than barring the remedy — so the two cannot share one retention rule.')),
   },
@@ -1682,13 +2104,22 @@ const SCREENS = {
       '<div class="m-msg them"><div class="bubble">Hello Aaron. Your Direct Debit of £61.53 on 4 September was returned unpaid, so your balance is now £184.60. Nothing further happens automatically. You can see your options in the app.</div><div class="m-time">Thu 08:30 · also sent by text</div></div>'
       + '<div class="m-msg me"><div class="bubble">Sorry, changed banks last month and forgot to move it over. Can I pay half now and half on payday</div><div class="m-time">Thu 10:12</div></div>'
       + '<div class="m-msg them"><div class="bubble">No problem at all. I can set that up — £92.30 today and £92.30 on 27 September. Shall I send you a secure link for the first part?</div><div class="m-time">Thu 10:19 · Rhiannon</div></div>'
-      + '<div class="m-note info">' + ic('info', 2) + '<span>This is <b>one conversation across both channels.</b> Replying by text lands here; replying here reaches the same agent.</span></div>'
-      + '<button class="m-btn sec">' + ic('msg', 2) + 'Write a reply</button>',
+      + '<div class="m-msg me"><div class="bubble">Yes please. Here is the meter as it is now</div>'
+      + '<button class="attach" data-img="meter" style="max-width:100%;margin-top:7px">' + photo('meter') + '</button>'
+      + '<div class="m-time">Thu 10:24 · Delivered</div></div>'
+      + '<div class="m-msg them"><div class="bubble"><span class="typing" style="color:var(--ink-3)"><i></i><i></i><i></i></span></div>'
+      + '<div class="m-time">Rhiannon is typing</div></div>'
+      + '<div class="m-note info">' + ic('info', 2) + '<span>This is <b>one conversation across both channels.</b> Replying by text lands here; replying here reaches the same agent — and this is the only channel where either of you can see the other typing.</span></div>'
+      + '<div style="display:flex;gap:9px">'
+      + '<button class="m-btn sec" style="flex:1">' + ic('msg', 2) + 'Reply</button>'
+      + '<button class="m-btn sec" style="width:52px;flex:none" aria-label="Send a photo">' + ic('camera', 2) + '</button></div>',
     annot: {
       h: 'This screen is why the text messages can stay short',
       p: ['An SMS arrives on a possibly shared device and a visible lock screen, so the body carries <b>only enough for the right person to recognise their own account</b> — and the substance lives here, behind authentication. That is a privacy decision before it is a design one.',
           'It is also the failover mechanism that costs nothing. The conversation is keyed to <b>the case, not to a phone number and a sender</b>, so switching messaging provider changes a routing attribute on a message and leaves the thread, the audit trail and the suppression state untouched.'],
       rules: [['One thread, both directions', 'A customer who replies by text and a customer who replies in the app reach the same agent and the same record. Two systems means two truths.'],
+              ['Typing works here and nowhere else', 'SMS has no presence channel — no field in the protocol could carry "typing" — so the indicator exists only in the app, and the interface never implies otherwise. A typing dot the customer cannot actually see is a lie the product tells its own agents.'],
+              ['A photo is the fastest route through a dispute', 'A meter reading or a tenancy date settles in one image what a fortnight of messages cannot. Location metadata is stripped on receipt, and the reading is transcribed by a person: a misread digit on a disputed account is the whole dispute.'],
               ['Delivered is not read', 'One provider\'s own documentation admits its statuses are tentative, and that a switched-off handset still reports delivered. Anything with a statutory deadline keeps a non-SMS channel in the evidence path.']],
     },
   },
@@ -1697,16 +2128,20 @@ const SCREENS = {
     tab: 'home', back: 'home', title: 'Query the amount', sub: 'Tell us what looks wrong',
     body: () =>
       '<div class="m-note ok">' + ic('pause', 2) + '<span><b>We stop chasing this amount as soon as you tell us.</b> Not when we finish looking into it — now. Nothing is added while we check.</span></div>'
-      + [['I did not live here then', 'A tenancy date or move-out date'],
-         ['The readings look wrong', 'A meter reading or a photo'],
+      + [['I did not live here then', 'A tenancy date, or a photo of the agreement'],
+         ['The readings look wrong', 'A photo of the meter settles this fastest'],
          ['I already paid this', 'A payment date or reference'],
          ['Something else', 'Tell us in your own words']].map((o) => mrow('file', o[0], o[1])).join('')
+      + '<button class="m-btn sec">' + ic('camera', 2) + 'Send a photo instead' + '</button>'
+      + '<div class="m-note">' + ic('lock', 2) + '<span>A photo goes to <b>the team looking at your query, not to collections</b>. If it happens to show something about your health, that is kept under stricter rules and is never shared with credit reference agencies.</span></div>'
       + '<div class="m-note info">' + ic('scale', 2) + '<span>If we cannot agree, you can take it to the <b>energy ombudsman free of charge</b> after eight weeks, or sooner if we tell you we have gone as far as we can. We will remind you of this in writing.</span></div>',
     annot: {
       h: 'A dispute is a restriction, not a note on the file',
       p: ['Contesting a balance triggers a <b>restriction on processing</b>: the amount may be stored, but it may not be used to chase. Outbound on that balance stops at the moment the customer says so, and the restriction cannot be lifted without a recorded confirmation that they were told it had been.',
           'Most systems treat a dispute as a status field. Treating it as a <b>processing restriction</b> is what makes the outbound suspension automatic instead of dependent on an agent remembering.'],
-      rules: [['The clock starts at receipt', 'Complaint timers run from when the customer said it, on whatever channel, including a spoken remark. Two independent timers, because the deadlock point and the eight-week point are set by different rules.'],
+      rules: [['An image can prove one thing and disclose five', 'A tenancy agreement carries a signature, a landlord, a rent figure and an address history. So an attachment is held against the query rather than the collections case, scanned on receipt, and visible only to the team handling it.'],
+              ['A photograph can be special category data', 'Someone proving a health circumstance may send a GP letter. That cannot land in the same store as a meter photo: it routes to a restricted path with its own retention, and never travels to a credit reference agency or a collections agency.'],
+              ['The clock starts at receipt', 'Complaint timers run from when the customer said it, on whatever channel, including a spoken remark. Two independent timers, because the deadlock point and the eight-week point are set by different rules.'],
               ['Back-billing cannot be reopened', 'If a charge falls outside the protected window it cannot be presented as owed at all — and setting or raising a prepayment recovery rate counts as presenting it.']],
     },
   },
@@ -1778,7 +2213,7 @@ document.addEventListener('click', (e) => {
   }
 
   /* queue */
-  if (t.dataset.id) { current = t.dataset.id; draft = ''; return renderConversation(); }
+  if (t.dataset.id) { current = t.dataset.id; draft = ''; aiOpen = false; aiUsed = false; assignOpen = false; return renderConversation(); }
   if (t.dataset.f) {
     filter = t.dataset.f;
     $$('#q-filters .chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.f === filter)));
@@ -1805,7 +2240,12 @@ document.addEventListener('click', (e) => {
       c.thread.push({ k: 'sys', tone: 'warn', i: 'ban', b: '**Held by the per-recipient governor.** This customer has reached the hourly ceiling across every sender and workflow. The operator would discard the overflow silently rather than reject it, so the message waits instead of being lost — and the governor fails closed, which is why it holds rather than letting it through.' });
       draft = ''; return renderConversation();
     }
-    c.thread.push({ k: 'out', b: text, at: 'Now', st: 'queued', seg: segment(text).segments, agent: 'Rhiannon V.', session: true });
+    c.thread.push({ k: 'out', b: text, at: 'Now', st: 'queued', seg: segment(text).segments,
+      agent: (c.assignee ? AGENTS[c.assignee].n.split(' ')[0] + ' ' + AGENTS[c.assignee].n.split(' ')[1][0] + '.' : 'Rhiannon V.')
+        + (aiUsed ? ' · assisted draft, edited and sent by a person' : ''), session: true });
+    AUDIT.unshift(['now', 'Message sent', 'Case ' + c.id + ' · ' + segment(text).segments + ' segments'
+      + (aiUsed ? ' · wording began as an assistant suggestion and was approved by a person' : ' · typed by an agent')]);
+    aiUsed = false;
     draft = ''; renderConversation();
     const steps = ['accepted', 'sent', 'delivered_operator', 'delivered_handset'];
     steps.forEach((st, i) => setTimeout(() => {
@@ -1813,6 +2253,49 @@ document.addEventListener('click', (e) => {
       /* Monotonic: only ever advance. A late lower-ranked event is discarded. */
       if (m && STATUS[st].r > STATUS[m.st].r) { m.st = st; if (current === c.id) renderConversation(); }
     }, 700 * (i + 1)));
+    return;
+  }
+
+  /* assignment */
+  if (t.id === 'assign-btn') { assignOpen = !assignOpen; return renderConversation(); }
+  if (t.dataset.assign) {
+    const c = CASES.find((x) => x.id === current);
+    const from = c.assignee, to = t.dataset.assign;
+    assignOpen = false;
+    if (from !== to) {
+      if (from) AGENTS[from].load = Math.max(0, AGENTS[from].load - 1);
+      AGENTS[to].load += 1;
+      c.assignee = to; c.typingBy = null;
+      c.watchers = (c.watchers || []).filter((w) => w !== to);
+      /* Reassignment carries the case, not just the name: the customer's wait
+         clock is untouched, and the reason is written down. */
+      c.thread.push({ k: 'sys', i: 'users', b: '**Reassigned' + (from ? ' from ' + AGENTS[from].n : '') + ' to ' + AGENTS[to].n + '.**'
+        + (from ? '' : ' It had been unassigned, which is the state a manager most needs to see.')
+        + ' The customer\'s waiting time is unchanged — reassigning is not a fresh start for us and must not look like one to them. Care state, affordability record and the whole conversation move with it, and the handover is in the audit trail.' });
+      AUDIT.unshift(['now', 'Case reassigned', 'Case ' + c.id + ' · ' + (from ? AGENTS[from].n : 'unassigned') + ' to ' + AGENTS[to].n + ' · wait clock preserved']);
+      renderQueue();
+    }
+    return renderConversation();
+  }
+
+  /* drafting assistant */
+  if (t.id === 'ai-btn') { aiOpen = !aiOpen; return renderConversation(); }
+  if (t.dataset.ai !== undefined) {
+    const c = CASES.find((x) => x.id === current);
+    const o = AI_DRAFTS[c.id].options[+t.dataset.ai];
+    draft = o.body; aiOpen = false; aiUsed = true;
+    AUDIT.unshift(['now', 'Draft suggested by the assistant', 'Case ' + c.id + ' · inserted for editing, not sent · linter re-run at send']);
+    renderConversation();
+    const ta = $('#ta'); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+    return;
+  }
+
+  /* attachments */
+  if (t.dataset.img) {
+    const a = ATTACH_INFO[t.dataset.img];
+    $('#lightbox-inner').innerHTML = photo(t.dataset.img)
+      + '<div class="lightbox-foot"><h4>' + esc(a.t) + '</h4><p>' + esc(a.d) + '</p></div>';
+    $('#lightbox').classList.add('on');
     return;
   }
 
@@ -1825,6 +2308,17 @@ document.addEventListener('click', (e) => {
   /* mobile */
   if (t.dataset.go) { mScreen = t.dataset.go; return renderMobile(); }
   if (t.dataset.plan !== undefined) { mPlan = +t.dataset.plan; return renderMobile(); }
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'lightbox') e.target.classList.remove('on');
+  if (assignOpen && !e.target.closest('.assign')) { assignOpen = false; renderConversation(); }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  $('#lightbox').classList.remove('on');
+  if (assignOpen) { assignOpen = false; renderConversation(); }
+  if (aiOpen) { aiOpen = false; renderConversation(); }
 });
 
 document.addEventListener('input', (e) => {
