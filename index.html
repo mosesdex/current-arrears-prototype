@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Interactive prototype of a UK energy collections platform across four channels: agent workspace, admin console and customer mobile app. Synthetic data throughout.">
+<meta name="description" content="Interactive prototype of a UK energy collections platform across six channels: agent workspace, admin console and customer mobile app. Synthetic data throughout.">
 <meta name="color-scheme" content="light dark">
 <title>Current Arrears Platform</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -425,6 +425,39 @@ body[data-notes="on"] .note { display: flex; }
   color: var(--ink); font: inherit; font-size: 13.5px; font-weight: 600;
 }
 .subj-field:focus { outline: 0; background: var(--panel-2); }
+
+/* ---------- WhatsApp ---------- */
+.wa-window {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 9px 12px; border-bottom: 1px solid var(--ok-line); background: var(--ok-wash);
+  font-size: 12px; line-height: 1.5; color: var(--ink-2);
+}
+.wa-window.shut { background: var(--warn-wash); border-bottom-color: var(--warn-line); }
+.wa-window .ico { width: 15px; height: 15px; flex: none; margin-top: 1px; color: var(--ok); }
+.wa-window.shut .ico { color: var(--warn); }
+.wa-window b { color: var(--ink); font-weight: 600; }
+.wa-window .clock { margin-left: auto; font-family: var(--mono); font-size: 11.5px; white-space: nowrap; color: var(--ink-2); }
+
+.wa-tmpls { display: flex; flex-direction: column; gap: 7px; padding: 10px 12px 12px; }
+.wa-tmpl {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  padding: 10px 11px; border: 1px solid var(--line); border-radius: var(--r); background: var(--raised);
+}
+.wa-tmpl:hover { border-color: var(--line-strong); }
+.wa-tmpl:disabled { cursor: not-allowed; background: var(--panel-2); }
+.wa-tmpl .hd { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 6px; }
+.wa-tmpl .nm { font-family: var(--mono); font-size: 11px; font-weight: 600; }
+.wa-tmpl .bd { font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+.wa-tmpl:disabled .bd { color: var(--ink-3); }
+.wa-tmpl .rj { margin-top: 7px; font-size: 11.5px; line-height: 1.45; color: var(--brand-ink); }
+
+.quick { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.quick span {
+  padding: 5px 11px; font-size: 12px; font-weight: 500;
+  border: 1px solid var(--info-line); border-radius: 99px;
+  background: var(--info-wash); color: var(--info);
+}
+.msg.out .quick span { background: var(--raised); border-color: var(--line); color: var(--ink-2); }
 
 /* ---------- attachments ---------- */
 .attach {
@@ -955,6 +988,7 @@ img { max-width: 100%; }
   <g id="i-swap"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></g>
   <g id="i-call"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.5-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2z"/></g>
   <g id="i-call-off"><path d="M10.7 13.3a16 16 0 0 0 5 3l1.4-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 4 9"/><path d="M2 2l20 20"/><path d="M2.1 4.2A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6"/></g>
+  <g id="i-wa"><path d="M21 11.5a8.4 8.4 0 0 1-12.6 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/><path d="M8.6 9.1c0-.4.3-.7.7-.7h.6c.3 0 .5.2.6.4l.5 1.2c.1.3 0 .6-.2.8l-.4.4a5 5 0 0 0 2.4 2.4l.4-.4c.2-.2.5-.3.8-.2l1.2.5c.2.1.4.3.4.6v.6c0 .4-.3.7-.7.7A7.3 7.3 0 0 1 8.6 9.1z"/></g>
   <g id="i-mail"><rect width="20" height="15" x="2" y="4.5" rx="2"/><path d="m2.6 5.8 8.1 5.9a2 2 0 0 0 2.6 0l8.1-5.9"/></g>
   <g id="i-mic-off"><path d="M2 2l20 20"/><path d="M15 9.3V5a3 3 0 0 0-5.7-1.3"/><path d="M9 9v3a3 3 0 0 0 5.1 2.1"/><path d="M19 10v2a7 7 0 0 1-10.8 5.9M5 10v2a7 7 0 0 0 3 5.8"/><path d="M12 19v3"/></g>
   <g id="i-sparkle"><path d="M12 3l1.9 4.6L18.5 9.5 13.9 11.4 12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></g>
@@ -1171,6 +1205,9 @@ const CASES = [
       { k: 'sys', i: 'swap', b: '**Return code classified as an affordability signal**, not a dead mandate and not our own defect. The three classes are handled differently: this one suspends the mandate and suppresses dunning rather than re-presenting the payment.' },
       { k: 'in', b: 'Sorry, changed banks last month and forgot to move it over. Can I pay half now and half on payday', at: 'Thu 10:12' },
       { k: 'out', b: 'No problem at all. I can set that up — £92.30 today and £92.30 on 27 September. Shall I send you a secure link for the first part?', at: 'Thu 10:19', st: 'delivered_operator', seg: 1, agent: 'Rhiannon V.' },
+      { k: 'out', ch: 'whatsapp', b: 'Hello Aaron. There is £184.60 outstanding on your energy account ending 4417. Nothing happens automatically. Choose an option below and we will take it from there.', at: 'Thu 10:14', st: 'delivered_handset', tmpl: 'arrears_notice_v4', quick: ['I can pay now', 'I need more time', 'This is not mine'], agent: 'Automated · approved template' },
+      { k: 'in', ch: 'whatsapp', b: 'I need more time', at: 'Thu 10:15', quickPick: true },
+      { k: 'sys', i: 'wa', b: '**A tapped button instead of typed text.** The reply came back as a known value rather than a sentence we had to interpret, which removes the guessing from the one question that matters most. It also opened a 24-hour window in which we may write freely — outside it, only a template Meta has already approved can be sent.' },
       { k: 'call', dir: 'in', at: 'Thu 10:31', dur: '4m 12s', by: 'RV', outcome: ['Affordability captured', 'Arrangement agreed'],
         recorded: true, paused: '0:58–1:44',
         note: '**Recording paused automatically for 46 seconds** while the card details were taken, and resumed afterwards. The pause is triggered by opening the payment step, not by the agent remembering — card and security numbers must never reach the recording, and a control that depends on someone remembering is not a control.' },
@@ -1279,17 +1316,42 @@ const CASES = [
 const STAGES = ['Pre-arrears notice', 'Reminder', 'Ability to pay', 'Arrangement', 'Formal notice'];
 
 /* ---------- channels ----------
-   One conversation, four channels. A channel is a property of a message, not
+   One conversation, six channels. A channel is a property of a message, not
    a separate inbox: two inboxes for one customer means two versions of what
    was said. */
 const CH = {
   sms:    { t: 'Text', i: 'msg', evidential: false, presence: false },
   app:    { t: 'App', i: 'phone', evidential: true, presence: true },
   email:  { t: 'Email', i: 'mail', evidential: false, presence: false },
+  whatsapp: { t: 'WhatsApp', i: 'wa', evidential: true, presence: true },
   call:   { t: 'Call', i: 'call', evidential: true, presence: false },
   letter: { t: 'Letter', i: 'file', evidential: true, presence: false },
 };
 const chChip = (k) => '<span class="ch-chip">' + ic(CH[k].i, 2) + CH[k].t + '</span>';
+
+/* ---------- WhatsApp templates ----------
+   Every one of these was approved by Meta, not by us. The category is Meta's
+   too, and it does not always agree with the category we submitted — which is
+   the whole problem with the channel in one field. */
+const WA_TEMPLATES = [
+  { n: 'arrears_notice_v4', cat: 'Utility', st: 'approved',
+    body: 'Hello {{1}}. There is {{2}} outstanding on your energy account ending {{3}}. Nothing happens automatically. Choose an option below and we will take it from there.',
+    quick: ['I can pay now', 'I need more time', 'This is not mine'] },
+  { n: 'welfare_callback_v2', cat: 'Utility', st: 'approved',
+    body: 'Hello {{1}}. We would like to ring you about the support available on your account. Would {{2}} suit?',
+    quick: ['Yes, that works', 'Suggest another time', 'Please do not ring'] },
+  { n: 'arrangement_confirm_v3', cat: 'Utility', st: 'approved',
+    body: 'That is confirmed, {{1}}: {{2}} on {{3}} and {{4}} on {{5}}. Nothing further will be added while it holds.',
+    quick: ['View in the app'] },
+  { n: 'saver_tariff_offer_v1', cat: 'Marketing', st: 'rejected',
+    body: 'Hello {{1}}, while you clear your balance you could switch to our Saver tariff and save up to £120 a year.',
+    rj: 'Rejected, and correctly. We submitted it as Utility; Meta re-categorised it as Marketing, which needs separate opt-in and separate pricing. The same clause would also convert the whole message into direct marketing under UK privacy law. Two different rulebooks, the same sentence, the same answer.' },
+  { n: 'final_notice_v1', cat: 'Utility', st: 'pending',
+    body: 'Hello {{1}}. We have not been able to reach you about the {{2}} outstanding on your account ending {{3}}. Please get in touch before {{4}}.',
+    rj: 'Awaiting Meta review since 14 September. A statutory notice cannot wait on an external approval queue, so this wording also exists as a letter and the letter is what the deadline relies on.' },
+];
+const WA_WINDOW = { 'C-88097': { open: true, left: '21h 48m' }, 'C-88104': { open: false, since: '31 hours' } };
+
 
 
 /* ---------- people ----------
@@ -1426,6 +1488,57 @@ function segment(text) {
   const weighted = unicode ? chars.length : chars.reduce((n, c) => n + (GSM7_EXT.includes(c) ? 2 : 1), 0);
   const segments = weighted === 0 ? 0 : weighted <= per ? 1 : Math.ceil(weighted / perMulti);
   return { weighted, segments, unicode, outside, per };
+}
+
+function waOpen(c) { const w = WA_WINDOW[c.id]; return !!(w && w.open); }
+
+function waComposer(c) {
+  const w = WA_WINDOW[c.id];
+  if (!w) {
+    return '<div class="wa-window shut">' + ic('alert', 1.9)
+      + '<span><b>No WhatsApp opt-in on this account.</b> WhatsApp requires demonstrable consent obtained on another channel before a business may message someone at all \u2014 so this can never be the channel a conversation starts on, and never the one a failover falls back to.</span></div>';
+  }
+  if (w.open) {
+    return '<div class="wa-window">' + ic('check-circle', 1.9)
+      + '<span><b>Service window open.</b> ' + esc(c.name.split(' ')[0]) + ' messaged us inside the last 24 hours, so we may write freely. When it closes, only a template Meta has already approved can be sent.</span>'
+      + '<span class="clock">' + esc(w.left) + ' left</span></div>';
+  }
+  return '<div class="wa-window shut">' + ic('clock', 1.9)
+    + '<span><b>Service window closed ' + esc(w.since) + ' ago.</b> Free text cannot be sent. Pick an approved template \u2014 the approver is Meta, not us.</span></div>'
+    + '<div class="wa-tmpls">'
+    + WA_TEMPLATES.map((t, i) => '<button class="wa-tmpl" ' + (t.st === 'approved' ? 'data-wa="' + i + '"' : 'disabled') + '>'
+        + '<span class="hd"><span class="nm">' + esc(t.n) + '</span>'
+        + '<span class="pill ' + (t.cat === 'Marketing' ? 'warn' : 'mute') + '">' + esc(t.cat) + '</span>'
+        + '<span class="pill ' + ({ approved: 'ok', pending: 'info', rejected: 'brand' })[t.st] + '">' + esc(t.st) + '</span></span>'
+        + '<span class="bd">' + esc(t.body) + '</span>'
+        + (t.quick ? '<span class="quick">' + t.quick.map((q) => '<span>' + esc(q) + '</span>').join('') + '</span>' : '')
+        + (t.rj ? '<span class="rj">' + esc(t.rj) + '</span>' : '')
+        + '</button>').join('')
+    + '</div>';
+}
+
+function aiPanel(c) {
+  const d = AI_DRAFTS[c.id];
+  return '<div class="ai-panel"><div class="ai-head">' + ic('sparkle', 1.8)
+    + '<h4>Suggested drafts</h4>'
+    + '<span class="end"><span class="pill mute">You send it, not the model</span></span></div>'
+    + (d.refusal ? '<div class="ai-ground care" style="background:var(--care-wash);border-color:var(--care-line)">' + ic('care', 1.9)
+        + '<span>' + esc(d.refusal) + '</span></div>' : '')
+    + '<div class="ai-body">'
+    + d.options.map((o, i) => '<button class="ai-option" ' + (o.refused ? 'data-refused="1" disabled' : 'data-ai="' + i + '"') + '>'
+        + '<span class="why">' + esc(o.label)
+        + '<span class="pill ' + (o.verdict === 'pass' ? 'ok' : 'brand') + '">'
+        + (o.verdict === 'pass' ? ic('check-circle', 2) + 'Linter passes' : ic('ban', 2) + 'Rejected')
+        + '</span><span class="pill mute">' + esc(o.tone) + '</span></span>'
+        + '<span class="dr">' + esc(o.body) + '</span>'
+        + '<span class="fo">' + (o.refused ? esc(o.why) : segment(o.body).segments + ' segments · ' + esc(o.why)) + '</span>'
+        + '</button>').join('')
+    + '</div>'
+    + '<div class="ai-ground">' + ic('eye', 1.9)
+    + '<span><b>What the model was given:</b> ' + d.ground.map((g) => '<code class="mono">' + esc(g) + '</code>').join(', ')
+    + '. Not the name, not the address, not the meter number, not the conversation history beyond this case. '
+    + '<b>A draft is never sent automatically</b>, it is inserted for you to edit, it passes through the same linter as anything you type, '
+    + 'and the audit trail records that the wording started as a suggestion.</span></div></div>';
 }
 
 /* ---------- workspace ---------- */
@@ -1567,8 +1680,11 @@ function renderConversation() {
       ? '<button class="attach" data-img="' + m.img + '">' + photo(m.img) + '</button>'
         + '<div class="attach-meta">' + ic('check', 2.2) + esc(ATTACH_INFO[m.img].t) + '</div>'
       : '';
-    return '<div class="msg ' + m.k + '"><div class="bubble">' + esc(m.b) + '</div>' + att
+    const quick = m.quick ? '<div class="quick">' + m.quick.map((q) => '<span>' + esc(q) + '</span>').join('') + '</div>' : '';
+    return '<div class="msg ' + m.k + '"><div class="bubble">' + esc(m.b) + quick + '</div>' + att
       + '<div class="meta">' + chChip(m.ch || 'sms') + ' · ' + (m.agent ? esc(m.agent) + ' · ' : '') + esc(m.at)
+      + (m.tmpl ? ' · <span class="mono">' + esc(m.tmpl) + '</span>' : '')
+      + (m.quickPick ? ' · tapped, not typed' : '')
       + (m.seg ? ' · ' + m.seg + (m.seg === 1 ? ' segment' : ' segments') : '')
       + (st ? ' · <span class="pill ' + st.p + '" title="' + esc(st.d) + '">' + esc(st.t) + '</span>' : '')
       + '</div></div>';
@@ -1594,7 +1710,7 @@ function renderComposer(c) {
     (c.composerNote ? '<div class="note ' + c.composerNote.tone + '" style="margin:10px 12px 0">' + ic('care', 1.9) + '<span>' + md(c.composerNote.b) + '</span></div>' : '')
     + '<div class="composer-tools">'
     + '<span class="ch-switch">'
-    + ['sms', 'app', 'email'].map((k) => '<button data-ch="' + k + '" aria-selected="' + (composeCh === k) + '">'
+    + ['sms', 'app', 'whatsapp', 'email'].map((k) => '<button data-ch="' + k + '" aria-selected="' + (composeCh === k) + '">'
         + ic(CH[k].i, 2) + CH[k].t + '</button>').join('')
     + '</span>'
     + (call && call.caseId === c.id
@@ -1608,36 +1724,15 @@ function renderComposer(c) {
         + ic('sparkle', 1.8) + (aiOpen ? 'Hide drafts' : 'Draft with AI') + '</button>' : '')
     + '</div>'
     + (aiOpen && AI_DRAFTS[c.id] ? aiPanel(c) : '')
+    + (composeCh === 'whatsapp' ? waComposer(c) : '')
     + (composeCh === 'email' ? '<input class="subj-field" id="subj" placeholder="Subject — appears on a lock screen, so keep the account out of it" value="' + esc(subject) + '">' : '')
-    + '<textarea id="ta" placeholder="' + (composeCh === 'email' ? 'Write the email…' : 'Write to ' + esc(c.name.split(' ')[0]) + '…') + '">' + esc(draft) + '</textarea>'
+    + '<textarea id="ta"' + (composeCh === 'whatsapp' && !waOpen(c) ? ' disabled' : '')
+    + ' placeholder="' + (composeCh === 'whatsapp' && !waOpen(c) ? 'Outside the 24-hour window, only an approved template can be sent'
+        : composeCh === 'email' ? 'Write the email…' : 'Write to ' + esc(c.name.split(' ')[0]) + '…') + '">' + esc(draft) + '</textarea>'
     + '<div id="typing-hint"></div>'
     + '<div class="composer-foot"><span class="seg" id="segout"></span>'
     + '<button class="btn" id="send">' + ic('send', 2) + 'Send</button></div>';
   updateSeg();
-
-function aiPanel(c) {
-  const d = AI_DRAFTS[c.id];
-  return '<div class="ai-panel"><div class="ai-head">' + ic('sparkle', 1.8)
-    + '<h4>Suggested drafts</h4>'
-    + '<span class="end"><span class="pill mute">You send it, not the model</span></span></div>'
-    + (d.refusal ? '<div class="ai-ground care" style="background:var(--care-wash);border-color:var(--care-line)">' + ic('care', 1.9)
-        + '<span>' + esc(d.refusal) + '</span></div>' : '')
-    + '<div class="ai-body">'
-    + d.options.map((o, i) => '<button class="ai-option" ' + (o.refused ? 'data-refused="1" disabled' : 'data-ai="' + i + '"') + '>'
-        + '<span class="why">' + esc(o.label)
-        + '<span class="pill ' + (o.verdict === 'pass' ? 'ok' : 'brand') + '">'
-        + (o.verdict === 'pass' ? ic('check-circle', 2) + 'Linter passes' : ic('ban', 2) + 'Rejected')
-        + '</span><span class="pill mute">' + esc(o.tone) + '</span></span>'
-        + '<span class="dr">' + esc(o.body) + '</span>'
-        + '<span class="fo">' + (o.refused ? esc(o.why) : segment(o.body).segments + ' segments · ' + esc(o.why)) + '</span>'
-        + '</button>').join('')
-    + '</div>'
-    + '<div class="ai-ground">' + ic('eye', 1.9)
-    + '<span><b>What the model was given:</b> ' + d.ground.map((g) => '<code class="mono">' + esc(g) + '</code>').join(', ')
-    + '. Not the name, not the address, not the meter number, not the conversation history beyond this case. '
-    + '<b>A draft is never sent automatically</b>, it is inserted for you to edit, it passes through the same linter as anything you type, '
-    + 'and the audit trail records that the wording started as a suggestion.</span></div></div>';
-}
 }
 
 const TEMPLATE_BODIES = {
@@ -1662,6 +1757,24 @@ function updateSeg() {
   const hit = (w) => new RegExp('\\b' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b').test(low);
   const bad = [...promo.filter(hit).map((w) => ['warn', 'reclassifies as marketing: ' + w]),
                ...press.filter(hit).map((w) => ['brand', 'pressure language: ' + w])];
+  if (composeCh === 'whatsapp') {
+    const open = waOpen(c), has = !!WA_WINDOW[c.id];
+    $('#segout').innerHTML =
+      '<span><b>' + ta.value.length + '</b> chars</span>'
+      + '<span>No segments — priced by template category, not by length</span>'
+      + (!has ? '<span class="pill brand">' + ic('ban', 2) + 'no opt-in</span>'
+          : open ? '<span class="pill ok">' + ic('check-circle', 2) + 'free-form allowed</span>'
+          : waTmpl ? '<span class="pill ok">' + ic('check-circle', 2) + esc(waTmpl.n) + '</span>'
+          : '<span class="pill warn">' + ic('alert', 2) + 'pick an approved template</span>')
+      + (bad.length ? bad.map((b) => '<span class="pill ' + b[0] + '">' + esc(b[1]) + '</span>').join('') : '');
+    const s3 = $('#send');
+    if (s3) s3.disabled = !has || ta.value.trim().length === 0 || (!open && !waTmpl) || bad.some((b) => b[0] === 'brand');
+    const h3 = $('#typing-hint');
+    if (h3) h3.innerHTML = '<div style="display:flex;gap:8px;padding:6px 12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-3)">'
+      + ic('wa', 1.9) + '<span>Read receipts are available here and nowhere else in this product, which makes this the <b>strongest evidence of contact we can get</b> \u2014 though the customer can switch them off. '
+      + 'Against that: every message passes through one company\'s infrastructure, and <b>there is no second WhatsApp to fail over to.</b></span></div>';
+    return;
+  }
   if (composeCh === 'email') {
     const sub = $('#subj') ? $('#subj').value : '';
     /* A subject line is a lock-screen preview. It gets the same minimisation
@@ -1890,7 +2003,7 @@ function note(html, tone) {
    an abandoned-call rate is a regulatory exposure, answer-machine detection
    produces exactly the silent call the rules exist to stop, and neither belongs
    anywhere near a conversation about somebody's arrears. */
-let call = null, callTimer = null, composeCh = 'sms', subject = '';
+let call = null, callTimer = null, composeCh = 'sms', subject = '', waTmpl = null;
 
 const TEXAS = [
   ['T', 'Thank them for telling you', 'Say it plainly. A disclosure about health or money takes effort, and the first thing the customer hears back sets whether they say any more.'],
@@ -2089,11 +2202,12 @@ Object.assign(SECTIONS, {
   },
 
   channels: {
-    title: 'Channels', sub: 'Four channels, one conversation',
+    title: 'Channels', sub: 'Six channels, one conversation',
     body: () => '<p class="lede">A channel is a property of a message, not a separate inbox. <b>Two inboxes for one customer means two versions of what was said</b> — and the one an ombudsman asks for will be the other one.</p>'
       + box('What each channel is actually for', '', '<div class="tscroll"><table><thead><tr><th>Channel</th><th>Two-way</th><th>Typing shown</th><th>Evidence of receipt</th><th>Carries detail</th><th>Used for</th></tr></thead><tbody>'
         + [['Text', 'Yes, on a short code', 'No — no field exists', 'Handset receipt at one provider, operator acknowledgement at the rest', 'No — lock screen, shared devices', 'Getting attention, and a way back in'],
            ['App', 'Yes', 'Yes, both directions', 'Read state, behind authentication', 'Yes — the only channel that should', 'Balance, payment, affordability, documents'],
+           ['WhatsApp', 'Yes, inside a 24-hour window', 'Yes, both directions', '<b>Read receipts</b> — the strongest here, though the customer can switch them off', 'Yes, behind a verified business profile', 'Structured replies, documents, and customers who will not open anything else'],
            ['Email', 'Yes', 'No', 'Delivery to a mailbox, which is not reading', 'Subject line no, body sparingly', 'Confirmations, adviser correspondence, longer explanations'],
            ['Call', 'Yes', 'n/a', 'Strongest — a conversation with a record', 'Yes, with the caller verified first', 'Affordability, welfare, anything difficult'],
            ['Letter', 'No', 'n/a', 'Posting, not reading', 'Yes', 'Statutory notices, and where nothing else is available']]
@@ -2115,6 +2229,27 @@ Object.assign(SECTIONS, {
           + note('Two things make this more than a checkbox. <b>The pause is automatic</b>, because a control that depends on an agent remembering is not a control and card numbers must never reach a recording. And a call where somebody mentions their health <b>becomes special category data mid-sentence</b> — so it cannot sit in the same store as the rest, and it is never shared with a credit reference agency.'))
       + '</div>'
       + '<div class="grid g2">'
+      + box('WhatsApp — and the problem with it', 'Read this before signing anything', '<dl style="margin:0">'
+          + kv('Business solution provider', 'Swappable') + kv('Underlying platform', 'One company, not swappable')
+          + kv('Outside a 24-hour window', 'Approved templates only') + kv('Template approver', 'Meta, not us')
+          + kv('Opt-in', 'Required, obtained elsewhere') + kv('Quality rating', 'Set by user blocks and reports')
+          + '</dl>'
+          + note('<b>WhatsApp reintroduces the exact dependency this platform exists to remove.</b> With text we can move between aggregators because the short code is ours; with WhatsApp we can change the provider in front of it but <b>there is no second WhatsApp behind it</b>. One policy change, one template rejection, one quality downgrade, and the channel stops. So it is built as additive and never load-bearing: nothing in the collections process may depend on it, and every template that matters also exists as a letter.', 'care'))
+      + box('The rating paradox', 'The channel penalises the traffic we would send', bars([
+          ['Delivered', 3180, 'var(--chart-2)'], ['Read', 2461, 'var(--chart-2)'],
+          ['Replied via a button', 1104, 'var(--chart-3)'], ['Blocked us', 88, 'var(--chart-1)'], ['Reported us', 11, 'var(--chart-1)'],
+        ])
+          + note('Quality rating is derived from <b>blocks and reports</b>, and a messaging tier can be cut or a number restricted on the back of it. People in arrears block and report \u2014 that is not misconduct on their part, it is a predictable response to a message about money. So an arrears programme is structurally capable of degrading its own access to the channel, and the only defence is sending less on it rather than more.'))
+      + '</div>'
+      + '<div class="grid g2">'
+      + box('Template approval queue', 'An external dependency in the middle of a workflow', '<div class="tscroll"><table><thead><tr><th>Template</th><th>Submitted as</th><th>Categorised as</th><th>State</th></tr></thead><tbody>'
+          + [['arrears_notice_v4', 'Utility', 'Utility', 'approved'], ['welfare_callback_v2', 'Utility', 'Utility', 'approved'],
+             ['arrangement_confirm_v3', 'Utility', 'Utility', 'approved'], ['final_notice_v1', 'Utility', '—', 'pending'],
+             ['saver_tariff_offer_v1', 'Utility', 'Marketing', 'rejected']]
+            .map((r) => '<tr><td class="code">' + r[0] + '</td><td>' + r[1] + '</td><td>' + (r[2] === 'Marketing' ? '<span class="pill warn">' + r[2] + '</span>' : r[2]) + '</td>'
+              + '<td><span class="pill ' + ({ approved: 'ok', pending: 'info', rejected: 'brand' })[r[3]] + '">' + r[3] + '</span></td></tr>').join('')
+          + '</tbody></table></div>'
+          + note('The last row is the useful one. We submitted it as a utility message; it was re-categorised as marketing, which needs separate opt-in and separate pricing. <b>The same clause would also convert the whole message into direct marketing under UK privacy law.</b> Two unrelated rulebooks, one sentence, the same verdict \u2014 which is a good sign the linter is testing the right thing.'))
       + box('Email deliverability', 'Our domain is a phishing target', '<dl style="margin:0">'
           + kv('SPF', 'Aligned') + kv('DKIM', 'Signed, 2048-bit') + kv('DMARC', 'p=reject')
           + kv('Payment links in email', 'Never') + kv('Balance in subject', 'Blocked by the linter')
@@ -2128,10 +2263,10 @@ Object.assign(SECTIONS, {
         + note('A hard bounce <b>suppresses the channel and raises a data-quality exception</b> rather than entering a retry queue \u2014 the same three-way classification used for Direct Debit returns and text failures: the customer\'s circumstances, a dead address, or our own defect. Retrying a dead address forever is how a supplier convinces itself it has been in contact.'))
       + '</div>'
       + box('Contact attempts this week', 'Per channel, deduplicated by person', barChart([
-          { name: 'Attempted', color: 'var(--chart-2)', data: [['Text', 8420], ['App', 5110], ['Email', 9140], ['Call', 1284], ['Letter', 612]] },
-          { name: 'Reached the person', color: 'var(--chart-3)', data: [['Text', 5136], ['App', 3781], ['Email', 3473], ['Call', 565], ['Letter', 135]] },
+          { name: 'Attempted', color: 'var(--chart-2)', data: [['Text', 8420], ['App', 5110], ['WhatsApp', 3180], ['Email', 9140], ['Call', 1284], ['Letter', 612]] },
+          { name: 'Reached the person', color: 'var(--chart-3)', data: [['Text', 5136], ['App', 3781], ['WhatsApp', 2461], ['Email', 3473], ['Call', 565], ['Letter', 135]] },
         ], { label: 'Contact attempts and successes by channel', max: 10000 })
-        + note('Calls reach the fewest people and are the most expensive per contact. They are also <b>the only channel where somebody can say something we did not think to ask about</b>, which is why the ratio is not the measure of whether they are worth making.')),
+        + note('<b>WhatsApp has the best reach ratio on the board</b> at roughly four in five, against three in five for text and under two in five for email. It is also the only one of the six that could be withdrawn by a decision nobody here is party to, which is why it is not the one anything depends on. Calls reach the fewest people and are the most expensive per contact. They are also <b>the only channel where somebody can say something we did not think to ask about</b>, which is why the ratio is not the measure of whether they are worth making.')),
   },
 
   workflow: {
@@ -2473,8 +2608,10 @@ const SCREENS = {
       + ['This morning', 'This afternoon', 'After 5pm', 'Tomorrow', 'A specific time'].map((t, i) =>
           '<span class="pill ' + (i === 2 ? 'brand' : 'mute') + '" style="padding:5px 10px;font-size:12px">' + esc(t) + '</span>').join('')
       + '</div><div class="m-sub" style="margin-top:10px">We will ring from <b>0330 900 0184</b>. You can check that number on our website before you answer — we would rather you did.</div></div>'
+      + '<div class="m-note info">' + ic('shield', 2) + '<span>On WhatsApp, messages go through <b>a company that is not us</b>. We keep the detail out of them for that reason, and you can withdraw from that channel at any time without it affecting anything else.</span></div>'
       + '<div class="m-note info">' + ic('info', 2) + '<span>Calls are recorded. If you tell us something about your health, that is kept under stricter rules and <b>never goes to a credit reference agency</b>. You can ask us not to record and still get the same help.</span></div>'
       + mrow('msg', 'I would rather not speak on the phone', 'Message us here instead, at your own pace')
+      + mrow('wa', 'Use WhatsApp instead', 'You will need to say yes to this first — we cannot message you there otherwise')
       + mrow('mail', 'Email me instead', 'Slower, but it gives you something to keep')
       + mrow('file', 'Write to me by post', 'If nothing digital works for you')
       + '<div class="m-note">' + ic('care', 2) + '<span>If speaking is difficult — hearing loss, anxiety, a job you cannot take calls in — <b>say so and we will stop ringing</b>. Refusing a call is not refusing to engage, and it is never recorded as one.</span></div>',
@@ -2482,7 +2619,8 @@ const SCREENS = {
       h: 'A call is offered, never imposed',
       p: ['The number is <b>shown before the call and is dialable</b>, so the customer can verify it against the website. Withholding the number, or presenting one that cannot be rung back, trains people to distrust exactly the calls a supplier most needs answered.',
           'The last note is the substantive one. A customer declining calls is routinely recorded as non-engagement, which then justifies escalation. <b>Refusing a channel is not refusing to engage</b> — so the platform records a channel preference and switches, and logs the switch as a contact attempt rather than a failure.'],
-      rules: [['No dialler, ever', 'There is no predictive or power dialler in this design. Predictive dialling produces abandoned calls and answer-machine detection produces the silent call the rules exist to prevent — both trade a regulatory breach for agent utilisation, on a call about someone\'s arrears.'],
+      rules: [['WhatsApp has to be asked for', 'A business may not message someone on WhatsApp without consent obtained on another channel, so it can never be where a conversation starts and never where a failover lands. The upside is real though: a verified business profile is far harder to impersonate than a text sender name, which matters when people have been trained by years of scam texts about money.'],
+              ['No dialler, ever', 'There is no predictive or power dialler in this design. Predictive dialling produces abandoned calls and answer-machine detection produces the silent call the rules exist to prevent — both trade a regulatory breach for agent utilisation, on a call about someone\'s arrears.'],
               ['Recording pauses itself for payments', 'Card and security numbers must never reach a recording, and the pause is triggered by the payment step opening rather than by an agent remembering to press it.'],
               ['A health disclosure changes the call\'s retention mid-sentence', 'The moment somebody mentions a condition, the recording contains special category data. It moves to a restricted store with its own rule and is never shared onward.'],
               ['Declining calls switches the channel', 'And the switch is logged as an attempt that succeeded in reaching a preference, not as a customer who would not engage.']],
@@ -2617,11 +2755,13 @@ document.addEventListener('click', (e) => {
       return renderConversation();
     }
     c.thread.push({ k: 'out', ch: composeCh, b: text, at: 'Now', st: 'queued', seg: segment(text).segments,
+      tmpl: composeCh === 'whatsapp' && waTmpl ? waTmpl.n : null,
+      quick: composeCh === 'whatsapp' && waTmpl ? waTmpl.quick : null,
       agent: (c.assignee ? AGENTS[c.assignee].n.split(' ')[0] + ' ' + AGENTS[c.assignee].n.split(' ')[1][0] + '.' : 'Rhiannon V.')
         + (aiUsed ? ' · assisted draft, edited and sent by a person' : ''), session: true });
     AUDIT.unshift(['now', 'Message sent', 'Case ' + c.id + ' · ' + segment(text).segments + ' segments'
       + (aiUsed ? ' · wording began as an assistant suggestion and was approved by a person' : ' · typed by an agent')]);
-    aiUsed = false;
+    aiUsed = false; waTmpl = null;
     draft = ''; renderConversation();
     const steps = ['accepted', 'sent', 'delivered_operator', 'delivered_handset'];
     steps.forEach((st, i) => setTimeout(() => {
@@ -2633,7 +2773,19 @@ document.addEventListener('click', (e) => {
   }
 
   /* channels */
-  if (t.dataset.ch) { composeCh = t.dataset.ch; return renderConversation(); }
+  if (t.dataset.ch) { composeCh = t.dataset.ch; waTmpl = null; return renderConversation(); }
+  if (t.dataset.wa !== undefined) {
+    const c = CASES.find((x) => x.id === current);
+    const tm = WA_TEMPLATES[+t.dataset.wa];
+    waTmpl = tm;
+    /* Placeholders resolve from the case record, never from free text. A
+       template is a fixed shape with named holes; anything else is a new
+       template and a new approval. */
+    const vals = [c.name.split(' ')[0], gbp(c.arrears), c.acct.slice(-4), 'this afternoon', '27 September'];
+    draft = tm.body.replace(/\{\{(\d)\}\}/g, (_, n) => vals[+n - 1] || '');
+    renderConversation();
+    return;
+  }
 
   /* calls */
   if (t.id === 'call-btn') {

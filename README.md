@@ -35,10 +35,11 @@ It covers three surfaces, switchable from the top rail:
 - **Manager statistics** — a first-reply distribution rather than an average, who
   is carrying what, what nobody has picked up, and every handover with its reason.
 
-### Four channels, one conversation
+### Six channels, one conversation
 
-Text, app, email and call are properties of a message, not separate inboxes —
-two inboxes for one customer means two versions of what was said.
+Text, app, WhatsApp, email, call and letter are properties of a message, not
+separate inboxes — two inboxes for one customer means two versions of what was
+said, and the one an ombudsman asks for will be the other one.
 
 - **Calls**, agent-initiated only. There is no predictive or power dialler in
   this design: predictive dialling produces abandoned calls and answer-machine
@@ -60,6 +61,16 @@ two inboxes for one customer means two versions of what was said.
 - **Bounces classified three ways** — the customer's circumstances, a dead
   address, or our own defect — the same shape as a Direct Debit return, with a
   hard bounce suppressing the channel rather than entering a retry queue.
+- **WhatsApp**, built as additive and never load-bearing. It is the only channel
+  here that **reintroduces the dependency this platform exists to remove**: the
+  provider in front of it is swappable, but there is no second WhatsApp behind
+  it. Outside a 24-hour service window only a template Meta has approved can be
+  sent, the approver is Meta rather than us, and quality rating is derived from
+  user blocks and reports — which people in arrears do. So nothing in the
+  collections process depends on it, and every template that matters also exists
+  as a letter.
+- **Quick-reply buttons** return a known value instead of a sentence to
+  interpret, which takes the guessing out of the question that matters most.
 - **Declining a call switches the channel** and is logged as reaching a
   preference, never as a customer who would not engage.
 
