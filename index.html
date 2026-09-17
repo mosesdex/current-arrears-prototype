@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Interactive prototype of a UK energy collections platform: agent workspace, admin console and customer mobile app. Synthetic data throughout.">
+<meta name="description" content="Interactive prototype of a UK energy collections platform across four channels: agent workspace, admin console and customer mobile app. Synthetic data throughout.">
 <meta name="color-scheme" content="light dark">
 <title>Current Arrears Platform</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -254,7 +254,9 @@ body[data-notes="on"] .note { display: flex; }
    a two-line row onto one. */
 .ctx h4 svg, .box-head h4 svg, .care-block h4 svg { width: 13px; height: 13px; vertical-align: -2px; }
 .bar-fill { display: block; }
-.m-row .tt, .m-row .td, .toggle .tt, .toggle .td, .m-opt .td, .m-field .hint { display: block; }
+.m-row .tt, .m-row .td, .toggle .tt, .toggle .td, .m-opt .td, .m-field .hint,
+.texas-step .t1, .texas-step .t2, .call-bar .who, .call-bar .sub,
+.assign-menu .nm, .assign-menu .st { display: block; }
 
 .lbl {
   font-family: var(--mono); font-size: 10px; letter-spacing: 0.07em;
@@ -317,6 +319,112 @@ body[data-notes="on"] .note { display: flex; }
 .assign-menu .nm { font-weight: 500; }
 .assign-menu .st { font-size: 11px; color: var(--ink-3); margin-top: 1px; }
 .assign-menu .load { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--ink-3); text-align: right; }
+
+/* ---------- channels ---------- */
+.ch-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.ch-chip .ico { width: 11px; height: 11px; }
+
+.email {
+  border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+  background: var(--raised); max-width: 100%;
+}
+.email-head { padding: 9px 11px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+.email-head .subj { font-size: 13px; font-weight: 600; letter-spacing: -0.005em; }
+.email-head .addr { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); margin-top: 3px; }
+.email-body { padding: 11px; font-size: 13px; line-height: 1.55; }
+.email-body p { margin: 0 0 9px; }
+.email-body p:last-child { margin-bottom: 0; }
+.msg.out .email { background: var(--raised); }
+.msg.out .email .email-body { color: var(--ink); }
+
+.call-rec {
+  display: flex; gap: 11px; padding: 11px 12px; max-width: 100%;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--raised);
+}
+.call-rec > .ico { width: 17px; height: 17px; margin-top: 2px; color: var(--ok); }
+.call-rec.missed > .ico { color: var(--warn); }
+.call-rec .tx { flex: 1; min-width: 0; }
+.call-rec .t1 { font-size: 13px; font-weight: 600; }
+.call-rec .t2 { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); margin-top: 3px; }
+.call-rec .outs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.call-rec .disc {
+  margin-top: 9px; padding: 8px 10px; border-radius: var(--r);
+  background: var(--care-wash); border: 1px solid var(--care-line);
+  font-size: 12px; line-height: 1.5; color: var(--ink-2);
+}
+.call-rec .disc b { color: var(--ink); font-weight: 600; }
+
+/* ---------- live call ---------- */
+.call-bar {
+  display: none; align-items: center; gap: 11px; flex: none;
+  padding: 10px 12px; border-bottom: 1px solid var(--ok-line); background: var(--ok-wash);
+}
+.call-bar.on { display: flex; }
+.call-bar.on[data-held] { background: var(--warn-wash); border-bottom-color: var(--warn-line); }
+.call-bar .who { font-size: 12.5px; font-weight: 600; }
+.call-bar .sub { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); margin-top: 2px; }
+.call-bar .timer { font-family: var(--mono); font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.call-bar .acts { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+.call-act {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 9px; font-size: 11.5px; font-weight: 500; cursor: pointer;
+  background: var(--raised); color: var(--ink-2);
+  border: 1px solid var(--line); border-radius: var(--r);
+}
+.call-act:hover { border-color: var(--line-strong); color: var(--ink); }
+.call-act[aria-pressed="true"] { background: var(--warn-wash); border-color: var(--warn-line); color: var(--warn); }
+.call-act.end { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.call-act.end:hover { background: var(--brand-hover); }
+.rec-dot { width: 8px; height: 8px; border-radius: 99px; background: var(--brand); flex: none; animation: pulse 1.8s infinite; }
+.rec-dot.paused { background: var(--ink-3); animation: none; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.call-panel { border-top: 1px solid var(--line); background: var(--panel); padding: 12px; }
+.call-panel > * + * { margin-top: 10px; }
+.call-panel h4 { font-size: 12.5px; font-weight: 600; display: flex; align-items: center; gap: 7px; }
+.texas { display: flex; flex-direction: column; gap: 7px; }
+.texas-step {
+  display: flex; gap: 9px; padding: 9px 11px; width: 100%; text-align: left;
+  border: 1px solid var(--line); border-radius: var(--r); background: var(--raised); cursor: pointer;
+}
+.texas-step:hover { border-color: var(--line-strong); }
+.texas-step[aria-pressed="true"] { background: var(--care-wash); border-color: var(--care-line); }
+.texas-step .k {
+  width: 20px; height: 20px; flex: none; border-radius: 4px; display: grid; place-items: center;
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  background: var(--sunk); color: var(--ink-3);
+}
+.texas-step[aria-pressed="true"] .k { background: var(--care); color: var(--on-brand); }
+.texas-step .t1 { font-size: 12.5px; font-weight: 600; }
+.texas-step .t2 { font-size: 11.5px; color: var(--ink-3); margin-top: 2px; line-height: 1.45; }
+.dispo { display: flex; flex-wrap: wrap; gap: 6px; }
+.dispo button {
+  padding: 6px 11px; font-size: 12px; font-weight: 500; cursor: pointer;
+  background: var(--raised); color: var(--ink-2);
+  border: 1px solid var(--line); border-radius: 99px;
+}
+.dispo button:hover { color: var(--ink); border-color: var(--line-strong); }
+
+/* composer channel switcher */
+.ch-switch { display: flex; gap: 2px; padding: 2px; background: var(--sunk); border: 1px solid var(--line); border-radius: var(--r); }
+.ch-switch button {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 9px; border: 0; background: transparent; cursor: pointer;
+  border-radius: 3px; font-size: 11.5px; font-weight: 500; color: var(--ink-3);
+}
+.ch-switch button:hover { color: var(--ink); }
+.ch-switch button[aria-selected="true"] { background: var(--raised); color: var(--ink); box-shadow: var(--shadow-sm); }
+.ch-switch button:disabled { opacity: 0.4; cursor: not-allowed; }
+.subj-field {
+  display: block; width: 100%; padding: 9px 12px; border: 0;
+  border-bottom: 1px solid var(--line); background: transparent;
+  color: var(--ink); font: inherit; font-size: 13.5px; font-weight: 600;
+}
+.subj-field:focus { outline: 0; background: var(--panel-2); }
 
 /* ---------- attachments ---------- */
 .attach {
@@ -845,6 +953,10 @@ img { max-width: 100%; }
   <g id="i-wifi"><path d="M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 20 0M12 20h.01"/></g>
   <g id="i-git"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"/><path d="M12 12v3"/></g>
   <g id="i-swap"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></g>
+  <g id="i-call"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.5-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2z"/></g>
+  <g id="i-call-off"><path d="M10.7 13.3a16 16 0 0 0 5 3l1.4-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 4 9"/><path d="M2 2l20 20"/><path d="M2.1 4.2A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6"/></g>
+  <g id="i-mail"><rect width="20" height="15" x="2" y="4.5" rx="2"/><path d="m2.6 5.8 8.1 5.9a2 2 0 0 0 2.6 0l8.1-5.9"/></g>
+  <g id="i-mic-off"><path d="M2 2l20 20"/><path d="M15 9.3V5a3 3 0 0 0-5.7-1.3"/><path d="M9 9v3a3 3 0 0 0 5.1 2.1"/><path d="M19 10v2a7 7 0 0 1-10.8 5.9M5 10v2a7 7 0 0 0 3 5.8"/><path d="M12 19v3"/></g>
   <g id="i-sparkle"><path d="M12 3l1.9 4.6L18.5 9.5 13.9 11.4 12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></g>
   <g id="i-camera"><path d="M14.5 4h-5L8 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4z"/><circle cx="12" cy="13" r="3.5"/></g>
   <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 19 7a4 4 0 0 1-3 3.87"/></g>
@@ -913,6 +1025,7 @@ img { max-width: 100%; }
           <div class="pane-head">
             <div class="row" id="conv-head"></div>
           </div>
+          <div class="call-bar" id="call-bar"></div>
           <div class="presence" id="presence" style="display:none"></div>
           <div class="thread" id="thread"></div>
           <div class="composer" id="composer"></div>
@@ -937,6 +1050,7 @@ img { max-width: 100%; }
       <div class="nav-group lbl">Oversight</div>
       <button data-sec="ops" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-activity"/></svg>Operations</button>
       <button data-sec="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-users"/></svg>Team and queues<span class="count" id="nav-unassigned">1</span></button>
+      <button data-sec="channels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-call"/></svg>Channels</button>
       <button data-sec="providers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-swap"/></svg>Message routing</button>
       <button data-sec="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-git"/></svg>Audit trail</button>
       <div class="nav-group lbl">Configure</div>
@@ -1038,7 +1152,7 @@ const CASES = [
       { k: 'sys', tone: 'care', i: 'care', b: '**Priority Services Register match on account creation.** Care state resolved before any collections stage could open. The gate fails closed: if the register cannot be read, nothing is sent.' },
       { k: 'out', b: 'Hello Delyth. We can see your electricity account ending 3112 is behind. We would rather help than chase — reply HELP and we will call you, or see your options in the app. Reply STOP to opt out of marketing.', at: 'Mon 09:14', st: 'delivered_handset', seg: 2, agent: 'Automated · care-approved template' },
       { k: 'in', b: 'I am not ignoring it. Money is very tight and the oxygen machine has to stay on overnight, I cannot let the meter run out. Can someone ring me', at: 'Mon 11:02' },
-      { k: 'in', b: 'This is what it says now', at: 'Mon 11:03', img: 'meter', cap: 'Meter reading, sent from the app' },
+      { k: 'in', ch: 'app', b: 'This is what it says now', at: 'Mon 11:03', img: 'meter' },
       { k: 'sys', tone: 'warn', i: 'alert', b: '**Routed out of the collections workflow to the care queue.** Self-disconnection risk on a medically dependent account. Arrears activity on this account is suspended until a welfare call is completed — the case cannot advance a stage while this holds.' },
     ],
     allow: true,
@@ -1057,6 +1171,14 @@ const CASES = [
       { k: 'sys', i: 'swap', b: '**Return code classified as an affordability signal**, not a dead mandate and not our own defect. The three classes are handled differently: this one suspends the mandate and suppresses dunning rather than re-presenting the payment.' },
       { k: 'in', b: 'Sorry, changed banks last month and forgot to move it over. Can I pay half now and half on payday', at: 'Thu 10:12' },
       { k: 'out', b: 'No problem at all. I can set that up — £92.30 today and £92.30 on 27 September. Shall I send you a secure link for the first part?', at: 'Thu 10:19', st: 'delivered_operator', seg: 1, agent: 'Rhiannon V.' },
+      { k: 'call', dir: 'in', at: 'Thu 10:31', dur: '4m 12s', by: 'RV', outcome: ['Affordability captured', 'Arrangement agreed'],
+        recorded: true, paused: '0:58–1:44',
+        note: '**Recording paused automatically for 46 seconds** while the card details were taken, and resumed afterwards. The pause is triggered by opening the payment step, not by the agent remembering — card and security numbers must never reach the recording, and a control that depends on someone remembering is not a control.' },
+      { k: 'email', dir: 'out', at: 'Thu 10:38', subj: 'Your payment arrangement — account ending 4417',
+        from: 'noreply@current-energy.example', to: 'a.whitfield@example.com',
+        body: ['Hello Aaron,', 'This confirms the arrangement we agreed on the phone: £92.30 today and £92.30 on 27 September. Nothing further will be added while it holds.', 'You can see it, change it or tell us it is no longer affordable at any time by signing in.', 'If anything changes before 27 September, tell us before the date rather than after — we would much rather adjust it than have it fail.'],
+        st: 'delivered_handset' },
+      { k: 'sys', i: 'mail', b: '**The email carries no balance and no link to a payment page** — only a sign-in. A subject line and preview appear on a lock screen exactly as an SMS does, so the same minimisation applies to both, and a collections email with a payment link in it is indistinguishable from the phishing it invites.' },
       { k: 'sys', i: 'info', b: 'Delivery receipt says **operator, not handset.** Our failover provider is the only one on the market that separates the two; the primary reports both as "delivered". We record what was actually reported and never upgrade the claim.' },
     ],
     allow: true,
@@ -1072,7 +1194,12 @@ const CASES = [
     thread: [
       { k: 'out', b: 'Hello Sofia. There is £268.90 outstanding on your energy account ending 9934. You can see the detail and pay in the app.', at: 'Fri 09:02', st: 'delivered_handset', seg: 1, agent: 'Automated · reminder template' },
       { k: 'in', b: 'This is not my usage. I moved out of that flat in March and I have the tenancy agreement to prove it', at: 'Fri 09:48' },
-      { k: 'in', b: 'Here it is', at: 'Fri 09:50', img: 'tenancy', cap: 'Tenancy agreement, sent from the app' },
+      { k: 'in', ch: 'app', b: 'Here it is', at: 'Fri 09:50', img: 'tenancy' },
+      { k: 'email', dir: 'out', at: 'Fri 10:04', subj: 'We have stopped chasing this while we check it',
+        from: 'queries@current-energy.example', to: 's.kaur@example.com',
+        body: ['Hello Sofia,', 'Thank you for sending the tenancy agreement. We have stopped asking you to pay this amount while we check it, and nothing is being added to it.', 'We will write again within ten working days. If we cannot agree, you can take it to the energy ombudsman free of charge after eight weeks, or sooner if we tell you we have gone as far as we can.'],
+        st: 'delivered_handset',
+        why: 'Permitted while outbound on the balance is suspended: this is about the dispute, not about paying.' },
       { k: 'sys', tone: 'warn', i: 'ban', b: '**Balance marked disputed from the inbound message.** Processing is restricted to storage while the dispute stands, and outbound contact about this balance is suspended. The restriction cannot be lifted without a recorded confirmation that Sofia was told it had been.' },
     ],
     allow: false,
@@ -1094,6 +1221,13 @@ const CASES = [
       { k: 'sys', i: 'pause', b: '**Breathing space received from the Insolvency Service register at 06:04.** Applied at debt level, not customer level: this account is protected, and any other debt this customer holds with us is unaffected unless separately listed.' },
       { k: 'in', b: 'My adviser at the debt charity said you would be told about the breathing space', at: 'Wed 07:15' },
       { k: 'out', b: 'That is right, Joseph — we have it on record. We will not contact you about this balance or add anything to it until it ends. Your adviser will hear from us, not you.', at: 'Wed 07:22', st: 'delivered_handset', seg: 2, agent: 'Rhiannon V.' },
+      { k: 'email', dir: 'out', at: 'Wed 07:40', subj: 'Breathing space acknowledged — Mr J Okafor, account ending 1290',
+        from: 'advisers@current-energy.example', to: 'casework@debtcharity.example',
+        body: ['Dear colleague,', 'We have applied the moratorium to this account. Contact, interest and charges are suspended until 14 October and the case cannot advance a stage while it holds.', 'Please send any income and expenditure assessment to this address. We will not contact Mr Okafor directly during the moratorium.'],
+        st: 'delivered_handset',
+        why: 'Addressed to the authorised adviser, not the customer. Third-party representation suppresses direct contact separately from any marketing preference.' },
+      { k: 'call', dir: 'out', at: 'Wed 09:15', dur: null, by: 'MN', outcome: ['Not dialled'], blocked: true,
+        note: 'An agent tried to ring Joseph. **The dialler refused before it connected.** Breathing space suspends contact on every channel, and a call is the channel most likely to be made by someone who has not read the case notes — so the block sits in the dialler, not in the guidance.' },
     ],
     allow: false,
     block: {
@@ -1143,6 +1277,20 @@ const CASES = [
 ];
 
 const STAGES = ['Pre-arrears notice', 'Reminder', 'Ability to pay', 'Arrangement', 'Formal notice'];
+
+/* ---------- channels ----------
+   One conversation, four channels. A channel is a property of a message, not
+   a separate inbox: two inboxes for one customer means two versions of what
+   was said. */
+const CH = {
+  sms:    { t: 'Text', i: 'msg', evidential: false, presence: false },
+  app:    { t: 'App', i: 'phone', evidential: true, presence: true },
+  email:  { t: 'Email', i: 'mail', evidential: false, presence: false },
+  call:   { t: 'Call', i: 'call', evidential: true, presence: false },
+  letter: { t: 'Letter', i: 'file', evidential: true, presence: false },
+};
+const chChip = (k) => '<span class="ch-chip">' + ic(CH[k].i, 2) + CH[k].t + '</span>';
+
 
 /* ---------- people ----------
    Avatar colours deliberately exclude red. Red is the arrears signal in this
@@ -1390,12 +1538,37 @@ function renderConversation() {
         + '<span>' + md(m.b) + '</span></div>';
     }
     const st = m.st ? STATUS[m.st] : null;
+    if (m.k === 'email') {
+      const st = m.st ? STATUS[m.st] : null;
+      return '<div class="msg ' + (m.dir === 'out' ? 'out' : 'in') + '" style="max-width:88%">'
+        + '<div class="email"><div class="email-head"><div class="subj">' + esc(m.subj) + '</div>'
+        + '<div class="addr">' + esc(m.from) + ' &rarr; ' + esc(m.to) + '</div></div>'
+        + '<div class="email-body">' + m.body.map((para) => '<p>' + esc(para) + '</p>').join('') + '</div></div>'
+        + '<div class="meta">' + chChip('email') + ' · ' + esc(m.at)
+        + (st ? ' · <span class="pill ' + st.p + '" title="' + esc(st.d) + '">Delivered to the mailbox</span>' : '')
+        + '</div>'
+        + (m.why ? '<div class="note" style="margin-top:7px">' + ic('info', 1.9) + '<span>' + esc(m.why) + '</span></div>' : '')
+        + '</div>';
+    }
+    if (m.k === 'call') {
+      return '<div class="sys" style="padding:0;border:0;background:transparent;display:block">'
+        + '<div class="call-rec' + (m.blocked ? ' missed' : '') + '">'
+        + ic(m.blocked ? 'call-off' : 'call', 1.9)
+        + '<div class="tx"><div class="t1">' + (m.blocked ? 'Call blocked before it connected' : (m.dir === 'in' ? 'Inbound call' : 'Outbound call'))
+        + (m.dur ? ' · ' + esc(m.dur) : '') + '</div>'
+        + '<div class="t2">' + esc(m.at) + ' · ' + esc(AGENTS[m.by].n)
+        + (m.recorded ? ' · recorded' + (m.paused ? ', paused ' + esc(m.paused) : '') : '') + '</div>'
+        + '<div class="outs">' + m.outcome.map((o) => '<span class="pill ' + (m.blocked ? 'brand' : 'ok') + '">' + esc(o) + '</span>').join('')
+        + chChip('call') + '</div>'
+        + (m.note ? '<div class="disc">' + md(m.note) + '</div>' : '')
+        + '</div></div></div>';
+    }
     const att = m.img
       ? '<button class="attach" data-img="' + m.img + '">' + photo(m.img) + '</button>'
         + '<div class="attach-meta">' + ic('check', 2.2) + esc(ATTACH_INFO[m.img].t) + '</div>'
       : '';
     return '<div class="msg ' + m.k + '"><div class="bubble">' + esc(m.b) + '</div>' + att
-      + '<div class="meta">' + (m.agent ? esc(m.agent) + ' · ' : '') + esc(m.at)
+      + '<div class="meta">' + chChip(m.ch || 'sms') + ' · ' + (m.agent ? esc(m.agent) + ' · ' : '') + esc(m.at)
       + (m.seg ? ' · ' + m.seg + (m.seg === 1 ? ' segment' : ' segments') : '')
       + (st ? ' · <span class="pill ' + st.p + '" title="' + esc(st.d) + '">' + esc(st.t) + '</span>' : '')
       + '</div></div>';
@@ -1404,6 +1577,7 @@ function renderConversation() {
 
   renderComposer(c);
   renderContext(c);
+  callBar();
   $('#queue').querySelectorAll('button').forEach((b) => b.setAttribute('aria-current', String(b.dataset.id === current)));
 }
 
@@ -1418,13 +1592,24 @@ function renderComposer(c) {
   }
   $('#composer').innerHTML =
     (c.composerNote ? '<div class="note ' + c.composerNote.tone + '" style="margin:10px 12px 0">' + ic('care', 1.9) + '<span>' + md(c.composerNote.b) + '</span></div>' : '')
+    + '<div class="composer-tools">'
+    + '<span class="ch-switch">'
+    + ['sms', 'app', 'email'].map((k) => '<button data-ch="' + k + '" aria-selected="' + (composeCh === k) + '">'
+        + ic(CH[k].i, 2) + CH[k].t + '</button>').join('')
+    + '</span>'
+    + (call && call.caseId === c.id
+        ? '<span class="pill ok" style="margin-left:auto">' + ic('call', 2) + 'On a call</span>'
+        : '<button class="ghost" id="call-btn" style="margin-left:auto">' + ic('call', 1.8) + 'Call ' + esc(c.name.split(' ')[0]) + '</button>')
+    + '</div>'
+    + (call && call.caseId === c.id ? callPanel() : '')
     + '<div class="composer-tools"><span class="lbl">Templates</span>'
     + c.tmpls.map((t, i) => '<button class="tmpl" data-t="' + i + '">' + esc(t) + '</button>').join('')
     + (AI_DRAFTS[c.id] ? '<button class="ghost" id="ai-btn" aria-pressed="' + aiOpen + '" style="margin-left:auto">'
         + ic('sparkle', 1.8) + (aiOpen ? 'Hide drafts' : 'Draft with AI') + '</button>' : '')
     + '</div>'
     + (aiOpen && AI_DRAFTS[c.id] ? aiPanel(c) : '')
-    + '<textarea id="ta" placeholder="Write to ' + esc(c.name.split(' ')[0]) + '…">' + esc(draft) + '</textarea>'
+    + (composeCh === 'email' ? '<input class="subj-field" id="subj" placeholder="Subject — appears on a lock screen, so keep the account out of it" value="' + esc(subject) + '">' : '')
+    + '<textarea id="ta" placeholder="' + (composeCh === 'email' ? 'Write the email…' : 'Write to ' + esc(c.name.split(' ')[0]) + '…') + '">' + esc(draft) + '</textarea>'
     + '<div id="typing-hint"></div>'
     + '<div class="composer-foot"><span class="seg" id="segout"></span>'
     + '<button class="btn" id="send">' + ic('send', 2) + 'Send</button></div>';
@@ -1462,6 +1647,9 @@ const TEMPLATE_BODIES = {
   'Confirm a two-part payment': 'That is all set, Aaron — £92.30 today and £92.30 on 27 September. Nothing else will be added while the arrangement holds.',
   'Send a secure payment link': 'Here is your secure link for the first payment of £92.30. It expires in 30 minutes and only works for your account.',
   'Re-set the Direct Debit': 'I can restart your Direct Debit on the new account. You will get 10 working days notice of the amount and date before anything is taken.',
+  'Confirm what we agreed on the call': 'Helo Delyth. Diolch am siarad heddiw. Just to confirm what we agreed: emergency credit is on, nothing will be added, and I will ring again on Friday to check how you are getting on.',
+  'Send emergency credit guidance': 'Hello Delyth. Here is how to use the emergency credit on your meter, step by step. You will not be cut off while we are sorting this out.',
+  'Welsh — cadarnhau': 'Helo Delyth. Diolch am siarad heddiw. Mae credyd argyfwng ymlaen, ni fydd dim yn cael ei ychwanegu, ac fe ffoniaf eto ddydd Gwener.',
 };
 
 function updateSeg() {
@@ -1474,6 +1662,26 @@ function updateSeg() {
   const hit = (w) => new RegExp('\\b' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b').test(low);
   const bad = [...promo.filter(hit).map((w) => ['warn', 'reclassifies as marketing: ' + w]),
                ...press.filter(hit).map((w) => ['brand', 'pressure language: ' + w])];
+  if (composeCh === 'email') {
+    const sub = $('#subj') ? $('#subj').value : '';
+    /* A subject line is a lock-screen preview. It gets the same minimisation
+       rule as an SMS body, and blocks the send rather than warning about it —
+       a warning that does not block is how a rule becomes a suggestion. */
+    const subjDiscloses = /\d{4}|balance|arrears|owe|owed|debt|overdue|unpaid|£/i.test(sub);
+    $('#segout').innerHTML =
+      '<span><b>' + ta.value.length + '</b> chars</span><span>No segments — email is not billed by length</span>'
+      + (sub.trim() === '' ? '<span class="pill warn">' + ic('alert', 2) + 'no subject' + '</span>'
+          : subjDiscloses
+            ? '<span class="pill brand">' + ic('ban', 2) + 'subject discloses the debt on a lock screen</span>'
+            : '<span class="pill ok">' + ic('check-circle', 2) + 'subject safe on a lock screen</span>')
+      + (bad.length ? bad.map((b) => '<span class="pill ' + b[0] + '">' + esc(b[1]) + '</span>').join('') : '');
+    const s2 = $('#send');
+    if (s2) s2.disabled = ta.value.trim().length === 0 || sub.trim().length === 0 || subjDiscloses || bad.some((b) => b[0] === 'brand');
+    const h2 = $('#typing-hint');
+    if (h2) h2.innerHTML = '<div style="display:flex;gap:8px;padding:6px 12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-3)">'
+      + ic('mail', 1.9) + '<span>Sent from the brand\'s own authenticated domain, with no payment link and no balance in the body — a collections email carrying a link is indistinguishable from the phishing it invites. <b>Delivery to a mailbox is not evidence anyone read it</b>, so a statutory deadline keeps a second channel.</span></div>';
+    return;
+  }
   $('#segout').innerHTML =
     '<span><b>' + s.weighted + '</b> chars</span>'
     + '<span><b>' + s.segments + '</b> ' + (s.segments === 1 ? 'segment' : 'segments') + '</span>'
@@ -1677,6 +1885,85 @@ function note(html, tone) {
   return '<div class="note ' + (tone || '') + '">' + ic(tone === 'care' ? 'care' : 'info', 1.9) + '<span>' + html + '</span></div>';
 }
 
+/* ---------- the live call ----------
+   Agent-initiated only. There is no predictive or power dialler in this design:
+   an abandoned-call rate is a regulatory exposure, answer-machine detection
+   produces exactly the silent call the rules exist to stop, and neither belongs
+   anywhere near a conversation about somebody's arrears. */
+let call = null, callTimer = null, composeCh = 'sms', subject = '';
+
+const TEXAS = [
+  ['T', 'Thank them for telling you', 'Say it plainly. A disclosure about health or money takes effort, and the first thing the customer hears back sets whether they say any more.'],
+  ['E', 'Explain what you will do with it', 'What gets recorded, who can see it, and what changes as a result. Not a privacy notice read aloud.'],
+  ['X', 'eXplicit consent to record it', 'Asked for, not assumed. A health disclosure is special category data and needs its own basis — and the customer can say no and still get the support.'],
+  ['A', 'Ask what would actually help', 'An open question. The support they need is frequently not the support the script offers.'],
+  ['S', 'Signpost to free advice', 'Named and free. Signposting to a paid debt-management firm is the failure mode this step exists to prevent.'],
+];
+
+const DISPOSITIONS = {
+  'C-88104': [
+    ['Welfare call completed', 'care', 'The suspension on arrears activity lifts and the case can advance. Until this exists, nothing about money is sent.'],
+    ['No answer — try again', 'mute', 'A second attempt is scheduled inside the call window. It does not escalate a stage.'],
+    ['Emergency support arranged', 'care', 'Emergency credit walked through and a PSR record updated.'],
+  ],
+  'C-88097': [
+    ['Arrangement agreed', 'ok', 'Written to the affordability record with its basis and a review date.'],
+    ['Needs to think about it', 'mute', 'No arrangement recorded, no stage advanced, and a callback offered.'],
+    ['Cannot afford anything now', 'care', 'Routes to the care queue and suspends collections activity rather than recording a failed arrangement.'],
+  ],
+  'C-88112': [
+    ['Dispute detail taken', 'info', 'Recorded against the query. The restriction on the balance stays until it is resolved.'],
+    ['Escalated to a complaint', 'warn', 'Starts both redress timers from the moment she said it, not from now.'],
+  ],
+};
+
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function callBar() {
+  const el = $('#call-bar');
+  if (!call) { el.className = 'call-bar'; el.innerHTML = ''; return; }
+  const c = CASES.find((x) => x.id === call.caseId);
+  el.className = 'call-bar on' + (call.held ? ' held' : '');
+  if (call.held) el.setAttribute('data-held', ''); else el.removeAttribute('data-held');
+  el.innerHTML = '<span class="rec-dot' + (call.paused ? ' paused' : '') + '"></span>'
+    + '<span><span class="who">' + (call.ended ? 'Call ended · ' : call.held ? 'On hold · ' : 'On a call with ') + esc(c.name.split(' ')[0]) + '</span>'
+    + '<span class="sub">' + esc(c.phone) + ' · presenting 0330 900 0184 · '
+    + (call.paused ? 'recording paused for payment' : call.recording ? 'recording' : 'not recording') + '</span></span>'
+    + '<span class="timer" id="call-timer">' + pad(Math.floor(call.secs / 60)) + ':' + pad(call.secs % 60) + '</span>'
+    + (call.ended ? '' : '<span class="acts">'
+      + '<button class="call-act" data-call="mute" aria-pressed="' + !!call.muted + '">' + ic('mic-off', 2) + 'Mute</button>'
+      + '<button class="call-act" data-call="hold" aria-pressed="' + !!call.held + '">' + ic('pause', 2) + 'Hold</button>'
+      + '<button class="call-act" data-call="pay" aria-pressed="' + !!call.paused + '">' + ic('card', 2) + (call.paused ? 'Payment open' : 'Take a payment') + '</button>'
+      + '<button class="call-act end" data-call="end">' + ic('call-off', 2) + 'End</button></span>');
+}
+
+function callPanel() {
+  if (!call) return '';
+  const c = CASES.find((x) => x.id === call.caseId);
+  if (call.ended) {
+    const d = DISPOSITIONS[c.id] || [['Call logged', 'mute', 'Recorded against the case.']];
+    return '<div class="call-panel"><h4>' + ic('call-off', 1.9) + 'How did it go?</h4>'
+      + '<p style="margin:0;font-size:12.5px;color:var(--ink-3);line-height:1.5">Nothing is written to the case until you choose. An outcome is the one part of a call that cannot be inferred from the recording.</p>'
+      + '<div class="dispo">' + d.map((x, i) => '<button data-dispo="' + i + '">' + esc(x[0]) + '</button>').join('') + '</div></div>';
+  }
+  const done = Object.keys(call.texas).length;
+  return '<div class="call-panel"><h4>' + ic('care', 1.9) + 'If they disclose something'
+    + '<span class="pill ' + (done === 5 ? 'ok' : 'mute') + '" style="margin-left:auto">' + done + ' of 5</span></h4>'
+    + '<p style="margin:0;font-size:12.5px;color:var(--ink-3);line-height:1.5">A five-step protocol for the moment a customer tells you something difficult. It is on the screen during the call because that is when it is needed, not in a training deck.</p>'
+    + '<div class="texas">' + TEXAS.map((t, i) => '<button class="texas-step" data-texas="' + i + '" aria-pressed="' + !!call.texas[i] + '">'
+        + '<span class="k">' + t[0] + '</span><span><span class="t1">' + esc(t[1]) + '</span><span class="t2">' + esc(t[2]) + '</span></span></button>').join('')
+    + '</div>'
+    + (call.paused ? '<div class="note" style="display:flex">' + ic('lock', 1.9)
+        + '<span><b>Recording paused automatically.</b> It resumed nowhere near the card number, because the pause is driven by the payment step opening rather than by you remembering to press it. Card and security numbers must never reach a recording.</span></div>' : '')
+    + '</div>';
+}
+
+function tick() {
+  if (!call || call.ended || call.held) return;
+  call.secs += 1;
+  const t = $('#call-timer');
+  if (t) t.textContent = pad(Math.floor(call.secs / 60)) + ':' + pad(call.secs % 60);
+}
+
 let aiUsed = false;
 const AUDIT = [
   ['17 Sep 09:41:02', 'Message accepted by provider', 'Case C-88097 · Sinch · ref 01JMQ8… · rendered body stored verbatim', '8f2a…c104'],
@@ -1799,6 +2086,52 @@ Object.assign(SECTIONS, {
         + note('Plotted on <b>one scale</b>. The gap between the two series is the backlog, and it is only readable because both are measured the same way — a second axis would let any gap be drawn as any size.'))
       + '</div>';
     },
+  },
+
+  channels: {
+    title: 'Channels', sub: 'Four channels, one conversation',
+    body: () => '<p class="lede">A channel is a property of a message, not a separate inbox. <b>Two inboxes for one customer means two versions of what was said</b> — and the one an ombudsman asks for will be the other one.</p>'
+      + box('What each channel is actually for', '', '<div class="tscroll"><table><thead><tr><th>Channel</th><th>Two-way</th><th>Typing shown</th><th>Evidence of receipt</th><th>Carries detail</th><th>Used for</th></tr></thead><tbody>'
+        + [['Text', 'Yes, on a short code', 'No — no field exists', 'Handset receipt at one provider, operator acknowledgement at the rest', 'No — lock screen, shared devices', 'Getting attention, and a way back in'],
+           ['App', 'Yes', 'Yes, both directions', 'Read state, behind authentication', 'Yes — the only channel that should', 'Balance, payment, affordability, documents'],
+           ['Email', 'Yes', 'No', 'Delivery to a mailbox, which is not reading', 'Subject line no, body sparingly', 'Confirmations, adviser correspondence, longer explanations'],
+           ['Call', 'Yes', 'n/a', 'Strongest — a conversation with a record', 'Yes, with the caller verified first', 'Affordability, welfare, anything difficult'],
+           ['Letter', 'No', 'n/a', 'Posting, not reading', 'Yes', 'Statutory notices, and where nothing else is available']]
+          .map((r) => '<tr><td><b>' + r[0] + '</b></td><td>' + r[1] + '</td><td>' + r[2] + '</td><td>' + r[3] + '</td><td>' + r[4] + '</td><td>' + r[5] + '</td></tr>').join('')
+        + '</tbody></table></div>'
+        + note('The evidence column is the one that matters and it is uncomfortable. <b>No channel here proves a person read anything</b> — one provider\'s own documentation admits a switched-off handset still reports delivered, and an email in a spam folder is delivered too. Anything with a statutory deadline therefore keeps a second channel in the evidential path rather than relying on a receipt.'))
+      + '<div class="grid g2">'
+      + box('Calls', 'Agent-initiated only', '<dl style="margin:0">'
+          + kv('Dialler', 'None — no predictive, no power') + kv('Answer-machine detection', 'Off')
+          + kv('Abandoned calls', 'Structurally impossible') + kv('Number presented', '0330 900 0184, dialable')
+          + kv('Window', '08:00 – 20:00, weekdays 09:00 Sat') + kv('Attempts per week', '3, across all channels')
+          + '</dl>'
+          + note('<b>There is no dialler in this design, and that is the decision.</b> A predictive dialler creates abandoned calls, and answer-machine detection produces exactly the silent call the rules exist to stop. Both trade a regulatory exposure for agent utilisation, on a call about someone\'s arrears. Removing the dialler removes the whole category of breach rather than managing it down to a permitted percentage.', 'care'))
+      + box('Recording', 'And when it stops', '<dl style="margin:0">'
+          + kv('Basis', 'Quality and dispute resolution') + kv('Told to the customer', 'At the start, every call')
+          + kv('Pause on payment', 'Automatic, on the step opening') + kv('Retention, ordinary call', '13 months')
+          + kv('Retention, health disclosed', 'Restricted store, separate rule') + kv('Agent can delete', 'No')
+          + '</dl>'
+          + note('Two things make this more than a checkbox. <b>The pause is automatic</b>, because a control that depends on an agent remembering is not a control and card numbers must never reach a recording. And a call where somebody mentions their health <b>becomes special category data mid-sentence</b> — so it cannot sit in the same store as the rest, and it is never shared with a credit reference agency.'))
+      + '</div>'
+      + '<div class="grid g2">'
+      + box('Email deliverability', 'Our domain is a phishing target', '<dl style="margin:0">'
+          + kv('SPF', 'Aligned') + kv('DKIM', 'Signed, 2048-bit') + kv('DMARC', 'p=reject')
+          + kv('Payment links in email', 'Never') + kv('Balance in subject', 'Blocked by the linter')
+          + kv('Plain-text alternative', 'Always')
+          + '</dl>'
+          + note('<b>A collections email containing a link is indistinguishable from the phishing it invites.</b> So the email carries a sign-in prompt and nothing else, and the domain is locked down hard enough that a forgery fails before it reaches anyone \u2014 which protects customers who will never read a header.'))
+      + box('Bounces, classified three ways', 'The same shape as a Direct Debit return', bars([
+          ['Delivered', 9140, 'var(--chart-2)'], ['Soft — retried', 284, 'var(--chart-3)'],
+          ['Hard — channel suppressed', 96, 'var(--chart-1)'], ['Rejected by us before sending', 41, 'var(--chart-muted)'],
+        ])
+        + note('A hard bounce <b>suppresses the channel and raises a data-quality exception</b> rather than entering a retry queue \u2014 the same three-way classification used for Direct Debit returns and text failures: the customer\'s circumstances, a dead address, or our own defect. Retrying a dead address forever is how a supplier convinces itself it has been in contact.'))
+      + '</div>'
+      + box('Contact attempts this week', 'Per channel, deduplicated by person', barChart([
+          { name: 'Attempted', color: 'var(--chart-2)', data: [['Text', 8420], ['App', 5110], ['Email', 9140], ['Call', 1284], ['Letter', 612]] },
+          { name: 'Reached the person', color: 'var(--chart-3)', data: [['Text', 5136], ['App', 3781], ['Email', 3473], ['Call', 565], ['Letter', 135]] },
+        ], { label: 'Contact attempts and successes by channel', max: 10000 })
+        + note('Calls reach the fewest people and are the most expensive per contact. They are also <b>the only channel where somebody can say something we did not think to ask about</b>, which is why the ratio is not the measure of whether they are worth making.')),
   },
 
   workflow: {
@@ -2087,6 +2420,7 @@ const SCREENS = {
       + mrow('msg', 'I would find it easier another way', 'Large print, Welsh, a different channel, or more time')
       + mrow('key', 'Someone else should deal with this for me', 'A family member, carer, or a debt adviser')
       + mrow('pause', 'I am getting debt advice', 'Your adviser can apply for breathing space')
+      + mrow('call', 'I would rather talk to a person', 'Ask for a callback, or tell us not to ring', 'contact')
       + '<div class="m-note info">' + ic('shield', 2) + '<span>What you tell us here is kept because it is <b>necessary to supply you safely</b>, and it is not shared with credit reference agencies or debt collectors. You can see everything we hold and ask us to correct it.</span></div>',
     annot: {
       h: 'Vulnerability is an obligation, not a risk score',
@@ -2107,6 +2441,12 @@ const SCREENS = {
       + '<div class="m-msg me"><div class="bubble">Yes please. Here is the meter as it is now</div>'
       + '<button class="attach" data-img="meter" style="max-width:100%;margin-top:7px">' + photo('meter') + '</button>'
       + '<div class="m-time">Thu 10:24 · Delivered</div></div>'
+      + '<div class="m-card quiet" style="display:flex;gap:10px;align-items:flex-start">' + ic('call', 1.9)
+      + '<div><div style="font-size:13px;font-weight:600">Call with Rhiannon · 4m 12s</div>'
+      + '<div class="m-sub">Thu 10:31 · recorded, paused while you gave your card details · arrangement agreed</div></div></div>'
+      + '<div class="m-card quiet" style="display:flex;gap:10px;align-items:flex-start">' + ic('mail', 1.9)
+      + '<div><div style="font-size:13px;font-weight:600">Your payment arrangement</div>'
+      + '<div class="m-sub">Emailed Thu 10:38 · no balance in the subject line, and no payment link in it</div></div></div>'
       + '<div class="m-msg them"><div class="bubble"><span class="typing" style="color:var(--ink-3)"><i></i><i></i><i></i></span></div>'
       + '<div class="m-time">Rhiannon is typing</div></div>'
       + '<div class="m-note info">' + ic('info', 2) + '<span>This is <b>one conversation across both channels.</b> Replying by text lands here; replying here reaches the same agent — and this is the only channel where either of you can see the other typing.</span></div>'
@@ -2121,6 +2461,31 @@ const SCREENS = {
               ['Typing works here and nowhere else', 'SMS has no presence channel — no field in the protocol could carry "typing" — so the indicator exists only in the app, and the interface never implies otherwise. A typing dot the customer cannot actually see is a lie the product tells its own agents.'],
               ['A photo is the fastest route through a dispute', 'A meter reading or a tenancy date settles in one image what a fortnight of messages cannot. Location metadata is stripped on receipt, and the reading is transcribed by a person: a misread digit on a disputed account is the whole dispute.'],
               ['Delivered is not read', 'One provider\'s own documentation admits its statuses are tentative, and that a switched-off handset still reports delivered. Anything with a statutory deadline keeps a non-SMS channel in the evidence path.']],
+    },
+  },
+
+  contact: {
+    tab: 'support', back: 'home', title: 'Talk to someone', sub: 'On your terms, not ours',
+    body: () =>
+      '<button class="m-btn">' + ic('call', 2) + 'Ask us to ring you' + '</button>'
+      + '<div class="m-card quiet"><div class="lbl">When suits you</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:9px">'
+      + ['This morning', 'This afternoon', 'After 5pm', 'Tomorrow', 'A specific time'].map((t, i) =>
+          '<span class="pill ' + (i === 2 ? 'brand' : 'mute') + '" style="padding:5px 10px;font-size:12px">' + esc(t) + '</span>').join('')
+      + '</div><div class="m-sub" style="margin-top:10px">We will ring from <b>0330 900 0184</b>. You can check that number on our website before you answer — we would rather you did.</div></div>'
+      + '<div class="m-note info">' + ic('info', 2) + '<span>Calls are recorded. If you tell us something about your health, that is kept under stricter rules and <b>never goes to a credit reference agency</b>. You can ask us not to record and still get the same help.</span></div>'
+      + mrow('msg', 'I would rather not speak on the phone', 'Message us here instead, at your own pace')
+      + mrow('mail', 'Email me instead', 'Slower, but it gives you something to keep')
+      + mrow('file', 'Write to me by post', 'If nothing digital works for you')
+      + '<div class="m-note">' + ic('care', 2) + '<span>If speaking is difficult — hearing loss, anxiety, a job you cannot take calls in — <b>say so and we will stop ringing</b>. Refusing a call is not refusing to engage, and it is never recorded as one.</span></div>',
+    annot: {
+      h: 'A call is offered, never imposed',
+      p: ['The number is <b>shown before the call and is dialable</b>, so the customer can verify it against the website. Withholding the number, or presenting one that cannot be rung back, trains people to distrust exactly the calls a supplier most needs answered.',
+          'The last note is the substantive one. A customer declining calls is routinely recorded as non-engagement, which then justifies escalation. <b>Refusing a channel is not refusing to engage</b> — so the platform records a channel preference and switches, and logs the switch as a contact attempt rather than a failure.'],
+      rules: [['No dialler, ever', 'There is no predictive or power dialler in this design. Predictive dialling produces abandoned calls and answer-machine detection produces the silent call the rules exist to prevent — both trade a regulatory breach for agent utilisation, on a call about someone\'s arrears.'],
+              ['Recording pauses itself for payments', 'Card and security numbers must never reach a recording, and the pause is triggered by the payment step opening rather than by an agent remembering to press it.'],
+              ['A health disclosure changes the call\'s retention mid-sentence', 'The moment somebody mentions a condition, the recording contains special category data. It moves to a restricted store with its own rule and is never shared onward.'],
+              ['Declining calls switches the channel', 'And the switch is logged as an attempt that succeeded in reaching a preference, not as a customer who would not engage.']],
     },
   },
 
@@ -2237,10 +2602,21 @@ document.addEventListener('click', (e) => {
     const ta = $('#ta'); const text = ta.value.trim(); if (!text) return;
     const sent = c.thread.filter((m) => m.k === 'out' && m.session).length;
     if (sent >= 3) {
-      c.thread.push({ k: 'sys', tone: 'warn', i: 'ban', b: '**Held by the per-recipient governor.** This customer has reached the hourly ceiling across every sender and workflow. The operator would discard the overflow silently rather than reject it, so the message waits instead of being lost — and the governor fails closed, which is why it holds rather than letting it through.' });
+      c.thread.push({ k: 'sys', tone: 'warn', i: 'ban', b: '**Held by the per-recipient governor.** '
+        + 'This customer has reached the hourly ceiling across every sender and workflow. It counts across channels, not just this one \u2014 three texts, an email and a call is five contacts whatever the billing system thinks. '
+        + 'The operator would discard the overflow silently rather than reject it, so the message waits instead of being lost, and the governor fails closed: it holds rather than letting it through.' });
       draft = ''; return renderConversation();
     }
-    c.thread.push({ k: 'out', b: text, at: 'Now', st: 'queued', seg: segment(text).segments,
+    if (composeCh === 'email') {
+      c.thread.push({ k: 'email', dir: 'out', at: 'Now', subj: subject || '(no subject)',
+        from: 'queries@current-energy.example', to: (c.name.split(' ')[0][0] + '.' + (c.name.split(' ')[1] || 'customer')).toLowerCase() + '@example.com',
+        body: text.split(/\n{2,}/).filter(Boolean), st: 'delivered_handset' });
+      AUDIT.unshift(['now', 'Email sent', 'Case ' + c.id + ' · subject stored verbatim · no payment link · no balance in the body'
+        + (aiUsed ? ' · wording began as an assistant suggestion' : '')]);
+      aiUsed = false; draft = ''; subject = '';
+      return renderConversation();
+    }
+    c.thread.push({ k: 'out', ch: composeCh, b: text, at: 'Now', st: 'queued', seg: segment(text).segments,
       agent: (c.assignee ? AGENTS[c.assignee].n.split(' ')[0] + ' ' + AGENTS[c.assignee].n.split(' ')[1][0] + '.' : 'Rhiannon V.')
         + (aiUsed ? ' · assisted draft, edited and sent by a person' : ''), session: true });
     AUDIT.unshift(['now', 'Message sent', 'Case ' + c.id + ' · ' + segment(text).segments + ' segments'
@@ -2254,6 +2630,62 @@ document.addEventListener('click', (e) => {
       if (m && STATUS[st].r > STATUS[m.st].r) { m.st = st; if (current === c.id) renderConversation(); }
     }, 700 * (i + 1)));
     return;
+  }
+
+  /* channels */
+  if (t.dataset.ch) { composeCh = t.dataset.ch; return renderConversation(); }
+
+  /* calls */
+  if (t.id === 'call-btn') {
+    const c = CASES.find((x) => x.id === current);
+    call = { caseId: c.id, secs: 0, recording: true, paused: false, muted: false, held: false, texas: {}, ended: false };
+    clearInterval(callTimer); callTimer = setInterval(tick, 1000);
+    AUDIT.unshift(['now', 'Outbound call started', 'Case ' + c.id + ' · agent-initiated · recording on · presenting a dialable number']);
+    return renderConversation();
+  }
+  if (t.dataset.call) {
+    const a = t.dataset.call, c = CASES.find((x) => x.id === call.caseId);
+    if (a === 'mute') call.muted = !call.muted;
+    if (a === 'hold') call.held = !call.held;
+    if (a === 'pay') {
+      /* The pause is a consequence of opening the payment step. It is not a
+         button the agent has to remember, because card and security numbers
+         must never reach the recording. */
+      call.paused = !call.paused;
+      if (call.paused) call.pausedEver = true;
+      AUDIT.unshift(['now', call.paused ? 'Recording paused automatically' : 'Recording resumed',
+        'Case ' + c.id + ' · payment step ' + (call.paused ? 'opened' : 'closed') + ' · no card data can reach the recording']);
+    }
+    if (a === 'end') { call.ended = true; clearInterval(callTimer); }
+    callBar();
+    if (a === 'end' || a === 'pay') renderComposer(c);
+    return;
+  }
+  if (t.dataset.texas !== undefined) {
+    const i = +t.dataset.texas;
+    if (call.texas[i]) delete call.texas[i]; else call.texas[i] = true;
+    return renderComposer(CASES.find((x) => x.id === call.caseId));
+  }
+  if (t.dataset.dispo !== undefined) {
+    const c = CASES.find((x) => x.id === call.caseId);
+    const d = (DISPOSITIONS[c.id] || [['Call logged', 'mute', 'Recorded against the case.']])[+t.dataset.dispo];
+    const mins = Math.floor(call.secs / 60), secs = call.secs % 60;
+    const steps = Object.keys(call.texas).length;
+    c.thread.push({ k: 'call', dir: 'out', at: 'Now', dur: mins + 'm ' + secs + 's', by: c.assignee || 'RV',
+      outcome: [d[0]], recorded: true, paused: call.pausedEver ? 'during the payment' : null,
+      note: d[2] + (steps ? ' **' + steps + ' of the five disclosure steps were recorded**, so what was said about her circumstances is on the case rather than only in a recording nobody will listen to again.' : '') });
+    AUDIT.unshift(['now', 'Call outcome recorded', 'Case ' + c.id + ' · ' + d[0] + ' · ' + mins + 'm ' + secs + 's · ' + steps + '/5 disclosure steps']);
+    /* The one gate a call can actually open. */
+    if (c.id === 'C-88104' && d[0] === 'Welfare call completed') {
+      c.thread.push({ k: 'sys', tone: 'care', i: 'check-circle', b: '**Suspension on arrears activity lifted.** The welfare call the care route required has been completed and recorded, so the case can advance a stage. This is the only thing that could have lifted it — no timer, and no manager override.' });
+      /* The composer note described a restriction that no longer holds. Leaving
+         it would tell the agent the opposite of the truth. */
+      c.careRoute = false; c.stage = 3; c.composerNote = null;
+      c.tmpls = ['Confirm what we agreed on the call', 'Send emergency credit guidance', 'Welsh — cadarnhau'];
+    }
+    call = null; clearInterval(callTimer);
+    renderQueue();
+    return renderConversation();
   }
 
   /* assignment */
@@ -2323,6 +2755,7 @@ document.addEventListener('keydown', (e) => {
 
 document.addEventListener('input', (e) => {
   if (e.target.id === 'ta') { draft = e.target.value; return updateSeg(); }
+  if (e.target.id === 'subj') { subject = e.target.value; return updateSeg(); }
   if (e.target.id === 'lint-ta') {
     lintBody = e.target.value;
     const sel = e.target.selectionStart;

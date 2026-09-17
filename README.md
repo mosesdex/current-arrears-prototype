@@ -14,8 +14,6 @@ It covers three surfaces, switchable from the top rail:
 | **Admin console** | Operations, message routing and failover, workflow gates, template linting, roles and access, import validation, contact rules, audit trail. |
 | **Customer app** | Seven screens in a device frame: balance, payment, affordability, Direct Debit, circumstances, messages, dispute. |
 
-### Working together on a conversation
-
 - **Typing indicators**, in the app only. SMS has no presence field that could
   carry "typing", so the indicator exists on the channel where it is true and the
   interface says so rather than implying otherwise.
@@ -37,7 +35,35 @@ It covers three surfaces, switchable from the top rail:
 - **Manager statistics** — a first-reply distribution rather than an average, who
   is carrying what, what nobody has picked up, and every handover with its reason.
 
-Toggle **Design notes** in the top rail to show or hide the annotation layer that
+### Four channels, one conversation
+
+Text, app, email and call are properties of a message, not separate inboxes —
+two inboxes for one customer means two versions of what was said.
+
+- **Calls**, agent-initiated only. There is no predictive or power dialler in
+  this design: predictive dialling produces abandoned calls and answer-machine
+  detection produces the silent call the rules exist to prevent. A live call bar
+  runs mute, hold and end, and the **recording pauses itself when the payment
+  step opens** rather than relying on the agent to remember, because card and
+  security numbers must never reach a recording.
+- **A five-step disclosure protocol on screen during the call**, not in a
+  training deck, for the moment a customer tells you something difficult. A call
+  where somebody mentions their health becomes special category data
+  mid-sentence and routes to a restricted store.
+- **Call outcomes are chosen, not inferred.** On the care-flagged case,
+  completing the welfare call is the only thing that lifts the suspension on
+  arrears activity — no timer and no manager override.
+- **Email**, with the subject line treated as a lock-screen preview: a subject
+  naming the balance **blocks the send**, on the same minimisation rule as an
+  SMS body. No payment links, ever, because a collections email carrying a link
+  is indistinguishable from the phishing it invites.
+- **Bounces classified three ways** — the customer's circumstances, a dead
+  address, or our own defect — the same shape as a Direct Debit return, with a
+  hard bounce suppressing the channel rather than entering a retry queue.
+- **Declining a call switches the channel** and is logged as reaching a
+  preference, never as a customer who would not engage.
+
+### Working together on a conversation to show or hide the annotation layer that
 explains the rule behind each decision. Dark mode follows the operating system
 and can be overridden.
 
