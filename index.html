@@ -1,0 +1,1842 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Interactive prototype of a UK energy collections platform: agent workspace, admin console and customer mobile app. Every customer, balance and phone number is synthetic.">
+<meta name="color-scheme" content="light dark">
+<title>Current Arrears Platform</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* ============================================================
+   Current — interactive prototype
+   Tokens inherited from the platform's own design system so the
+   client sees one product across the research site and this demo.
+   Red oxide (hue 29) is the single brand voice and doubles as the
+   arrears signal. Duty-of-care states are violet, never red:
+   vulnerability is an obligation, not a risk.
+   ============================================================ */
+:root {
+  color-scheme: light;
+  --bg:          oklch(1 0 0);
+  --panel:       oklch(0.976 0.0025 29);
+  --panel-2:     oklch(0.955 0.004 29);
+  --raised:      oklch(1 0 0);
+  --sunk:        oklch(0.935 0.005 29);
+  --ink:         oklch(0.19 0.012 29);
+  --ink-2:       oklch(0.42 0.012 29);
+  --ink-3:       oklch(0.545 0.010 29);
+  --line:        oklch(0.905 0.004 29);
+  --line-strong: oklch(0.815 0.006 29);
+  --brand:       oklch(0.47 0.155 29);
+  --brand-hover: oklch(0.39 0.145 29);
+  --brand-ink:   oklch(0.35 0.13 29);
+  --brand-wash:  oklch(0.967 0.018 29);
+  --brand-line:  oklch(0.88 0.045 29);
+  --on-brand:    oklch(0.99 0.004 29);
+  --ok:          oklch(0.46 0.105 155);
+  --ok-wash:     oklch(0.963 0.024 155);
+  --ok-line:     oklch(0.86 0.045 155);
+  --warn:        oklch(0.53 0.115 68);
+  --warn-wash:   oklch(0.966 0.032 78);
+  --warn-line:   oklch(0.87 0.055 78);
+  --info:        oklch(0.47 0.115 250);
+  --info-wash:   oklch(0.965 0.022 250);
+  --info-line:   oklch(0.87 0.04 250);
+  --care:        oklch(0.46 0.145 300);
+  --care-wash:   oklch(0.965 0.024 300);
+  --care-line:   oklch(0.87 0.045 300);
+  --focus:       oklch(0.52 0.16 250);
+  --chart-1: #a02a21;
+  --chart-2: #387ec1;
+  --chart-3: #d59731;
+  --chart-muted: #c6c1c0;
+  --chart-grid: oklch(0.925 0.003 29);
+  --shadow-sm: 0 1px 2px oklch(0.19 0.012 29 / 0.06);
+  --shadow-md: 0 2px 4px oklch(0.19 0.012 29 / 0.05), 0 8px 24px oklch(0.19 0.012 29 / 0.06);
+  --shadow-lg: 0 1px 3px oklch(0.19 0.012 29 / 0.08), 0 18px 48px oklch(0.19 0.012 29 / 0.10);
+  --device: oklch(0.30 0.008 29);
+
+  --sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Newsreader', ui-serif, Georgia, 'Times New Roman', serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --r: 5px;
+}
+
+/* Dark tokens are selected against the near-black panel, not flipped. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg:          oklch(0.115 0 0);
+    --panel:       oklch(0.148 0.004 29);
+    --panel-2:     oklch(0.185 0.005 29);
+    --raised:      oklch(0.168 0.005 29);
+    --sunk:        oklch(0.128 0.004 29);
+    --ink:         oklch(0.955 0.005 29);
+    --ink-2:       oklch(0.755 0.008 29);
+    --ink-3:       oklch(0.615 0.009 29);
+    --line:        oklch(0.265 0.007 29);
+    --line-strong: oklch(0.365 0.010 29);
+    --brand:       oklch(0.685 0.155 29);
+    --brand-hover: oklch(0.755 0.145 29);
+    --brand-ink:   oklch(0.80 0.12 29);
+    --brand-wash:  oklch(0.235 0.045 29);
+    --brand-line:  oklch(0.36 0.075 29);
+    --on-brand:    oklch(0.14 0.02 29);
+    --ok:          oklch(0.735 0.125 155);
+    --ok-wash:     oklch(0.235 0.045 155);
+    --ok-line:     oklch(0.34 0.07 155);
+    --warn:        oklch(0.785 0.125 78);
+    --warn-wash:   oklch(0.245 0.045 68);
+    --warn-line:   oklch(0.35 0.07 68);
+    --info:        oklch(0.735 0.115 250);
+    --info-wash:   oklch(0.235 0.045 250);
+    --info-line:   oklch(0.34 0.065 250);
+    --care:        oklch(0.735 0.125 300);
+    --care-wash:   oklch(0.245 0.045 300);
+    --care-line:   oklch(0.35 0.07 300);
+    --focus:       oklch(0.72 0.135 250);
+    --chart-1: #b6372c;
+    --chart-2: #3982c9;
+    --chart-3: #bd8708;
+    --chart-muted: #443d3b;
+    --chart-grid: oklch(0.235 0.006 29);
+    --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.5);
+    --shadow-md: 0 2px 4px oklch(0 0 0 / 0.4), 0 8px 24px oklch(0 0 0 / 0.45);
+    --shadow-lg: 0 1px 3px oklch(0 0 0 / 0.5), 0 18px 48px oklch(0 0 0 / 0.55);
+    --device: oklch(0.07 0 0);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg:          oklch(0.115 0 0);
+  --panel:       oklch(0.148 0.004 29);
+  --panel-2:     oklch(0.185 0.005 29);
+  --raised:      oklch(0.168 0.005 29);
+  --sunk:        oklch(0.128 0.004 29);
+  --ink:         oklch(0.955 0.005 29);
+  --ink-2:       oklch(0.755 0.008 29);
+  --ink-3:       oklch(0.615 0.009 29);
+  --line:        oklch(0.265 0.007 29);
+  --line-strong: oklch(0.365 0.010 29);
+  --brand:       oklch(0.685 0.155 29);
+  --brand-hover: oklch(0.755 0.145 29);
+  --brand-ink:   oklch(0.80 0.12 29);
+  --brand-wash:  oklch(0.235 0.045 29);
+  --brand-line:  oklch(0.36 0.075 29);
+  --on-brand:    oklch(0.14 0.02 29);
+  --ok:          oklch(0.735 0.125 155);
+  --ok-wash:     oklch(0.235 0.045 155);
+  --ok-line:     oklch(0.34 0.07 155);
+  --warn:        oklch(0.785 0.125 78);
+  --warn-wash:   oklch(0.245 0.045 68);
+  --warn-line:   oklch(0.35 0.07 68);
+  --info:        oklch(0.735 0.115 250);
+  --info-wash:   oklch(0.235 0.045 250);
+  --info-line:   oklch(0.34 0.065 250);
+  --care:        oklch(0.735 0.125 300);
+  --care-wash:   oklch(0.245 0.045 300);
+  --care-line:   oklch(0.35 0.07 300);
+  --focus:       oklch(0.72 0.135 250);
+  --chart-1: #b6372c;
+  --chart-2: #3982c9;
+  --chart-3: #bd8708;
+  --chart-muted: #443d3b;
+  --chart-grid: oklch(0.235 0.006 29);
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.5);
+  --shadow-md: 0 2px 4px oklch(0 0 0 / 0.4), 0 8px 24px oklch(0 0 0 / 0.45);
+  --shadow-lg: 0 1px 3px oklch(0 0 0 / 0.5), 0 18px 48px oklch(0 0 0 / 0.55);
+  --device: oklch(0.07 0 0);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'cv11';
+}
+:where(a) { color: var(--brand-ink); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+button { font: inherit; color: inherit; }
+.tnum { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+h1, h2, h3, h4 { text-wrap: balance; margin: 0; }
+
+/* ---------- demo rail ---------- */
+.rail {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; gap: 18px;
+  padding: 0 16px; height: 52px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+.mark { display: flex; align-items: baseline; gap: 9px; flex: none; }
+.mark b {
+  font-family: var(--serif); font-size: 19px; font-weight: 600;
+  letter-spacing: -0.012em; color: var(--ink);
+}
+.mark span {
+  font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-3);
+}
+.switch { display: flex; gap: 2px; padding: 2px; background: var(--sunk); border-radius: var(--r); border: 1px solid var(--line); }
+.switch button {
+  display: flex; align-items: center; gap: 7px;
+  padding: 5px 11px; border: 0; background: transparent; cursor: pointer;
+  border-radius: 3px; font-size: 13px; font-weight: 500; color: var(--ink-3);
+  white-space: nowrap;
+}
+.switch button:hover { color: var(--ink); }
+.switch button[aria-selected="true"] { background: var(--raised); color: var(--ink); box-shadow: var(--shadow-sm); }
+.switch svg { width: 15px; height: 15px; flex: none; }
+.rail-end { margin-left: auto; display: flex; align-items: center; gap: 10px; flex: none; }
+.synthetic {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.02em;
+  padding: 3px 8px; border-radius: 99px;
+  background: var(--warn-wash); color: var(--warn); border: 1px solid var(--warn-line);
+}
+.ghost {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px; font-size: 12.5px; font-weight: 500;
+  background: var(--raised); color: var(--ink-2);
+  border: 1px solid var(--line); border-radius: var(--r); cursor: pointer;
+}
+.ghost:hover { color: var(--ink); border-color: var(--line-strong); }
+.ghost[aria-pressed="true"] { background: var(--info-wash); border-color: var(--info-line); color: var(--info); }
+.ghost svg { width: 14px; height: 14px; }
+
+/* ---------- surface frame ---------- */
+.surface { display: none; }
+.surface.on { display: block; }
+
+
+/* ---------- annotation layer ---------- */
+.note {
+  display: none; gap: 9px;
+  padding: 9px 12px; margin: 0;
+  background: var(--info-wash); border: 1px solid var(--info-line);
+  border-radius: var(--r); font-size: 12.5px; line-height: 1.5; color: var(--ink-2);
+}
+body[data-notes="on"] .note { display: flex; }
+.note svg { width: 14px; height: 14px; flex: none; margin-top: 2px; color: var(--info); }
+.note b { color: var(--ink); font-weight: 600; }
+.note.care { background: var(--care-wash); border-color: var(--care-line); }
+.note.care svg { color: var(--care); }
+
+/* ---------- pills ---------- */
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 7px; border-radius: 99px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.01em;
+  border: 1px solid transparent; white-space: nowrap;
+}
+.pill svg { width: 11px; height: 11px; }
+.pill.brand { background: var(--brand-wash); color: var(--brand-ink); border-color: var(--brand-line); }
+.pill.ok    { background: var(--ok-wash); color: var(--ok); border-color: var(--ok-line); }
+.pill.warn  { background: var(--warn-wash); color: var(--warn); border-color: var(--warn-line); }
+.pill.info  { background: var(--info-wash); color: var(--info); border-color: var(--info-line); }
+.pill.care  { background: var(--care-wash); color: var(--care); border-color: var(--care-line); }
+.pill.mute  { background: var(--sunk); color: var(--ink-3); border-color: var(--line); }
+
+.dot { width: 7px; height: 7px; border-radius: 99px; flex: none; }
+.dot.ok { background: var(--ok); } .dot.warn { background: var(--warn); }
+.dot.brand { background: var(--brand); } .dot.care { background: var(--care); }
+.dot.mute { background: var(--ink-3); } .dot.info { background: var(--info); }
+
+/* Spans used as rows and labels need blockifying: inline elements ignore
+   height and vertical margins, which silently flattens a bar and collapses
+   a two-line row onto one. */
+.ctx h4 svg, .box-head h4 svg, .care-block h4 svg { width: 13px; height: 13px; vertical-align: -2px; }
+.bar-fill { display: block; }
+.m-row .tt, .m-row .td, .toggle .tt, .toggle .td, .m-opt .td, .m-field .hint { display: block; }
+
+.lbl {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+
+/* ---------- app chrome (shared by workspace + admin) ---------- */
+.app {
+  display: grid; grid-template-columns: 214px 1fr;
+  height: calc(100vh - 52px); min-height: 620px;
+  border-top: 1px solid var(--line);
+}
+.nav { background: var(--panel); border-right: 1px solid var(--line); overflow-y: auto; padding: 12px 0 24px; }
+.nav-group { padding: 14px 14px 5px; }
+.nav a, .nav button {
+  display: flex; align-items: center; gap: 9px; width: 100%;
+  padding: 6px 14px; border: 0; background: transparent; text-align: left;
+  font-size: 13px; color: var(--ink-2); cursor: pointer; text-decoration: none;
+}
+.nav a:hover, .nav button:hover { color: var(--ink); background: var(--panel-2); }
+.nav [aria-current="page"] {
+  color: var(--brand-ink); background: var(--brand-wash);
+  box-shadow: inset 2px 0 0 var(--brand); font-weight: 500;
+}
+.nav svg { width: 15px; height: 15px; flex: none; opacity: 0.85; }
+.nav .count { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+.who {
+  margin: 8px 12px 4px; padding: 9px 10px; border-radius: var(--r);
+  background: var(--raised); border: 1px solid var(--line);
+}
+.who .nm { font-size: 12.5px; font-weight: 600; }
+.who .rl { font-size: 11px; color: var(--ink-3); margin-top: 1px; }
+
+.main { overflow: hidden; display: flex; flex-direction: column; background: var(--bg); }
+.bar {
+  display: flex; align-items: center; gap: 12px; flex: none;
+  padding: 0 16px; height: 46px; border-bottom: 1px solid var(--line); background: var(--raised);
+}
+.bar h2 { font-size: 14px; font-weight: 600; letter-spacing: -0.005em; }
+.bar .sub { font-size: 12px; color: var(--ink-3); }
+.bar-end { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+/* ---------- workspace: three panes ---------- */
+.panes { display: grid; grid-template-columns: 286px 1fr 306px; flex: 1; overflow: hidden; }
+.pane { overflow-y: auto; display: flex; flex-direction: column; }
+.pane + .pane { border-left: 1px solid var(--line); }
+.pane-head {
+  position: sticky; top: 0; z-index: 4; flex: none;
+  padding: 9px 12px; background: var(--panel); border-bottom: 1px solid var(--line);
+}
+.pane-head .row { display: flex; align-items: center; gap: 8px; }
+.pane-head h3 { font-size: 12.5px; font-weight: 600; }
+
+.chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+.chip {
+  padding: 3px 9px; font-size: 11.5px; font-weight: 500; cursor: pointer;
+  background: var(--raised); color: var(--ink-3);
+  border: 1px solid var(--line); border-radius: 99px;
+}
+.chip:hover { color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--brand-wash); border-color: var(--brand-line); color: var(--brand-ink); }
+
+/* queue */
+.q { list-style: none; margin: 0; padding: 0; }
+.q li { border-bottom: 1px solid var(--line); }
+.q button {
+  display: block; width: 100%; text-align: left; padding: 10px 12px;
+  border: 0; background: transparent; cursor: pointer;
+}
+.q button:hover { background: var(--panel); }
+.q [aria-current="true"] { background: var(--brand-wash); box-shadow: inset 2px 0 0 var(--brand); }
+.q .l1 { display: flex; align-items: baseline; gap: 8px; }
+.q .nm { font-size: 13px; font-weight: 600; letter-spacing: -0.005em; }
+.q .wait { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--brand-ink); font-weight: 500; }
+.q .l2 { display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 11.5px; color: var(--ink-3); }
+.q .snip {
+  margin-top: 5px; font-size: 12px; color: var(--ink-2); line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.q .flags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+
+/* thread */
+.thread { flex: 1; overflow-y: auto; padding: 16px 18px 20px; background: var(--panel); }
+.msg { max-width: 78%; margin-bottom: 14px; }
+.msg.out { margin-left: auto; }
+.bubble {
+  padding: 9px 12px; border-radius: 10px; font-size: 13.5px; line-height: 1.5;
+  background: var(--raised); border: 1px solid var(--line); color: var(--ink);
+}
+.msg.out .bubble { background: var(--brand); border-color: var(--brand); color: var(--on-brand); border-bottom-right-radius: 3px; }
+.msg.in .bubble { border-bottom-left-radius: 3px; }
+.meta {
+  display: flex; align-items: center; gap: 7px; margin-top: 4px;
+  font-family: var(--mono); font-size: 10.5px; color: var(--ink-3);
+}
+.msg.out .meta { justify-content: flex-end; }
+.sys {
+  display: flex; align-items: flex-start; gap: 9px; max-width: 100%;
+  margin: 0 auto 14px; padding: 8px 11px;
+  background: var(--raised); border: 1px dashed var(--line-strong);
+  border-radius: var(--r); font-size: 12px; color: var(--ink-2); line-height: 1.45;
+}
+.sys svg { width: 14px; height: 14px; flex: none; margin-top: 1px; }
+.sys b { color: var(--ink); font-weight: 600; }
+.sys.care { background: var(--care-wash); border-color: var(--care-line); border-style: solid; }
+.sys.care svg { color: var(--care); }
+.sys.warn { background: var(--warn-wash); border-color: var(--warn-line); border-style: solid; }
+.sys.warn svg { color: var(--warn); }
+
+/* composer */
+.composer { flex: none; border-top: 1px solid var(--line); background: var(--raised); }
+.composer-tools {
+  display: flex; align-items: center; gap: 6px; padding: 7px 12px;
+  border-bottom: 1px solid var(--line); flex-wrap: wrap;
+}
+.tmpl {
+  padding: 3px 8px; font-size: 11.5px; cursor: pointer;
+  background: var(--panel); color: var(--ink-2);
+  border: 1px solid var(--line); border-radius: var(--r);
+}
+.tmpl:hover { color: var(--ink); border-color: var(--line-strong); }
+.composer textarea {
+  display: block; width: 100%; min-height: 74px; resize: vertical;
+  padding: 11px 12px; border: 0; background: transparent; color: var(--ink);
+  font: inherit; font-size: 13.5px; line-height: 1.5;
+}
+.composer textarea:focus { outline: 0; }
+.composer textarea:disabled { color: var(--ink-3); }
+.composer-foot {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 12px 10px; border-top: 1px solid var(--line);
+}
+.seg { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+.seg b { color: var(--ink-2); font-weight: 500; }
+.seg .over { color: var(--warn); }
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-left: auto; padding: 7px 15px; border: 1px solid var(--brand);
+  background: var(--brand); color: var(--on-brand);
+  font-size: 13px; font-weight: 600; border-radius: var(--r); cursor: pointer;
+}
+.btn:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
+.btn:disabled { background: var(--sunk); border-color: var(--line); color: var(--ink-3); cursor: not-allowed; }
+.btn svg { width: 14px; height: 14px; }
+.blocked {
+  display: flex; align-items: flex-start; gap: 10px; padding: 11px 12px;
+  background: var(--brand-wash); border-bottom: 1px solid var(--brand-line);
+  font-size: 12.5px; line-height: 1.5; color: var(--ink-2);
+}
+.blocked svg { width: 15px; height: 15px; flex: none; color: var(--brand); margin-top: 1px; }
+.blocked b { color: var(--brand-ink); font-weight: 600; display: block; margin-bottom: 2px; }
+
+/* context pane */
+.ctx { padding: 0; }
+.ctx section { border-bottom: 1px solid var(--line); padding: 12px; }
+.ctx section:last-child { border-bottom: 0; }
+.ctx h4 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 9px; }
+.kv { display: flex; align-items: baseline; gap: 10px; font-size: 12.5px; padding: 3px 0; }
+.kv dt { color: var(--ink-3); flex: none; }
+.kv dd { margin: 0 0 0 auto; text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.figure { display: flex; align-items: baseline; gap: 9px; }
+.figure .v { font-family: var(--mono); font-size: 25px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.figure .v.arrears { color: var(--brand-ink); }
+.age { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); margin-top: 3px; }
+.care-block { background: var(--care-wash); border: 1px solid var(--care-line); border-radius: var(--r); padding: 10px 11px; }
+.care-block h4 { color: var(--care); margin-bottom: 7px; }
+.care-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.care-list li { display: flex; align-items: flex-start; gap: 7px; font-size: 12.5px; line-height: 1.4; }
+.care-list svg { width: 13px; height: 13px; flex: none; margin-top: 2px; color: var(--care); }
+.stage-rail { display: flex; flex-direction: column; gap: 0; }
+.stage {
+  display: flex; align-items: center; gap: 9px; padding: 6px 0;
+  font-size: 12.5px; color: var(--ink-3);
+}
+.stage.done { color: var(--ink-2); }
+.stage.now { color: var(--ink); font-weight: 600; }
+.stage .tick { width: 15px; height: 15px; flex: none; }
+
+/* ---------- admin ---------- */
+.scroll { flex: 1; overflow-y: auto; }
+.wrap { padding: 20px 22px 44px; max-width: 1180px; }
+.wrap > * + * { margin-top: 20px; }
+.sec-head { display: flex; align-items: baseline; gap: 10px; }
+.sec-head h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.008em; }
+.sec-head p { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+.lede {
+  font-family: var(--serif); font-size: 16px; line-height: 1.6;
+  color: var(--ink-2); max-width: 68ch; margin: 0;
+}
+.lede b { color: var(--ink); font-weight: 600; }
+
+.grid { display: grid; gap: 14px; }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.g4 { grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); }
+
+.box { border: 1px solid var(--line); border-radius: var(--r); background: var(--raised); }
+.box-head {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 12px; border-bottom: 1px solid var(--line); background: var(--panel);
+  border-radius: var(--r) var(--r) 0 0;
+}
+.box-head h4 { font-size: 12.5px; font-weight: 600; }
+.box-head .end { margin-left: auto; display: flex; align-items: center; gap: 7px; }
+.box-body { padding: 12px; }
+.box-body > * + * { margin-top: 10px; }
+
+.stat { padding: 11px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--raised); }
+.stat .lbl { display: block; margin-bottom: 5px; }
+.stat .v { font-family: var(--mono); font-size: 21px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.stat .d { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; line-height: 1.4; }
+
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 500; white-space: nowrap;
+  position: sticky; top: 0; background: var(--panel); z-index: 2;
+}
+tbody tr:last-child td { border-bottom: 0; }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+td.code { font-family: var(--mono); font-size: 11.5px; white-space: nowrap; }
+.tscroll { overflow-x: auto; }
+
+.toggle {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 11px; border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--raised); text-align: left; cursor: pointer;
+}
+.toggle:hover { border-color: var(--line-strong); }
+.toggle .tx { flex: 1; }
+.toggle .tt { font-size: 12.5px; font-weight: 600; }
+.toggle .td { font-size: 11.5px; color: var(--ink-3); margin-top: 2px; line-height: 1.4; }
+.sw { width: 34px; height: 19px; border-radius: 99px; background: var(--line-strong); flex: none; position: relative; transition: background 0.16s; }
+.sw::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 15px; height: 15px;
+  border-radius: 99px; background: var(--raised); box-shadow: var(--shadow-sm); transition: transform 0.16s;
+}
+.toggle[aria-pressed="true"] .sw { background: var(--brand); }
+.toggle[aria-pressed="true"] .sw::after { transform: translateX(15px); }
+.toggle[aria-pressed="true"][data-locked] .sw { background: var(--care); }
+
+.bars { display: flex; flex-direction: column; gap: 9px; }
+.bar-row { display: grid; grid-template-columns: 116px 1fr 58px; align-items: center; gap: 10px; font-size: 12.5px; }
+.bar-track { height: 9px; background: var(--sunk); border-radius: 2px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 2px 4px 4px 2px; }
+.bar-row .n { font-family: var(--mono); font-size: 11.5px; text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 11.5px; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 9px; height: 9px; border-radius: 2px; display: block; }
+
+.matrix td, .matrix th { padding: 6px 8px; text-align: center; }
+.matrix th:first-child, .matrix td:first-child { text-align: left; }
+.matrix tbody th { position: static; background: transparent; font-family: var(--sans); font-size: 12.5px; text-transform: none; letter-spacing: 0; color: var(--ink); font-weight: 500; }
+.cap { display: inline-block; width: 15px; height: 15px; border-radius: 3px; }
+.cap.full { background: var(--brand); }
+.cap.cond { background: var(--brand-line); }
+.cap.read { background: var(--line-strong); }
+.cap.none { background: var(--sunk); border: 1px solid var(--line); }
+.grp-row td { background: var(--panel); font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+
+.audit { list-style: none; margin: 0; padding: 0; }
+.audit li { display: grid; grid-template-columns: 128px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 12.5px; }
+.audit li:last-child { border-bottom: 0; }
+.audit time { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+.audit .what b { font-weight: 600; }
+.audit .why { color: var(--ink-3); font-size: 11.5px; margin-top: 2px; }
+.hashchain { font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-top: 3px; }
+
+/* ---------- mobile ---------- */
+.mob-stage {
+  display: grid; grid-template-columns: minmax(0, 1fr) 372px;
+  gap: 34px; align-items: start;
+  padding: 26px 24px 56px; max-width: 1080px; margin: 0 auto;
+}
+.mob-left { display: flex; flex-direction: column; align-items: center; gap: 14px; position: sticky; top: 74px; }
+.phone {
+  width: 356px; height: 726px; flex: none;
+  background: var(--device); border-radius: 44px; padding: 11px;
+  box-shadow: var(--shadow-lg); position: relative;
+}
+.phone::after {
+  content: ''; position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
+  width: 94px; height: 25px; background: var(--device); border-radius: 99px; z-index: 5;
+}
+.screen {
+  width: 100%; height: 100%; background: var(--bg); border-radius: 34px;
+  overflow: hidden; display: flex; flex-direction: column; position: relative;
+}
+.status-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 22px 7px; font-family: var(--mono); font-size: 11px; font-weight: 500;
+  color: var(--ink); flex: none;
+}
+.status-bar .icons { display: flex; gap: 4px; align-items: center; }
+.status-bar svg { width: 14px; height: 14px; }
+.m-head { flex: none; padding: 6px 18px 12px; }
+.m-head .back { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: var(--brand-ink); background: 0; border: 0; padding: 0; cursor: pointer; margin-bottom: 9px; }
+.m-head .back svg { width: 15px; height: 15px; }
+.m-head h3 { font-family: var(--serif); font-size: 23px; font-weight: 500; letter-spacing: -0.015em; }
+.m-head p { margin: 5px 0 0; font-size: 13px; color: var(--ink-3); line-height: 1.45; }
+.m-body { flex: 1; overflow-y: auto; padding: 0 18px 18px; }
+.m-body > * + * { margin-top: 13px; }
+.m-tabs {
+  flex: none; display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line); background: var(--panel); padding: 7px 0 13px;
+}
+.m-tabs button {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  border: 0; background: 0; cursor: pointer; font-size: 10px; color: var(--ink-3); padding: 3px 0;
+}
+.m-tabs button svg { width: 19px; height: 19px; }
+.m-tabs button[aria-selected="true"] { color: var(--brand-ink); font-weight: 600; }
+
+.m-card { border: 1px solid var(--line); border-radius: 12px; background: var(--raised); padding: 14px; }
+.m-card.quiet { background: var(--panel); }
+.m-figure { font-family: var(--mono); font-size: 33px; font-weight: 600; letter-spacing: -0.028em; font-variant-numeric: tabular-nums; }
+.m-figure.arrears { color: var(--brand-ink); }
+.m-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 4px; line-height: 1.45; }
+.m-btn {
+  display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%;
+  padding: 12px 16px; border: 1px solid var(--brand); background: var(--brand);
+  color: var(--on-brand); font-size: 14px; font-weight: 600; border-radius: 10px; cursor: pointer;
+}
+.m-btn:hover { background: var(--brand-hover); }
+.m-btn.sec { background: var(--raised); color: var(--ink); border-color: var(--line-strong); }
+.m-btn.sec:hover { background: var(--panel); }
+.m-btn svg { width: 16px; height: 16px; }
+.m-row {
+  display: flex; align-items: center; gap: 11px; width: 100%;
+  padding: 12px 13px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--raised); text-align: left; cursor: pointer;
+}
+.m-row:hover { border-color: var(--line-strong); }
+.m-row .ic { width: 17px; height: 17px; flex: none; color: var(--ink-3); }
+.m-row .tx { flex: 1; }
+.m-row .tt { font-size: 13.5px; font-weight: 500; }
+.m-row .td { font-size: 11.5px; color: var(--ink-3); margin-top: 1px; line-height: 1.4; }
+.m-row .ch { width: 15px; height: 15px; color: var(--ink-3); flex: none; }
+.m-opt { border: 1px solid var(--line); border-radius: 10px; padding: 12px 13px; cursor: pointer; background: var(--raised); display: block; width: 100%; text-align: left; }
+.m-opt[aria-pressed="true"] { border-color: var(--brand); background: var(--brand-wash); box-shadow: inset 0 0 0 1px var(--brand); }
+.m-opt .tt { font-size: 13.5px; font-weight: 600; display: flex; align-items: baseline; gap: 8px; }
+.m-opt .tt .amt { margin-left: auto; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.m-opt .td { font-size: 11.5px; color: var(--ink-2); margin-top: 4px; line-height: 1.45; }
+.m-field { display: block; }
+.m-field .lb { font-size: 12px; font-weight: 500; color: var(--ink-2); display: block; margin-bottom: 5px; }
+.m-field input {
+  width: 100%; padding: 11px 12px; font: inherit; font-size: 15px;
+  font-family: var(--mono); font-variant-numeric: tabular-nums;
+  background: var(--raised); color: var(--ink);
+  border: 1px solid var(--line-strong); border-radius: 9px;
+}
+.m-field .hint { font-size: 11.5px; color: var(--ink-3); margin-top: 5px; line-height: 1.45; }
+.m-note {
+  display: flex; gap: 9px; padding: 11px 12px; border-radius: 10px;
+  font-size: 12.5px; line-height: 1.5;
+  background: var(--care-wash); border: 1px solid var(--care-line); color: var(--ink-2);
+}
+.m-note svg { width: 15px; height: 15px; flex: none; margin-top: 1px; color: var(--care); }
+.m-note b { color: var(--ink); font-weight: 600; }
+.m-note.info { background: var(--info-wash); border-color: var(--info-line); }
+.m-note.info svg { color: var(--info); }
+.m-note.ok { background: var(--ok-wash); border-color: var(--ok-line); }
+.m-note.ok svg { color: var(--ok); }
+.m-msg { max-width: 84%; }
+.m-msg.them .bubble { background: var(--panel); border: 1px solid var(--line); font-size: 13px; }
+.m-msg.me { margin-left: auto; }
+.m-msg.me .bubble { background: var(--brand); border-color: var(--brand); color: var(--on-brand); font-size: 13px; }
+.m-time { font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-top: 3px; }
+.m-msg.me .m-time { text-align: right; }
+
+.mob-right > * + * { margin-top: 16px; }
+.screen-list { display: flex; flex-wrap: wrap; gap: 5px; }
+.screen-list button {
+  padding: 5px 10px; font-size: 12px; font-weight: 500; cursor: pointer;
+  background: var(--raised); color: var(--ink-3);
+  border: 1px solid var(--line); border-radius: 99px;
+}
+.screen-list button:hover { color: var(--ink); }
+.screen-list button[aria-selected="true"] { background: var(--brand-wash); border-color: var(--brand-line); color: var(--brand-ink); }
+.mob-right h3 { font-family: var(--serif); font-size: 22px; font-weight: 500; letter-spacing: -0.015em; }
+.mob-right .body { font-size: 13.5px; line-height: 1.62; color: var(--ink-2); }
+.mob-right .body p { margin: 0 0 11px; }
+.mob-right .body p:last-child { margin-bottom: 0; }
+.mob-right .body b { color: var(--ink); font-weight: 600; }
+.rule-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.rule-list li { display: flex; gap: 9px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+.rule-list svg { width: 14px; height: 14px; flex: none; margin-top: 3px; color: var(--brand); }
+.rule-list b { color: var(--ink); font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+@media (max-width: 1180px) { .panes { grid-template-columns: 250px 1fr; } .pane.ctx-pane { display: none; } }
+@media (max-width: 980px) {
+  .mob-stage { grid-template-columns: 1fr; justify-items: center; }
+  .mob-left { position: static; }
+  .mob-right { max-width: 560px; }
+}
+@media (max-width: 820px) {
+  .app { grid-template-columns: 1fr; height: auto; }
+  .nav { display: none; }
+  .panes { grid-template-columns: 1fr; }
+  .pane.q-pane { max-height: 300px; }
+  .rail { gap: 10px; padding: 0 10px; }
+  .mark span, .synthetic span { display: none; }
+  .switch button span { display: none; }
+  .switch button { padding: 5px 9px; }
+}
+@media (max-width: 420px) { .phone { width: 100%; height: 620px; border-radius: 30px; } .screen { border-radius: 22px; } }
+</style>
+<style>
+/* Supplied by the artifact host in the hosted copy; needed standalone. */
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <g id="i-inbox"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></g>
+  <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>
+  <g id="i-phone"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></g>
+  <g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g>
+  <g id="i-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></g>
+  <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></g>
+  <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+  <g id="i-care"><path d="M11 14h2a2 2 0 0 1 0 4h-3c-.6 0-1.1.2-1.4.6L7 20"/><path d="m2 15 2.5-2.5c.3-.4.8-.6 1.4-.6h2.6a2 2 0 0 1 0 4H8"/><path d="m2 22 3-3"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v.5a2.5 2.5 0 0 1-5 0V4"/><path d="M18 8.5a2.5 2.5 0 0 0 4 2V6a4 4 0 0 0-4-4h-3.5"/></g>
+  <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+  <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+  <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4M12 17h.01"/></g>
+  <g id="i-send"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></g>
+  <g id="i-clock"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g>
+  <g id="i-right"><path d="m9 18 6-6-6-6"/></g>
+  <g id="i-left"><path d="m15 18-6-6 6-6"/></g>
+  <g id="i-back"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></g>
+  <g id="i-card"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></g>
+  <g id="i-calendar"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></g>
+  <g id="i-file"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h6"/><path d="M9 13h6M9 17h4"/></g>
+  <g id="i-msg"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></g>
+  <g id="i-activity"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></g>
+  <g id="i-db"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></g>
+  <g id="i-sliders"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></g>
+  <g id="i-key"><path d="m15.5 7.5 3 3L22 7l-3-3"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+  <g id="i-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5M12 3v12"/></g>
+  <g id="i-ban"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></g>
+  <g id="i-pause"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></g>
+  <g id="i-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></g>
+  <g id="i-buoy"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24"/></g>
+  <g id="i-eye"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></g>
+  <g id="i-sig"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></g>
+  <g id="i-bat"><rect width="16" height="10" x="2" y="7" rx="2"/><path d="M22 11v2"/><path d="M6 11v2"/></g>
+  <g id="i-wifi"><path d="M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 20 0M12 20h.01"/></g>
+  <g id="i-git"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"/><path d="M12 12v3"/></g>
+  <g id="i-swap"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></g>
+  <g id="i-scale"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></g>
+ </defs>
+</svg>
+
+<header class="rail">
+  <div class="mark"><b>Current</b><span>prototype</span></div>
+  <div class="switch" role="tablist" aria-label="Choose a surface">
+    <button role="tab" id="t-work" aria-selected="true" aria-controls="s-work"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-inbox"/></svg><span>Agent workspace</span></button>
+    <button role="tab" id="t-admin" aria-selected="false" aria-controls="s-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-shield"/></svg><span>Admin console</span></button>
+    <button role="tab" id="t-mob" aria-selected="false" aria-controls="s-mob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-phone"/></svg><span>Customer app</span></button>
+  </div>
+  <div class="rail-end">
+    <span class="synthetic"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-alert"/></svg><span>Synthetic data</span></span>
+    <button class="ghost" id="notes-btn" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-info"/></svg>Design notes</button>
+    <button class="ghost" id="theme-btn" aria-label="Switch theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-moon"/></svg></button>
+  </div>
+</header>
+
+<!-- ============ SURFACE 1: AGENT WORKSPACE ============ -->
+<main class="surface on" id="s-work" role="tabpanel" aria-labelledby="t-work">
+  <div class="app">
+    <nav class="nav" aria-label="Workspace navigation">
+      <div class="who">
+        <div class="nm">Rhiannon Vaughan</div>
+        <div class="rl">Collections agent · Team 4</div>
+      </div>
+      <div class="nav-group lbl">Work</div>
+      <button aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-inbox"/></svg>My conversations<span class="count" id="nav-count">6</span></button>
+      <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-care"/></svg>Care queue<span class="count">3</span></button>
+      <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-clock"/></svg>Follow-ups<span class="count">11</span></button>
+      <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-alert"/></svg>Recovery queue<span class="count">2</span></button>
+      <div class="nav-group lbl">Account</div>
+      <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-scale"/></svg>Arrangements</button>
+      <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-card"/></svg>Payments</button>
+      <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-file"/></svg>Complaints<span class="count">1</span></button>
+    </nav>
+
+    <div class="main">
+      <div class="bar">
+        <h2>My conversations</h2>
+        <span class="sub" id="queue-sub">Sorted by longest wait since the customer wrote</span>
+        <div class="bar-end">
+          <span class="pill mute"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-eye"/></svg>Reads audited</span>
+        </div>
+      </div>
+
+      <div class="panes">
+        <div class="pane q-pane">
+          <div class="pane-head">
+            <div class="row"><h3>Queue</h3><span class="lbl" id="q-count"></span></div>
+            <div class="chips" id="q-filters">
+              <button class="chip" aria-pressed="true" data-f="all">All</button>
+              <button class="chip" aria-pressed="false" data-f="care">Care flagged</button>
+              <button class="chip" aria-pressed="false" data-f="blocked">Send blocked</button>
+              <button class="chip" aria-pressed="false" data-f="waiting">Awaiting reply</button>
+            </div>
+          </div>
+          <ul class="q" id="queue"></ul>
+        </div>
+
+        <div class="pane">
+          <div class="pane-head">
+            <div class="row" id="conv-head"></div>
+          </div>
+          <div class="thread" id="thread"></div>
+          <div class="composer" id="composer"></div>
+        </div>
+
+        <div class="pane ctx-pane ctx" id="ctx"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ============ SURFACE 2: ADMIN CONSOLE ============ -->
+<main class="surface" id="s-admin" role="tabpanel" aria-labelledby="t-admin">
+  <div class="app">
+    <nav class="nav" aria-label="Admin navigation">
+      <div class="who">
+        <div class="nm">Marcus Obi</div>
+        <div class="rl">Operations manager</div>
+      </div>
+      <div class="nav-group lbl">Oversight</div>
+      <button data-sec="ops" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-activity"/></svg>Operations</button>
+      <button data-sec="providers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-swap"/></svg>Message routing</button>
+      <button data-sec="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-git"/></svg>Audit trail</button>
+      <div class="nav-group lbl">Configure</div>
+      <button data-sec="workflow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-sliders"/></svg>Collections workflow</button>
+      <button data-sec="templates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-msg"/></svg>Message templates</button>
+      <button data-sec="access"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-key"/></svg>Roles and access</button>
+      <div class="nav-group lbl">Data</div>
+      <button data-sec="import"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-upload"/></svg>Import<span class="count">1</span></button>
+      <button data-sec="suppression"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-ban"/></svg>Contact rules</button>
+    </nav>
+    <div class="main">
+      <div class="bar">
+        <h2 id="admin-title">Operations</h2>
+        <span class="sub" id="admin-sub"></span>
+        <div class="bar-end"><span class="pill ok"><span class="dot ok"></span>All queues within service level</span></div>
+      </div>
+      <div class="scroll"><div class="wrap" id="admin-body"></div></div>
+    </div>
+  </div>
+</main>
+
+<!-- ============ SURFACE 3: CUSTOMER MOBILE APP ============ -->
+<main class="surface" id="s-mob" role="tabpanel" aria-labelledby="t-mob">
+  <div class="mob-stage">
+    <div class="mob-left">
+      <div class="phone">
+        <div class="screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span class="icons">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-sig"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-wifi"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-bat"/></svg>
+            </span>
+          </div>
+          <div class="m-head" id="m-head"></div>
+          <div class="m-body" id="m-body"></div>
+          <div class="m-tabs" id="m-tabs"></div>
+        </div>
+      </div>
+      <p class="lbl" style="text-align:center;max-width:320px;line-height:1.6">Customer-facing app · every figure, name and number on this screen is invented</p>
+    </div>
+    <div class="mob-right">
+      <div>
+        <div class="lbl" style="margin-bottom:7px">Screens</div>
+        <div class="screen-list" id="m-screens"></div>
+      </div>
+      <div id="m-annot"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+/* ============================================================
+   Current — prototype behaviour
+   Every customer, balance, meter reference and phone number below
+   is invented. Mobile numbers sit inside 07700 900000-900999, the
+   range Ofcom reserves for fiction, so no fixture can collide with
+   a real subscriber.
+   ============================================================ */
+'use strict';
+
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const ic = (n, w) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 1.8) + '" stroke-linecap="round" stroke-linejoin="round"><use href="#i-' + n + '"/></svg>';
+const gbp = (n) => '£' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+/* Emphasis only — the copy is authored, never parsed from user input. */
+const md = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`(.+?)`/g, '<code class="mono">$1</code>');
+
+/* ---------- delivery status vocabulary ----------
+   Deliberately coarser than any provider's. Ranked, so a late
+   non-terminal event can never overwrite a terminal one. */
+const STATUS = {
+  queued:            { r: 1, t: 'Queued',              p: 'mute', d: 'Written to our outbox. Not yet handed to a provider.' },
+  accepted:          { r: 2, t: 'Accepted',            p: 'mute', d: 'The provider accepted it. This says nothing about the network.' },
+  sent:              { r: 3, t: 'Sent to network',     p: 'info', d: 'Handed to the mobile operator.' },
+  delivered_operator:{ r: 4, t: 'Operator has it',     p: 'info', d: 'The operator acknowledged it but has not confirmed the handset. Most providers cannot tell these apart and report this as "delivered".' },
+  delivered_handset: { r: 5, t: 'Reached the handset', p: 'ok',   d: 'The handset confirmed receipt. Still not proof the right person read it: numbers get reassigned.' },
+  failed_transient:  { r: 5, t: 'Failed, will retry',  p: 'warn', d: 'Recoverable. Retried under a budget, never in a loop.' },
+  failed_permanent:  { r: 6, t: 'Failed permanently',  p: 'brand',d: 'Not retried. Routed to data quality instead of a retry queue.' },
+};
+
+/* ---------- the queue ---------- */
+const CASES = [
+  {
+    id: 'C-88104', name: 'Delyth Morgan', acct: '00483112', phone: '07700 900412',
+    wait: '4h 12m', waitMins: 252, stage: 3, channel: 'SMS',
+    arrears: 312.40, balance: 351.85, age: '4 min', mpan: '14 written off register',
+    snippet: 'the oxygen machine has to stay on overnight, I cannot let the meter run out. Can someone ring me',
+    care: [
+      ['Priority Services Register', 'Medically dependent on electricity — oxygen concentrator'],
+      ['Self-disconnection risk', 'Prepayment meter, no top-up recorded for 3 days'],
+      ['Communication need', 'Welsh language preferred; large print'],
+    ],
+    careRoute: true,
+    mandate: 'None — prepayment',
+    thread: [
+      { k: 'sys', tone: 'care', i: 'care', b: '**Priority Services Register match on account creation.** Care state resolved before any collections stage could open. The gate fails closed: if the register cannot be read, nothing is sent.' },
+      { k: 'out', b: 'Hello Delyth. We can see your electricity account ending 3112 is behind. We would rather help than chase — reply HELP and we will call you, or see your options in the app. Reply STOP to opt out of marketing.', at: 'Mon 09:14', st: 'delivered_handset', seg: 2, agent: 'Automated · care-approved template' },
+      { k: 'in', b: 'I am not ignoring it. Money is very tight and the oxygen machine has to stay on overnight, I cannot let the meter run out. Can someone ring me', at: 'Mon 11:02' },
+      { k: 'sys', tone: 'warn', i: 'alert', b: '**Routed out of the collections workflow to the care queue.** Self-disconnection risk on a medically dependent account. Arrears activity on this account is suspended until a welfare call is completed — the case cannot advance a stage while this holds.' },
+    ],
+    allow: true,
+    composerNote: { tone: 'care', b: '**Care routing is active.** Only templates cleared for vulnerable customers are offered, and nothing in this conversation can reference enforcement, prepayment installation or credit reporting. A welfare call is the expected next action, not a message.' },
+    tmpls: ['Offer a welfare call', 'Emergency credit and top-up support', 'Welsh — galwad lles'],
+  },
+  {
+    id: 'C-88097', name: 'Aaron Whitfield', acct: '00904417', phone: '07700 900555',
+    wait: '2h 48m', waitMins: 168, stage: 2, channel: 'SMS',
+    arrears: 184.60, balance: 184.60, age: '2 min', mpan: '—',
+    snippet: 'Sorry, changed banks last month and forgot to move it over. Can I pay half now and half on payday',
+    care: [], careRoute: false,
+    mandate: 'Suspended — return code 0, refer to payer',
+    thread: [
+      { k: 'out', b: 'Hello Aaron. Your Direct Debit of £61.53 on 4 September was returned unpaid, so your balance is now £184.60. Nothing further happens automatically. You can see your options in the app.', at: 'Thu 08:30', st: 'delivered_handset', seg: 2, agent: 'Automated · payment-failure template' },
+      { k: 'sys', i: 'swap', b: '**Return code classified as an affordability signal**, not a dead mandate and not our own defect. The three classes are handled differently: this one suspends the mandate and suppresses dunning rather than re-presenting the payment.' },
+      { k: 'in', b: 'Sorry, changed banks last month and forgot to move it over. Can I pay half now and half on payday', at: 'Thu 10:12' },
+      { k: 'out', b: 'No problem at all. I can set that up — £92.30 today and £92.30 on 27 September. Shall I send you a secure link for the first part?', at: 'Thu 10:19', st: 'delivered_operator', seg: 1, agent: 'Rhiannon V.' },
+      { k: 'sys', i: 'info', b: 'Delivery receipt says **operator, not handset.** Our failover provider is the only one on the market that separates the two; the primary reports both as "delivered". We record what was actually reported and never upgrade the claim.' },
+    ],
+    allow: true,
+    tmpls: ['Confirm a two-part payment', 'Send a secure payment link', 'Re-set the Direct Debit'],
+  },
+  {
+    id: 'C-88112', name: 'Sofia Kaur', acct: '00519934', phone: '07700 900789',
+    wait: '1h 05m', waitMins: 65, stage: 2, channel: 'SMS',
+    arrears: 268.90, balance: 268.90, age: '11 min', mpan: '—',
+    snippet: 'This is not my usage. I moved out of that flat in March and I have the tenancy agreement to prove it',
+    care: [], careRoute: false, disputed: true,
+    mandate: 'Cancelled by customer',
+    thread: [
+      { k: 'out', b: 'Hello Sofia. There is £268.90 outstanding on your energy account ending 9934. You can see the detail and pay in the app.', at: 'Fri 09:02', st: 'delivered_handset', seg: 1, agent: 'Automated · reminder template' },
+      { k: 'in', b: 'This is not my usage. I moved out of that flat in March and I have the tenancy agreement to prove it', at: 'Fri 09:48' },
+      { k: 'sys', tone: 'warn', i: 'ban', b: '**Balance marked disputed from the inbound message.** Processing is restricted to storage while the dispute stands, and outbound contact about this balance is suspended. The restriction cannot be lifted without a recorded confirmation that Sofia was told it had been.' },
+    ],
+    allow: false,
+    block: {
+      t: 'Outbound is blocked on this balance',
+      b: 'The customer has contested the amount, which restricts what we may do with it to storage until it is verified. You can still write to her about the dispute itself from the complaints workspace — but not about paying this balance, and not to ask her to pay it while it is contested.',
+    },
+    tmpls: [],
+  },
+  {
+    id: 'C-88090', name: 'Joseph Okafor', acct: '00771290', phone: '07700 900123',
+    wait: '3h 30m', waitMins: 210, stage: 1, channel: 'SMS',
+    arrears: 476.15, balance: 476.15, age: '1 min', mpan: '—',
+    snippet: 'My adviser at the debt charity said you would be told about the breathing space',
+    care: [['Third-party representation', 'Authorised debt adviser acting — direct contact suppressed']],
+    careRoute: false, breathing: { day: 23, of: 60 },
+    mandate: 'None',
+    thread: [
+      { k: 'sys', i: 'pause', b: '**Breathing space received from the Insolvency Service register at 06:04.** Applied at debt level, not customer level: this account is protected, and any other debt this customer holds with us is unaffected unless separately listed.' },
+      { k: 'in', b: 'My adviser at the debt charity said you would be told about the breathing space', at: 'Wed 07:15' },
+      { k: 'out', b: 'That is right, Joseph — we have it on record. We will not contact you about this balance or add anything to it until it ends. Your adviser will hear from us, not you.', at: 'Wed 07:22', st: 'delivered_handset', seg: 2, agent: 'Rhiannon V.' },
+    ],
+    allow: false,
+    block: {
+      t: 'Protected by breathing space — day 23 of 60',
+      b: 'Collections contact, interest, charges and enforcement are all suspended on this debt until the moratorium ends. The workflow cannot advance a stage, and the clock runs whether or not anyone opens this case. Contact goes to the authorised adviser.',
+    },
+    tmpls: [],
+  },
+  {
+    id: 'C-88121', name: 'Account 00483990', acct: '00483990', phone: '07700 900222',
+    wait: '52m', waitMins: 52, stage: 2, channel: 'SMS',
+    arrears: 96.40, balance: 96.40, age: '6 min', mpan: '—',
+    snippet: 'you have got the wrong person, I have never had an account with you',
+    care: [], careRoute: false, identity: false,
+    mandate: 'Active',
+    thread: [
+      { k: 'out', b: 'Hello. There is £96.40 outstanding on your energy account ending 3990. You can see the detail and pay in the app.', at: 'Fri 08:40', st: 'delivered_handset', seg: 1, agent: 'Automated · reminder template' },
+      { k: 'in', b: 'you have got the wrong person, I have never had an account with you', at: 'Fri 09:35' },
+      { k: 'sys', tone: 'warn', i: 'alert', b: '**Possible mistaken identity — treated as a potential personal data breach, not a wrong number.** Mobile numbers are reassigned. If this handset belongs to someone else, we have already disclosed one customer\'s arrears to a stranger. The number is suppressed on this account immediately and the assessment clock has started.' },
+    ],
+    allow: false,
+    block: {
+      t: 'Identity not confirmed — channel suppressed',
+      b: 'Sending anything further to this number risks repeating the disclosure. Nothing about the account may be confirmed or denied to this handset. Re-contact runs through a different channel on the account record, and the incident is logged for a breach assessment within the statutory window.',
+    },
+    tmpls: [],
+  },
+  {
+    id: 'C-88066', name: 'Estate of L. Fernandes', acct: '00662001', phone: '07700 900333',
+    wait: '18m', waitMins: 18, stage: 0, channel: 'Letter',
+    arrears: 0, balance: -12.00, age: '18 min', mpan: '—',
+    snippet: 'Advice code received from the bank: payer deceased',
+    care: [['Bereavement', 'All collections contact stopped on every channel']],
+    careRoute: true, deceased: true,
+    mandate: 'Cancelled — payer deceased',
+    thread: [
+      { k: 'sys', tone: 'care', i: 'care', b: '**Deceased advice code received on the Direct Debit.** Every channel stopped instantly and the case routed to bereavement handling. No re-setup prompt is generated — that prompt is the default behaviour of a system that treats a cancelled mandate as a task, and it is the wrong behaviour here.' },
+      { k: 'sys', i: 'info', b: 'The account is **£12.00 in credit.** A credit balance on an account submitted for arrears work is treated as a sign-convention error at import, so this was never eligible for collections at all.' },
+    ],
+    allow: false,
+    block: {
+      t: 'Hard stop — bereavement',
+      b: 'Nothing is sent on any channel. The case is handled by the bereavement team against a separate, slower process with no arrears clock attached. A refund of the credit balance is the likely outcome, not a collection.',
+    },
+    tmpls: [],
+  },
+];
+
+const STAGES = ['Pre-arrears notice', 'Reminder', 'Ability to pay', 'Arrangement', 'Formal notice'];
+
+/* ---------- GSM-7 segmentation, built without literal control chars ---------- */
+const GSM7 = '@£$¥èéùìòÇ' + String.fromCharCode(10) + 'Øø' + String.fromCharCode(13)
+  + 'ÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?'
+  + '¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà';
+const GSM7_EXT = '^{}\\[~]|€';
+
+function segment(text) {
+  const chars = Array.from(text);
+  const outside = [...new Set(chars.filter((c) => !GSM7.includes(c) && !GSM7_EXT.includes(c)))];
+  const unicode = outside.length > 0;
+  const per = unicode ? 70 : 160, perMulti = unicode ? 67 : 153;
+  const weighted = unicode ? chars.length : chars.reduce((n, c) => n + (GSM7_EXT.includes(c) ? 2 : 1), 0);
+  const segments = weighted === 0 ? 0 : weighted <= per ? 1 : Math.ceil(weighted / perMulti);
+  return { weighted, segments, unicode, outside, per };
+}
+
+/* ---------- workspace ---------- */
+let current = CASES[0].id, filter = 'all', draft = '';
+
+const filterFns = {
+  all: () => true,
+  care: (c) => c.care.length > 0,
+  blocked: (c) => !c.allow,
+  waiting: (c) => {
+    const m = c.thread.filter((x) => x.k !== 'sys');
+    return m.length === 0 || m[m.length - 1].k !== 'in';
+  },
+};
+
+function visible() {
+  return CASES.filter(filterFns[filter]).sort((a, b) => b.waitMins - a.waitMins);
+}
+
+function renderQueue() {
+  const list = visible();
+  $('#q-count').textContent = list.length + (list.length === 1 ? ' case' : ' cases');
+  $('#nav-count').textContent = CASES.length;
+  $('#queue').innerHTML = list.map((c) => {
+    const flags = [];
+    if (c.deceased) flags.push('<span class="pill care">' + ic('care', 2) + 'Bereavement</span>');
+    else if (c.careRoute) flags.push('<span class="pill care">' + ic('care', 2) + 'Care routed</span>');
+    else if (c.care.length) flags.push('<span class="pill care">' + ic('care', 2) + 'Care flag</span>');
+    if (c.breathing) flags.push('<span class="pill info">' + ic('pause', 2) + 'Breathing space</span>');
+    if (c.disputed) flags.push('<span class="pill warn">' + ic('ban', 2) + 'Disputed</span>');
+    if (c.identity === false) flags.push('<span class="pill brand">' + ic('alert', 2) + 'Identity unconfirmed</span>');
+    /* The last *message* decides whether we are waiting on them, not the last
+       entry — a system note posted after a customer wrote must not hide how
+       long they have been waiting. */
+    const msgs = c.thread.filter((m) => m.k !== 'sys');
+    const inbound = msgs.length > 0 && msgs[msgs.length - 1].k === 'in';
+    return '<li><button data-id="' + c.id + '" aria-current="' + (c.id === current) + '">'
+      + '<span class="l1"><span class="nm">' + esc(c.name) + '</span>'
+      + '<span class="wait">' + (inbound ? c.wait : '—') + '</span></span>'
+      + '<span class="l2"><span class="dot ' + (c.allow ? 'ok' : 'brand') + '"></span>'
+      + '<span class="mono">' + esc(c.acct) + '</span> · ' + esc(c.channel)
+      + ' · ' + (c.arrears > 0 ? gbp(c.arrears) + ' behind' : 'in credit') + '</span>'
+      + (inbound ? '<span class="snip">' + esc(c.snippet) + '</span>' : '')
+      + (flags.length ? '<span class="flags">' + flags.join('') + '</span>' : '')
+      + '</button></li>';
+  }).join('') || '<li style="padding:18px 12px;font-size:12.5px;color:var(--ink-3)">No cases match this filter.</li>';
+}
+
+function renderConversation() {
+  const c = CASES.find((x) => x.id === current);
+  if (!c) return;
+
+  $('#conv-head').innerHTML = '<h3>' + esc(c.name) + '</h3>'
+    + '<span class="lbl">' + esc(c.acct) + ' · ' + esc(c.phone) + '</span>'
+    + '<span style="margin-left:auto" class="pill ' + (c.allow ? 'ok' : 'brand') + '">'
+    + (c.allow ? ic('check-circle', 2) + 'Sending allowed' : ic('lock', 2) + 'Sending blocked') + '</span>';
+
+  $('#thread').innerHTML = c.thread.map((m) => {
+    if (m.k === 'sys') {
+      return '<div class="sys ' + (m.tone || '') + '">' + ic(m.i || 'info', 1.9)
+        + '<span>' + md(m.b) + '</span></div>';
+    }
+    const st = m.st ? STATUS[m.st] : null;
+    return '<div class="msg ' + m.k + '"><div class="bubble">' + esc(m.b) + '</div>'
+      + '<div class="meta">' + (m.agent ? esc(m.agent) + ' · ' : '') + esc(m.at)
+      + (m.seg ? ' · ' + m.seg + (m.seg === 1 ? ' segment' : ' segments') : '')
+      + (st ? ' · <span class="pill ' + st.p + '" title="' + esc(st.d) + '">' + esc(st.t) + '</span>' : '')
+      + '</div></div>';
+  }).join('');
+  $('#thread').scrollTop = $('#thread').scrollHeight;
+
+  renderComposer(c);
+  renderContext(c);
+  $('#queue').querySelectorAll('button').forEach((b) => b.setAttribute('aria-current', String(b.dataset.id === current)));
+}
+
+function renderComposer(c) {
+  if (!c.allow) {
+    $('#composer').innerHTML = '<div class="blocked">' + ic('lock', 1.9)
+      + '<span><b>' + esc(c.block.t) + '</b>' + esc(c.block.b) + '</span></div>'
+      + '<textarea disabled placeholder="Nothing can be sent from this conversation."></textarea>'
+      + '<div class="composer-foot"><span class="seg">Composer disabled by policy, not by permission</span>'
+      + '<button class="btn" disabled>' + ic('send', 2) + 'Send</button></div>';
+    return;
+  }
+  $('#composer').innerHTML =
+    (c.composerNote ? '<div class="note ' + c.composerNote.tone + '" style="margin:10px 12px 0">' + ic('care', 1.9) + '<span>' + md(c.composerNote.b) + '</span></div>' : '')
+    + '<div class="composer-tools"><span class="lbl">Templates</span>'
+    + c.tmpls.map((t, i) => '<button class="tmpl" data-t="' + i + '">' + esc(t) + '</button>').join('')
+    + '</div>'
+    + '<textarea id="ta" placeholder="Write to ' + esc(c.name.split(' ')[0]) + '…">' + esc(draft) + '</textarea>'
+    + '<div class="composer-foot"><span class="seg" id="segout"></span>'
+    + '<button class="btn" id="send">' + ic('send', 2) + 'Send</button></div>';
+  updateSeg();
+}
+
+const TEMPLATE_BODIES = {
+  'Offer a welfare call': 'Hello Delyth. I can see the oxygen concentrator on your account. I would like to ring you today to go through emergency credit and the support available — would this afternoon suit?',
+  'Emergency credit and top-up support': 'Hello Delyth. Your meter has emergency credit available now, and you will not be disconnected while we sort this out. I will call to walk you through it.',
+  'Welsh — galwad lles': 'Helo Delyth. Rwyf am eich ffonio heddiw i drafod y cymorth sydd ar gael. A fyddai prynhawn heddiw yn gyfleus?',
+  'Confirm a two-part payment': 'That is all set, Aaron — £92.30 today and £92.30 on 27 September. Nothing else will be added while the arrangement holds.',
+  'Send a secure payment link': 'Here is your secure link for the first payment of £92.30. It expires in 30 minutes and only works for your account.',
+  'Re-set the Direct Debit': 'I can restart your Direct Debit on the new account. You will get 10 working days notice of the amount and date before anything is taken.',
+};
+
+function updateSeg() {
+  const ta = $('#ta'); if (!ta) return;
+  const s = segment(ta.value);
+  const c = CASES.find((x) => x.id === current);
+  const promo = ['switch', 'save', 'saver', 'deal', 'offer', 'discount', 'tariff', 'cheaper'];
+  const press = ['urgent', 'immediately', 'failure to pay', 'further action', 'legal action', 'final warning', 'act now', 'bailiff'];
+  const low = ta.value.toLowerCase();
+  const hit = (w) => new RegExp('\\b' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b').test(low);
+  const bad = [...promo.filter(hit).map((w) => ['warn', 'reclassifies as marketing: ' + w]),
+               ...press.filter(hit).map((w) => ['brand', 'pressure language: ' + w])];
+  $('#segout').innerHTML =
+    '<span><b>' + s.weighted + '</b> chars</span>'
+    + '<span><b>' + s.segments + '</b> ' + (s.segments === 1 ? 'segment' : 'segments') + '</span>'
+    + '<span class="' + (s.unicode ? 'over' : '') + '">' + (s.unicode ? 'UCS-2 · 70 per segment' : 'GSM-7 · 160 per segment') + '</span>'
+    + (s.unicode && s.outside.length ? '<span class="over">outside GSM-7: ' + esc(s.outside.slice(0, 4).join(' ')) + '</span>' : '')
+    + (bad.length ? bad.map((b) => '<span class="pill ' + b[0] + '">' + esc(b[1]) + '</span>').join('') : '');
+  const send = $('#send');
+  if (send) send.disabled = ta.value.trim().length === 0 || bad.some((b) => b[0] === 'brand');
+  if (c && c.careRoute && s.unicode) { /* Welsh is expected here, not a defect */ }
+}
+
+function renderContext(c) {
+  const care = c.care.length
+    ? '<section><div class="care-block"><h4>' + ic('care', 2) + ' Duty of care</h4><ul class="care-list">'
+      + c.care.map((f) => '<li>' + ic('check', 2.2) + '<span><b>' + esc(f[0]) + '</b><br><span style="color:var(--ink-3)">' + esc(f[1]) + '</span></span></li>').join('')
+      + '</ul></div>'
+      + '<div class="note care" style="margin-top:10px">' + ic('info', 1.9)
+      + '<span><b>Care state sits above the balance, deliberately.</b> An agent who reads the money first has already framed the conversation. The ordering of this panel is a policy decision, not a layout preference.</span></div>'
+      + '</section>'
+    : '<section><h4>Duty of care</h4><p style="margin:0;font-size:12.5px;color:var(--ink-3);line-height:1.5">No care flags recorded. Absence of a flag is not evidence of resilience — it is only the absence of a flag.</p></section>';
+
+  const money = '<section><h4>Position</h4>'
+    + '<div class="figure"><span class="v' + (c.arrears > 0 ? ' arrears' : '') + '">'
+    + (c.arrears > 0 ? gbp(c.arrears) : gbp(Math.abs(c.balance)))
+    + '</span><span style="font-size:12px;color:var(--ink-3)">' + (c.arrears > 0 ? 'in arrears' : 'in credit') + '</span></div>'
+    + '<div class="age">projection ' + esc(c.age) + ' old · refreshed on open</div>'
+    + '<dl style="margin:11px 0 0"><div class="kv"><dt>Account balance</dt><dd>' + gbp(c.balance) + '</dd></div>'
+    + '<div class="kv"><dt>Direct Debit</dt><dd style="font-family:var(--sans);text-align:right;max-width:170px">' + esc(c.mandate) + '</dd></div>'
+    + '<div class="kv"><dt>Account</dt><dd>' + esc(c.acct) + '</dd></div>'
+    + '<div class="kv"><dt>Mobile</dt><dd>' + esc(c.phone) + '</dd></div></dl>'
+    + '<div class="note" style="margin-top:10px">' + ic('info', 1.9)
+    + '<span><b>Arrears, not balance.</b> The two differ whenever an unbilled charge or an unapplied payment is in flight. Chasing a balance chases money that is not yet owed.</span></div>'
+    + '</section>';
+
+  const bs = c.breathing
+    ? '<section><h4>Breathing space</h4>'
+      + '<div class="figure"><span class="v">' + c.breathing.day + '</span><span style="font-size:12px;color:var(--ink-3)">of ' + c.breathing.of + ' days</span></div>'
+      + '<div class="bar-track" style="margin-top:9px"><div class="bar-fill" style="width:' + Math.round(c.breathing.day / c.breathing.of * 100) + '%;background:var(--info)"></div></div>'
+      + '<div class="age" style="margin-top:7px">Ends 14 October · clock runs unattended</div></section>'
+    : '';
+
+  const stages = '<section><h4>Workflow stage</h4><div class="stage-rail">'
+    + STAGES.map((s, i) => {
+        const k = c.stage > i ? 'done' : c.stage === i ? 'now' : '';
+        const mark = c.stage > i ? ic('check-circle', 2) : c.stage === i ? '<span class="dot brand" style="margin:4px"></span>' : '<span class="dot mute" style="margin:4px;opacity:.4"></span>';
+        return '<div class="stage ' + k + '"><span class="tick">' + mark + '</span>' + esc(s) + '</div>';
+      }).join('')
+    + '</div>'
+    + '<div class="note" style="margin-top:10px">' + ic('lock', 1.9)
+    + '<span><b>Pinned to the workflow version this case opened under.</b> Changing the configuration tomorrow cannot rewrite what this case was required to do today.</span></div>'
+    + '</section>';
+
+  $('#ctx').innerHTML = care + money + bs + stages;
+}
+
+/* ---------- admin sections ---------- */
+const PROVIDERS = [
+  { n: 'Sinch', role: 'Primary', share: 82, health: 97, dlr: '1.4s', hand: false, circuit: 'closed', region: 'EU · Ireland', sub: true },
+  { n: 'Infobip', role: 'Failover · live canary', share: 15, health: 94, dlr: '2.1s', hand: true, circuit: 'closed', region: 'EU region-locked', sub: false },
+  { n: 'AWS End User Messaging', role: 'Break-glass', share: 3, health: 91, dlr: '18s', hand: false, circuit: 'closed', region: 'London', sub: true },
+];
+
+const ROLES = ['Agent', 'Senior agent', 'Team manager', 'Operations', 'Data management', 'Administrator', 'Auditor'];
+const CAPS = [
+  ['Conversations', [
+    ['Read a customer conversation', ['full', 'full', 'full', 'full', 'none', 'cond', 'read']],
+    ['Send a message', ['full', 'full', 'full', 'none', 'none', 'none', 'none']],
+    ['Send outside quiet hours', ['none', 'cond', 'cond', 'none', 'none', 'none', 'none']],
+    ['Override a care route', ['none', 'none', 'cond', 'none', 'none', 'none', 'none']],
+  ]],
+  ['Money', [
+    ['Take a payment', ['full', 'full', 'full', 'none', 'none', 'none', 'none']],
+    ['Agree an arrangement', ['cond', 'full', 'full', 'none', 'none', 'none', 'none']],
+    ['Write off a balance', ['none', 'none', 'cond', 'full', 'none', 'none', 'none']],
+    ['Refund a credit', ['none', 'cond', 'full', 'full', 'none', 'none', 'none']],
+  ]],
+  ['Configuration', [
+    ['Edit the collections workflow', ['none', 'none', 'none', 'full', 'none', 'full', 'read']],
+    ['Approve a message template', ['none', 'none', 'full', 'full', 'none', 'none', 'read']],
+    ['Change provider routing', ['none', 'none', 'none', 'full', 'none', 'full', 'read']],
+    ['Change a role definition', ['none', 'none', 'none', 'none', 'none', 'full', 'read']],
+  ]],
+  ['Data', [
+    ['Import a customer file', ['none', 'none', 'none', 'none', 'full', 'full', 'none']],
+    ['Export customer data', ['none', 'none', 'cond', 'cond', 'full', 'cond', 'none']],
+    ['Bulk delete', ['none', 'none', 'none', 'none', 'cond', 'cond', 'none']],
+    ['Read the audit trail', ['none', 'none', 'read', 'read', 'read', 'read', 'full']],
+  ]],
+];
+
+const IMPORT_ROWS = [
+  ['412', '1.20003E+12', 'J Okafor', '07700 900123', '184.60', 'rejected', 'IDENT_SCIENTIFIC_NOTATION', 'The spreadsheet turned the account number into scientific notation and digits are gone. Rejected rather than reconstructed — a guess could bind this row to the wrong account.'],
+  ['413', '9931204', 'P Achebe', '07700 900456', '96.40', 'rejected', 'IDENT_LEADING_ZERO_STRIPPED', 'Seven digits where eight are expected. A leading zero has been stripped. Re-padding would be a guess.'],
+  ['414', '00483112', 'S Kaur', '+447700900789', '268.90', 'warning', 'ENUM_CASE_NORMALISED', 'Accepted after normalising the status casing. Recorded as a warning so a systematic change upstream stays visible.'],
+  ['415', '00519934', '=HYPERLINK("http://x")', '07700 900222', '54.00', 'rejected', 'FORMULA_INJECTION', 'Begins with a formula trigger. Rejected at validation rather than escaped at export, because the leading-apostrophe fix does not survive a save and reopen.'],
+  ['416', '00483112', 'S. Kaur', '07700900789', '268.90', 'duplicate', 'DUPLICATE_OF_ROW_414', 'Same account and normalised number as row 414. Held for a person to adjudicate, never auto-merged: a false merge attributes one person\'s debt to another.'],
+  ['419', '00810344', 'R Thomas', '029 2018 0184', '331.20', 'rejected', 'LINE_TYPE_FIXED', 'Valid, but a landline. UK carriers do not bounce SMS to fixed lines because text-to-speech delivery is common here — so this would be read aloud to whoever answers, and return a delivery receipt.'],
+  ['420', '00662001', 'L Fernandes', '07700 900333', '-12.00', 'rejected', 'BALANCE_SIGN_UNEXPECTED', 'A credit balance on a file submitted for arrears work. Almost certainly a sign-convention mismatch, which would have us chase someone we owe.'],
+  ['421', '00904417', 'A Whitfield', '+447700900555', '184.60', 'accepted', '—', 'Passes every check.'],
+];
+
+/* ---------- a small honest chart ----------
+   One scale places bars, gridlines and labels. Every axis label
+   names a value the chart actually reaches. Room is left in the
+   viewBox for the outermost text, and text takes theme tokens so
+   it reads in both themes. */
+function barChart(series, opts) {
+  const o = Object.assign({ w: 560, h: 210, pad: 34, top: 18, left: 44, unit: '%', max: null }, opts || {});
+  const cats = series[0].data.map((d) => d[0]);
+  const max = o.max || Math.ceil(Math.max(...series.flatMap((s) => s.data.map((d) => d[1]))) / 10) * 10;
+  const plotW = o.w - o.left - 12, plotH = o.h - o.pad - o.top;
+  const band = plotW / cats.length, inner = band * 0.62, bw = inner / series.length;
+  const y = (v) => o.top + plotH - (v / max) * plotH;
+  let g = '';
+  for (let i = 0; i <= 4; i++) {
+    const v = (max / 4) * i, yy = y(v);
+    g += '<line x1="' + o.left + '" x2="' + (o.w - 12) + '" y1="' + yy + '" y2="' + yy + '" stroke="var(--chart-grid)" stroke-width="1"/>'
+      + '<text x="' + (o.left - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end" font-size="9.5" font-family="var(--mono)" fill="var(--ink-3)">' + Math.round(v) + '</text>';
+  }
+  let bars = '';
+  cats.forEach((c, ci) => {
+    const x0 = o.left + band * ci + (band - inner) / 2;
+    series.forEach((s, si) => {
+      const v = s.data[ci][1], yy = y(v), hh = o.top + plotH - yy;
+      bars += '<rect x="' + (x0 + bw * si) + '" y="' + yy + '" width="' + (bw - 2) + '" height="' + Math.max(hh, 1.5)
+        + '" rx="3" fill="' + s.color + '"/>'
+        + '<text x="' + (x0 + bw * si + (bw - 2) / 2) + '" y="' + (yy - 5) + '" text-anchor="middle" font-size="9.5" font-weight="600" font-family="var(--mono)" fill="var(--ink-2)">' + v + '</text>';
+    });
+    bars += '<text x="' + (o.left + band * ci + band / 2) + '" y="' + (o.h - 10) + '" text-anchor="middle" font-size="10" fill="var(--ink-3)">' + esc(c) + '</text>';
+  });
+  const legend = series.length > 1
+    ? '<div class="legend" style="margin-top:9px">' + series.map((s) => '<span><i style="background:' + s.color + '"></i>' + esc(s.name) + '</span>').join('') + '</div>'
+    : '';
+  return '<div class="tscroll"><svg viewBox="0 0 ' + o.w + ' ' + o.h + '" width="100%" style="display:block;min-width:440px" role="img" aria-label="' + esc(o.label || 'Chart') + '">'
+    + '<line x1="' + o.left + '" x2="' + o.left + '" y1="' + o.top + '" y2="' + (o.top + plotH) + '" stroke="var(--line-strong)" stroke-width="1"/>'
+    + g + bars + '</svg></div>' + legend;
+}
+
+function bars(rows, color) {
+  const max = Math.max(...rows.map((r) => r[1]));
+  return '<div class="bars">' + rows.map((r) =>
+    '<div class="bar-row"><span>' + esc(r[0]) + '</span>'
+    + '<span class="bar-track"><span class="bar-fill" style="width:' + Math.round(r[1] / max * 100) + '%;background:' + (r[2] || color) + '"></span></span>'
+    + '<span class="n">' + (typeof r[1] === 'number' ? r[1].toLocaleString('en-GB') : r[1]) + '</span></div>').join('') + '</div>';
+}
+
+const SECTIONS = {
+  ops: {
+    title: 'Operations', sub: 'Week to 17 September',
+    body: () =>
+      '<p class="lede">The purpose of this screen is to show whether people are being <b>treated well</b>, not only whether money arrived. Every figure here can be traced to the cases behind it, and none of them ranks an agent against another agent.</p>'
+      + '<div class="grid g4">'
+      + stat('Open cases', '4,312', 'Down 218 on last week')
+      + stat('Contacted', '11,840', 'Across every channel, deduplicated by person')
+      + stat('Arrangements holding', '2,904', '78% of those agreed in the last 90 days')
+      + stat('Routed to care', '612', '5.2% of contacts — up 0.4pp')
+      + '</div>'
+      + '<div class="grid g2">'
+      + box('Contact to outcome', 'Where 11,840 contacts went', bars([
+          ['Contacted', 11840, 'var(--chart-2)'],
+          ['Replied', 4106, 'var(--chart-2)'],
+          ['Ability-to-pay done', 2418, 'var(--chart-3)'],
+          ['Arrangement agreed', 1902, 'var(--chart-3)'],
+          ['Still holding at 90d', 1484, 'var(--chart-1)'],
+        ]) + note('A funnel is the wrong shape for this and we show it anyway, labelled. <b>Dropping out is not failure.</b> A customer who reads a message, sees they are fine and does nothing has been served correctly.'))
+      + box('Contact success by channel', 'Licence obliges review where contact has not succeeded', barChart([
+          { name: 'Reached the person', color: 'var(--chart-2)', data: [['SMS', 61], ['App', 74], ['Email', 38], ['Letter', 22], ['Phone', 44]] },
+        ], { label: 'Contact success rate by channel', unit: '%', max: 80 })
+        + note('Reported <b>per channel</b> because the licence requires a supplier to review its contact methods where contact has not succeeded. A platform that cannot produce this table is not evidencing compliance, whatever its dashboard says.'))
+      + '</div>'
+      + box('Team', 'Six agents · no ranking', '<div class="tscroll"><table><thead><tr><th>Agent</th><th>Conversations</th><th>Median first reply</th><th>Care routed</th><th>Arrangements holding</th><th>Complaints</th></tr></thead><tbody>'
+        + [['Rhiannon Vaughan', 148, '6m', '14%', '81%', 0], ['Tomas Belu', 201, '4m', '6%', '72%', 1], ['Asha Nair', 132, '9m', '22%', '84%', 0],
+           ['Craig Duthie', 187, '5m', '8%', '75%', 0], ['Maja Nowak', 119, '11m', '26%', '86%', 0], ['Ben Osei', 176, '5m', '9%', '77%', 2]]
+          .map((r) => '<tr><td>' + r[0] + '</td><td class="num">' + r[1] + '</td><td class="num">' + r[2] + '</td><td class="num">' + r[3] + '</td><td class="num">' + r[4] + '</td><td class="num">' + r[5] + '</td></tr>').join('')
+        + '</tbody></table></div>'
+        + note('<b>Deliberately unsorted and unscored.</b> Three independent reasons: the agent who takes the hardest cases looks worst on every throughput measure; a league table changes behaviour towards the measure rather than the customer; and the numbers are not comparable, because case mix is assigned, not chosen. Read the rows against each other and the pattern is visible without a rank — the two agents with the slowest first reply also carry the most care-routed cases and the highest arrangement survival.', 'care'),
+        '<span class="pill care">' + ic('care', 2) + 'No ranking</span>'),
+  },
+};
+
+function stat(l, v, d) {
+  return '<div class="stat"><span class="lbl">' + esc(l) + '</span><div class="v">' + esc(v) + '</div><div class="d">' + esc(d) + '</div></div>';
+}
+function box(h, sub, body, end) {
+  return '<div class="box"><div class="box-head"><h4>' + esc(h) + '</h4>'
+    + (sub ? '<span class="sub" style="font-size:11.5px;color:var(--ink-3)">' + esc(sub) + '</span>' : '')
+    + (end ? '<span class="end">' + end + '</span>' : '') + '</div><div class="box-body">' + body + '</div></div>';
+}
+function note(html, tone) {
+  return '<div class="note ' + (tone || '') + '">' + ic(tone === 'care' ? 'care' : 'info', 1.9) + '<span>' + html + '</span></div>';
+}
+
+let failover = 0; /* 0 steady, 1 degrading, 2 circuit open, 3 draining, 4 settled */
+const FAILOVER_STEPS = [
+  { t: 'Steady state', d: 'Sinch carries production. Infobip carries a continuous slice of live traffic — a real canary, not a synthetic ping — so its credentials, sender registration and delivery pipeline are known-good at all times.', share: [82, 15, 3], circuit: 'closed', health: [97, 94, 91] },
+  { t: 'Degradation detected', d: 'Sinch is still returning 200 OK to every send. What moved is the delivered ratio and the receipt latency — the two signals no SLA on the market covers. This is the failure that hurts, and HTTP monitoring cannot see it.', share: [82, 15, 3], circuit: 'closed', health: [71, 94, 91] },
+  { t: 'Circuit open', d: 'Sustained degradation past the threshold. New sends stop going to Sinch. In-flight messages are left to resolve rather than duplicated, because re-sending an ambiguous message is the one action guaranteed to double-dun someone in arrears.', share: [18, 78, 4], circuit: 'open', health: [38, 93, 91] },
+  { t: 'Outbox draining', d: 'The backlog moves to Infobip paced per recipient as well as per provider. Without the per-recipient pacing, the customer whose messages were stuck receives the whole sequence at once and the operator silently discards the tail — they would get messages two to six of seven, and nothing would show a failure.', share: [4, 92, 4], circuit: 'open', health: [22, 91, 90] },
+  { t: 'Settled on failover', d: 'Infobip carries production on the same short code, so the customer sees one continuous thread and STOP still works. Conversation state, suppression and the audit trail never moved — they were never at the provider.', share: [2, 94, 4], circuit: 'half', health: [46, 95, 91] },
+];
+
+Object.assign(SECTIONS, {
+  providers: {
+    title: 'Message routing', sub: 'Two providers live, one kept warm',
+    body: () => {
+      const s = FAILOVER_STEPS[failover];
+      return '<p class="lede">A weeks-long messaging outage is not a carrier event — the UK carrier layer is served by more than thirty tier-one aggregators and is already redundant. It is an <b>application-layer failure</b>. So the design goal is not to survive a blip. It is to own the layer that failed.</p>'
+      + box('Failover, step by step', s.t, '<p style="margin:0 0 12px;font-size:13px;line-height:1.6;color:var(--ink-2);max-width:74ch">' + md(s.d) + '</p>'
+          + '<div class="tscroll"><table><thead><tr><th>Provider</th><th>Role</th><th>Share</th><th>Health</th><th>Circuit</th><th>Region</th><th>Handset vs operator</th><th>Sub-processors</th></tr></thead><tbody>'
+          + PROVIDERS.map((p, i) => {
+              const h = s.health[i], hp = h > 85 ? 'ok' : h > 60 ? 'warn' : 'brand';
+              const cc = i === 0 ? s.circuit : 'closed';
+              return '<tr><td><b>' + esc(p.n) + '</b></td><td>' + esc(p.role) + '</td>'
+                + '<td class="num">' + s.share[i] + '%</td>'
+                + '<td class="num"><span class="pill ' + hp + '">' + h + '</span></td>'
+                + '<td><span class="pill ' + (cc === 'closed' ? 'ok' : cc === 'half' ? 'warn' : 'brand') + '">' + (cc === 'closed' ? 'closed' : cc === 'half' ? 'half-open' : 'open') + '</span></td>'
+                + '<td>' + esc(p.region) + '</td>'
+                + '<td>' + (p.hand ? '<span class="pill ok">separates them</span>' : '<span class="pill mute">cannot tell</span>') + '</td>'
+                + '<td>' + (p.sub ? '<span class="pill ok">published</span>' : '<span class="pill warn">on request</span>') + '</td></tr>';
+            }).join('')
+          + '</tbody></table></div>'
+          + '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
+          + '<button class="btn" id="fo-next" style="margin:0">' + ic('swap', 2) + (failover < 4 ? 'Advance the scenario' : 'Reset to steady state') + '</button>'
+          + '<span class="lbl" style="align-self:center">step ' + (failover + 1) + ' of 5</span></div>'
+          + note('Health is scored on <b>delivery-derived</b> signals — receipt latency and the terminal-delivered ratio against that provider\'s own trailing baseline — not on HTTP responses. Every published SLA in this market measures API availability; none measures delivery. One provider\'s agreement even deems the platform unavailable <b>only during an incident affecting multiple customers</b>, so a total outage affecting us alone is contractually not downtime.'))
+      + '<div class="grid g2">'
+      + box('Per-recipient governor', 'Below the carrier ceiling, on purpose', bars([
+          ['This hour, max', 4, 'var(--chart-2)'], ['Carrier ceiling, varied', 20, 'var(--chart-muted)'], ['Carrier ceiling, identical', 6, 'var(--chart-muted)'],
+        ]) + note('Mobile operators cap what one handset can receive per hour, and the <b>overflow is discarded, not returned as an error</b>. So this limiter fails closed: if the shared counter is unavailable, we stop sending. The egress limiter next to it fails open. Opposite defaults at two ends of the same send path, which is why they cannot be one component.'))
+      + box('Sender identity', 'One short code, both providers', '<dl style="margin:0">'
+          + kv('Short code', '60119') + kv('Registered to', 'The supplier, not the aggregator')
+          + kv('Activated through', 'Both providers, concurrently') + kv('Alphanumeric senders', 'Not used')
+          + '</dl>'
+          + note('The short code is held in the supplier\'s own name, so it can be activated through whichever aggregator is carrying traffic — and the customer\'s thread survives a failover intact. <b>Alphanumeric sender IDs are one-way</b>, so they cannot carry a reply or a working STOP, and nearly every word this programme would want — <code class="mono">Energy</code>, <code class="mono">Bill</code>, <code class="mono">Payment</code>, <code class="mono">Collection</code> — is blocked at operator level, which no change of provider recovers.'))
+      + '</div>';
+    },
+  },
+
+  workflow: {
+    title: 'Collections workflow', sub: 'Five stages · version 7 · 1,204 cases pinned to earlier versions',
+    body: () => '<p class="lede">Stages, timings and gates are configurable. What is <b>not</b> configurable is the set of gates that protect people — those are enforced above the configuration, and an administrator cannot switch them off from this screen.</p>'
+      + box('Stages', 'Drag to reorder · each stage carries its own dwell time and channel policy',
+        '<div class="tscroll"><table><thead><tr><th>#</th><th>Stage</th><th>Opens after</th><th>Channels</th><th>Requires</th></tr></thead><tbody>'
+        + [[1, 'Pre-arrears notice', 'Bill + 14 days unpaid', 'App, email', 'Nothing'],
+           [2, 'Reminder', 'Stage 1 + 7 days', 'SMS, app, email', 'Care gate passed'],
+           [3, 'Ability to pay', 'Stage 2 + 7 days, or on reply', 'Phone, SMS, app', 'Care gate passed'],
+           [4, 'Arrangement', 'On agreement', 'All', 'Affordability recorded with a basis'],
+           [5, 'Formal notice', 'Stage 4 broken twice', 'Letter, phone', 'Ability-to-pay process evidenced']]
+          .map((r) => '<tr><td class="num">' + r[0] + '</td><td><b>' + r[1] + '</b></td><td>' + r[2] + '</td><td>' + r[3] + '</td><td>' + r[4] + '</td></tr>').join('')
+        + '</tbody></table></div>')
+      + box('Gates', 'Enforced above the configuration', [
+          ['Care gate', 'Care state must resolve before any stage opens. If the register cannot be read, nothing sends.', true, 1],
+          ['Breathing space', 'Suspends contact, interest and charges at debt level, not customer level.', true, 1],
+          ['Dispute restriction', 'A contested balance restricts processing to storage and suspends outbound on that balance.', true, 1],
+          ['Quiet hours, UK local time', 'Evaluated in our own scheduler. Provider windows are UTC only and would be an hour out for seven months.', true, 0],
+          ['Back-billing window', 'Charges outside the protected window cannot be presented as owed.', true, 1],
+          ['Per-recipient frequency cap', 'Global across every sender, campaign and workflow.', true, 0],
+        ].map((g) => '<button class="toggle" aria-pressed="true"' + (g[3] ? ' data-locked disabled' : '') + '><span class="tx"><span class="tt">' + esc(g[0])
+          + (g[3] ? ' <span class="pill care" style="margin-left:6px">' + ic('lock', 2) + 'Cannot be disabled</span>' : '')
+          + '</span><span class="td">' + esc(g[1]) + '</span></span><span class="sw"></span></button>').join(''))
+      + note('Four of these six cannot be turned off by anyone, including an administrator. <b>A configurable compliance control is not a compliance control</b> — it is a setting that happens to be correct today. The two that are adjustable change thresholds, never whether the gate applies.', 'care'),
+  },
+});
+
+function kv(k, v) { return '<div class="kv"><dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd></div>'; }
+
+let lintBody = 'Hello {{preferred_name}}. Your energy account ending {{account_last4}} has an unpaid balance of {{amount_due}}. You can see it and pay in the app, or reply HELP and we will call you. Reply STOP to opt out.';
+const LINT_PRESETS = [
+  ['Compliant service message', 'Hello {{preferred_name}}. Your energy account ending {{account_last4}} has an unpaid balance of {{amount_due}}. You can see it and pay in the app, or reply HELP and we will call you. Reply STOP to opt out.'],
+  ['Accidentally marketing', 'Hello {{preferred_name}}, your balance is {{amount_due}}. Switch to our Saver tariff today and save up to 120 pounds a year while you clear it.'],
+  ['Pressure framing', 'URGENT: Your account is in arrears. Failure to pay {{amount_due}} within 48 hours will result in further action being taken against you.'],
+  ['Unresolved variable', 'Hello {{first_name}}, your balance is {{balance}}. Log in to pay.'],
+  ['Welsh — always UCS-2', 'Helo {{preferred_name}}. Mae balans o {{amount_due}} heb ei dalu ar eich cyfrif ynni sy’n gorffen {{account_last4}}. Gallwch dalu yn yr ap. Atebwch STOP i ddad-danysgrifio.'],
+];
+const DECLARED = ['preferred_name', 'account_last4', 'amount_due', 'due_date', 'agent_name'];
+
+Object.assign(SECTIONS, {
+  templates: {
+    title: 'Message templates', sub: '6 approved · 2 awaiting a second approver',
+    body: () => {
+      const rendered = lintBody
+        .replace(/\{\{\s*preferred_name\s*\}\}/g, 'Alex').replace(/\{\{\s*account_last4\s*\}\}/g, '4021')
+        .replace(/\{\{\s*amount_due\s*\}\}/g, '£184.60').replace(/\{\{\s*due_date\s*\}\}/g, '3 October')
+        .replace(/\{\{\s*agent_name\s*\}\}/g, 'Sam');
+      const vars = (lintBody.match(/\{\{\s*([a-z0-9_]+)\s*\}\}/gi) || []).map((v) => v.replace(/[{}\s]/g, ''));
+      const undeclared = [...new Set(vars.filter((v) => !DECLARED.includes(v)))];
+      const s = segment(rendered);
+      const gw = Array.from(rendered).length;
+      const g = { segments: gw === 0 ? 0 : gw <= 160 ? 1 : Math.ceil(gw / 153) };
+      const low = rendered.toLowerCase();
+      const hit = (w) => new RegExp('\\b' + w + '\\b').test(low);
+      const promo = ['switch', 'save', 'saver', 'deal', 'offer', 'discount', 'tariff', 'cheaper'].filter(hit);
+      const press = ['urgent', 'immediately', 'failure to pay', 'further action', 'legal action', 'final warning', 'act now', 'bailiff'].filter(hit);
+      const blocked = undeclared.length > 0 || press.length > 0;
+      const checks = [
+        [undeclared.length === 0, undeclared.length ? 'Undeclared: ' + undeclared.join(', ') : 'Every variable resolves',
+          undeclared.length ? 'An unresolved placeholder reaches the customer as literal template syntax. This blocks the send outright rather than sending and apologising.' : 'Every placeholder resolves against the declared set.'],
+        [promo.length === 0, promo.length ? 'Promotional terms: ' + promo.join(', ') : 'No promotional content',
+          promo.length ? 'One promotional clause converts the whole message into direct marketing, at which point consent and per-message opt-out obligations apply to all of it — including the arrears part.' : 'A service message may inform but not promote, so marketing consent is not required.'],
+        [press.length === 0, press.length ? 'Pressure language: ' + press.join(', ') : 'No pressure framing',
+          press.length ? 'Threat and urgency framing is a conduct risk and counter-productive: trials found non-aggressive wording raised contact rates with no loss of payment rate.' : 'Neutral register.'],
+        [!s.unicode, s.unicode ? 'Outside GSM-7: ' + s.outside.slice(0, 5).join(' ') : 'GSM-7 safe',
+          s.unicode ? 'One character outside the alphabet cuts the segment from 160 to 70. Welsh is the exception that proves the rule — it is a Unicode language, so it is always 70, and transliteration must stay off because in Welsh those characters carry the meaning.' : 'Uses the full 160-character segment.'],
+        [/STOP/i.test(rendered), /STOP/i.test(rendered) ? 'Opt-out present' : 'No opt-out',
+          'A bare STOP resolves to marketing only, and the confirmation states what stopped and what continues — because the licence duty to contact a customer in arrears survives a marketing opt-out.'],
+      ];
+      return '<p class="lede">The linter runs at approval <b>and again at render time</b>, because a template that passes with one customer\'s values can fail with another\'s. It can block a send outright.</p>'
+      + '<div class="grid g2">'
+      + box('Template body', 'Edit it — the checks re-run as you type',
+          '<div class="screen-list">' + LINT_PRESETS.map((p, i) => '<button data-lint="' + i + '" aria-selected="' + (p[1] === lintBody) + '">' + esc(p[0]) + '</button>').join('') + '</div>'
+          + '<textarea id="lint-ta" style="width:100%;min-height:104px;padding:11px;font:inherit;font-size:13px;line-height:1.5;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:var(--r);resize:vertical">' + esc(lintBody) + '</textarea>'
+          + '<div><div class="lbl" style="margin-bottom:6px">As the customer receives it</div>'
+          + '<div class="bubble" style="font-size:13px">' + esc(rendered) + '</div></div>'
+          + '<dl style="margin:0">' + kv('Characters', String(s.weighted)) + kv('Segments', String(s.segments))
+          + kv('Encoding', s.unicode ? 'UCS-2 · 70 per segment' : 'GSM-7 · 160 per segment')
+          + kv('Cost vs GSM-7', s.segments === g.segments ? 'baseline' : (+(s.segments / g.segments).toFixed(1)) + '× — ' + g.segments + (g.segments === 1 ? ' segment' : ' segments') + ' if GSM-7')
+          + '</dl>')
+      + box('Checks', blocked ? 'Send blocked' : promo.length ? 'Reclassified as marketing' : 'Passes as a service message',
+          checks.map((c) => '<div style="display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line)">'
+            + '<span style="flex:none;margin-top:1px;color:var(--' + (c[0] ? 'ok' : 'brand') + ')">' + ic(c[0] ? 'check-circle' : 'alert', 2) + '</span>'
+            + '<span><b style="font-size:12.5px">' + esc(c[1]) + '</b><br><span style="font-size:12px;color:var(--ink-3);line-height:1.5">' + esc(c[2]) + '</span></span></div>').join('')
+          + '<div style="padding-top:11px">' + (blocked
+              ? '<span class="pill brand">' + ic('ban', 2) + 'Send blocked</span>'
+              : promo.length ? '<span class="pill warn">' + ic('alert', 2) + 'Now direct marketing</span>'
+              : '<span class="pill ok">' + ic('check-circle', 2) + 'Passes as a service message</span>') + '</div>',
+          '<span class="pill mute">Two approvers required</span>')
+      + '</div>'
+      + box('Sender identities that cannot be used', 'Blocked at operator level — changing provider recovers none of them',
+          '<div style="display:flex;flex-wrap:wrap;gap:6px">'
+          + ['Energy', 'Bill', 'Billing', 'Payment', 'Repayment', 'Collect', 'Collection', 'Reminder', 'Account', 'Alert', 'Notify', 'Support', 'Info']
+            .map((w) => '<span class="pill brand" style="font-family:var(--mono)">' + w + '</span>').join('')
+          + '</div>'
+          + note('Nearly every sender ID this programme would naturally choose is on a blocked generic list. <b>The obvious design is unavailable at any price</b>, which is why the registered brand name on a short code is the only workable identity.'));
+    },
+  },
+
+  access: {
+    title: 'Roles and access', sub: '7 roles · 16 capabilities · row-level rules enforced in the database',
+    body: () => '<p class="lede">Roles answer <b>who may act</b>. They do not answer <b>who may look</b> — that is a separate question, answered per record, and every read is written to the audit trail with a reason where the record is privileged.</p>'
+      + box('Capability matrix', '', '<div class="tscroll"><table class="matrix"><thead><tr><th>Capability</th>' + ROLES.map((r) => '<th>' + esc(r) + '</th>').join('') + '</tr></thead><tbody>'
+        + CAPS.map((grp) => '<tr class="grp-row"><td colspan="' + (ROLES.length + 1) + '">' + esc(grp[0]) + '</td></tr>'
+            + grp[1].map((row) => '<tr><th>' + esc(row[0]) + '</th>'
+                + row[1].map((v) => '<td><span class="cap ' + v + '" title="' + ({ full: 'Permitted', cond: 'Permitted with a recorded reason', read: 'Read only', none: 'Not permitted' })[v] + '"></span></td>').join('') + '</tr>').join('')).join('')
+        + '</tbody></table></div>'
+        + '<div class="legend" style="margin-top:11px"><span><i class="cap full" style="width:11px;height:11px"></i>Permitted</span><span><i class="cap cond" style="width:11px;height:11px"></i>With a recorded reason</span><span><i class="cap read" style="width:11px;height:11px"></i>Read only</span><span><i class="cap none" style="width:11px;height:11px"></i>Not permitted</span></div>'
+        + note('Read the administrator column. It can change a role definition but <b>cannot read a customer conversation</b> without recording a reason, and cannot send a message at all. Separating configuration from operation is what stops the most privileged account being the most dangerous one.', 'care'))
+      + '<div class="grid g2">'
+      + box('Row-level rules', 'Enforced in the database, not the application', '<dl style="margin:0">'
+        + kv('Care-flagged accounts', 'Trained agents only') + kv('Colleague accounts', 'Excluded from all queues')
+        + kv('Complaint under review', 'Handling team only') + kv('Deceased', 'Bereavement team only')
+        + '</dl>' + note('These live below the application so a bug in a query cannot bypass them. A permission checked only in the interface is a suggestion.'))
+      + box('Access with a reason', 'Last four privileged reads', '<ul class="audit">'
+        + [['09:12', 'Marcus Obi opened a care-flagged record', 'Reason: welfare call preparation'],
+           ['08:47', 'Asha Nair opened a complaint under review', 'Reason: customer called about it'],
+           ['08:31', 'Data management exported 1,204 rows', 'Reason: quarterly reconciliation · approved by Operations'],
+           ['08:02', 'Administrator viewed a conversation', 'Reason: investigating a delivery defect']]
+          .map((r) => '<li><time>' + r[0] + '</time><div class="what"><b>' + esc(r[1]) + '</b><div class="why">' + esc(r[2]) + '</div></div></li>').join('')
+        + '</ul>')
+      + '</div>',
+  },
+});
+
+let importFilter = 'all';
+
+Object.assign(SECTIONS, {
+  import: {
+    title: 'Import', seci: 'import', sub: 'arrears-2026-09-17.xlsx · 41,820 rows · uploaded 09:04',
+    body: () => {
+      const rows = IMPORT_ROWS.filter((r) => importFilter === 'all' || r[5] === importFilter);
+      const counts = IMPORT_ROWS.reduce((a, r) => (a[r[5]] = (a[r[5]] || 0) + 1, a), {});
+      return '<p class="lede">A spreadsheet is a lossy transport for identifiers, and the losses are silent. The import is <b>strict by default and never repairs a value it cannot prove</b> — a guessed account number binds one person\'s debt to another.</p>'
+      + '<div class="grid g4">'
+      + stat('Rows', '41,820', 'Content hash 4f9c…a17b')
+      + stat('Accepted', '38,104', '91.1% — promoted on approval')
+      + stat('Rejected', '3,241', 'Returned as a file with a reason per row')
+      + stat('Held', '475', 'Duplicates awaiting a person')
+      + '</div>'
+      + box('Validation report', 'Eight illustrative rows',
+          '<div class="screen-list" style="margin-bottom:11px">'
+          + ['all', 'rejected', 'warning', 'duplicate', 'accepted'].map((f) => '<button data-imp="' + f + '" aria-selected="' + (importFilter === f) + '">'
+              + f.charAt(0).toUpperCase() + f.slice(1) + (f !== 'all' ? ' · ' + (counts[f] || 0) : '') + '</button>').join('')
+          + '</div>'
+          + '<div class="tscroll"><table><thead><tr><th>Row</th><th>Account</th><th>Name</th><th>Phone</th><th>Balance</th><th>Verdict</th><th>Code</th></tr></thead><tbody>'
+          + rows.map((r) => '<tr><td class="num">' + r[0] + '</td><td class="code">' + esc(r[1]) + '</td><td>' + esc(r[2]) + '</td>'
+              + '<td class="code">' + esc(r[3]) + '</td><td class="num">' + esc(r[4]) + '</td>'
+              + '<td><span class="pill ' + ({ rejected: 'brand', warning: 'warn', duplicate: 'info', accepted: 'ok' })[r[5]] + '">' + r[5] + '</span></td>'
+              + '<td class="code">' + esc(r[6]) + '</td></tr>'
+              + '<tr><td></td><td colspan="6" style="padding-top:0;font-size:12px;color:var(--ink-3);line-height:1.5;border-bottom:1px solid var(--line-strong)">' + esc(r[7]) + '</td></tr>').join('')
+          + '</tbody></table></div>')
+      + note('The landline row is the one worth pausing on. <b>UK carriers do not bounce SMS to fixed lines</b>, because text-to-speech delivery is widespread here — so an arrears message sent to a landline is read aloud to whoever answers a shared household phone, and returns a delivery receipt. That is an unintended disclosure, not a billing error, which is why line type is screened at import rather than at send.', 'care');
+    },
+  },
+
+  suppression: {
+    title: 'Contact rules', sub: 'Three suppression scopes · 14,208 records',
+    body: () => '<p class="lede">A single opt-out flag is the most common serious mistake in this domain. <b>A naive STOP handler puts a supplier in breach of its energy licence while it believes it is complying with privacy law</b> — because the duty to contact a customer in arrears survives a marketing opt-out.</p>'
+      + box('Scopes', 'Resolved independently, never collapsed into one flag', '<div class="tscroll"><table><thead><tr><th>Scope</th><th>Set by</th><th>Stops</th><th>Does not stop</th><th>Records</th></tr></thead><tbody>'
+        + [['Marketing', 'STOP, app preference, TPS', 'Every promotional message, absolutely', 'Arrears and service messages', '11,904'],
+           ['Service channel', 'Customer choosing another channel', 'SMS specifically', 'Contact itself — it falls back to letter or phone and is logged as an attempt', '1,806'],
+           ['Third-party representation', 'An authorised adviser acting', 'Direct contact with the customer', 'Contact with the adviser', '498']]
+          .map((r) => '<tr><td><b>' + r[0] + '</b></td><td>' + r[1] + '</td><td>' + r[2] + '</td><td>' + r[3] + '</td><td class="num">' + r[4] + '</td></tr>').join('')
+        + '</tbody></table></div>'
+        + note('A bare <code class="mono">STOP</code> resolves to <b>marketing only</b>, and the reply states what stopped and what continues. Anything else either keeps marketing someone who asked you not to, or stops the statutory notices they are entitled to receive.'))
+      + '<div class="grid g2">'
+      + box('Our list is the decision-maker', 'Provider lists are mirrored inward, never trusted', '<dl style="margin:0">'
+        + kv('Primary provider refresh', 'Every 10 minutes') + kv('Failover provider', 'Blocklist event webhook')
+        + kv('Readable back via API', 'At one provider of three') + kv('Scope at the provider', 'Per sender')
+        + '</dl>' + note('Provider suppression is <b>per-sender and mostly unreadable</b>, so it does not survive a failover and cannot be reconciled. It stays enabled as a backstop; ours decides. One UK specialist will silently re-subscribe anyone who replies — a customer who answers "I am not paying this" has just been opted back in.'))
+      + box('Quiet hours', 'Evaluated in UK local time, in our scheduler', '<dl style="margin:0">'
+        + kv('Send window', '08:00 – 20:00') + kv('Timezone', 'Europe/London, with BST')
+        + kv('Bulk validity', '4 hours, then it expires') + kv('Express lane', 'Replies and statutory notices')
+        + '</dl>' + note('The failover provider\'s native window is <b>UTC only</b>, which is an hour out for the seven months of British Summer Time — a window closing at 8pm would send at 9pm. Bulk traffic expires rather than arriving late, because an arrears message delivered at 3am is worse than one never delivered.'))
+      + '</div>',
+  },
+
+  audit: {
+    title: 'Audit trail', sub: 'Append-only · hash-chained · 5-year retention',
+    body: () => '<p class="lede">Provider retention runs from twenty-four hours to three months. Ombudsman referrals arrive years later and limitation on a contract debt is six years. <b>No provider on the market keeps a collections conversation for as long as we may be required to produce it</b>, so everything is persisted here at the moment of receipt.</p>'
+      + box('Recent entries', 'Every row is immutable', '<ul class="audit">'
+        + [['17 Sep 09:41:02', 'Message accepted by provider', 'Case C-88097 · Sinch · ref 01JMQ8… · rendered body stored verbatim', '8f2a…c104'],
+           ['17 Sep 09:41:06', 'Delivery receipt: operator', 'Raw provider status retained alongside our canonical status. We never upgrade the claim.', 'c104…91bd'],
+           ['17 Sep 09:38:15', 'Care route applied', 'Case C-88104 · self-disconnection risk · arrears activity suspended', '91bd…4f70'],
+           ['17 Sep 09:22:48', 'Dispute recorded from inbound', 'Case C-88112 · processing restricted to storage · outbound suspended on this balance', '4f70…2ae9'],
+           ['17 Sep 06:04:11', 'Breathing space applied', 'Case C-88090 · from the statutory register · applied at debt level · day 1 of 60', '2ae9…77c3'],
+           ['17 Sep 05:50:00', 'Workflow version 7 published', 'Approved by two people · 1,204 open cases remain pinned to version 6', '77c3…1a05']]
+          .map((r) => '<li><time>' + r[0] + '</time><div class="what"><b>' + esc(r[1]) + '</b><div class="why">' + esc(r[2]) + '</div><div class="hashchain">' + r[3] + '</div></div></li>').join('')
+        + '</ul>'
+        + note('Each entry carries the hash of the one before it, so a deletion or an edit anywhere in the chain is detectable rather than merely discouraged. <b>Retention differs by nation:</b> limitation is six years in England and Wales but five in Scotland, where it extinguishes the obligation outright rather than barring the remedy — so the two cannot share one retention rule.')),
+  },
+});
+
+/* ---------- customer app ---------- */
+let mScreen = 'home', mPlan = 1;
+
+const mrow = (i, t, d, to) => '<button class="m-row"' + (to ? ' data-go="' + to + '"' : '') + '>'
+  + '<span class="ic">' + ic(i, 1.8) + '</span><span class="tx"><span class="tt">' + esc(t) + '</span><span class="td">' + esc(d) + '</span></span>'
+  + '<span class="ch">' + ic('right', 2) + '</span></button>';
+
+const SCREENS = {
+  home: {
+    tab: 'home', title: 'Your account', sub: 'Flat 2, 14 Rhodfa Cambria · account 00904417',
+    body: () =>
+      '<div class="m-card"><div class="lbl">Behind on your account</div>'
+      + '<div class="m-figure arrears">£184.60</div>'
+      + '<div class="m-sub">This is what is overdue, not your whole balance. Nothing is being added while you sort it out, and nothing happens automatically.</div></div>'
+      + '<button class="m-btn" data-go="pay">' + ic('card', 2) + 'Pay some or all of it</button>'
+      + '<button class="m-btn sec" data-go="plan">' + ic('scale', 2) + 'Set up a plan I can afford</button>'
+      + '<div class="m-note info">' + ic('info', 2) + '<span><b>Your Direct Debit did not go through on 4 September.</b> Your bank returned it. We have paused it rather than trying again, so nothing will be taken unexpectedly.</span></div>'
+      + mrow('card', 'Restart your Direct Debit', 'You will get 10 working days notice first', 'dd')
+      + mrow('buoy', 'Tell us about your circumstances', 'Extra support, or someone to speak for you', 'support')
+      + mrow('ban', 'I do not think this is right', 'Query the amount', 'dispute'),
+    annot: {
+      h: 'Arrears, never the whole balance',
+      p: ['The number on this screen is the <b>overdue amount</b>, not the account balance. The two differ whenever an unbilled charge or an unapplied payment is in flight, and chasing the balance chases money that is not yet owed.',
+          'The Direct Debit failure is stated as <b>what the bank did</b>, with no implication of fault and no re-presentation. Return codes are classified three ways — an affordability signal, a dead mandate, or our own compliance defect — and the customer never sees the wrong one of those three.'],
+      rules: [['No pressure, by design', 'Trials in this sector found non-aggressive wording raised contact rates with no loss of payment rate. Urgency framing costs money as well as trust.'],
+              ['Every route is visible at once', 'Pay, arrange, get support, or dispute. Burying the affordability route below the payment route is how a system pushes someone into a plan they cannot keep.']],
+    },
+  },
+
+  pay: {
+    tab: 'pay', back: 'home', title: 'Pay', sub: 'Choose what works. Part payments are fine.',
+    body: () =>
+      [['all', 'Pay it all', '£184.60', 'Clears the arrears today.'],
+       ['half', 'Pay half now', '£92.30', 'And the rest on a date you choose. This is what most people do.'],
+       ['own', 'Choose an amount', '—', 'Anything reduces it. A part payment never closes your case or ends any support.']]
+        .map((o, i) => '<button class="m-opt" data-plan="' + i + '" aria-pressed="' + (mPlan === i) + '">'
+          + '<span class="tt">' + esc(o[1]) + '<span class="amt">' + esc(o[2]) + '</span></span>'
+          + '<span class="td">' + esc(o[3]) + '</span></button>').join('')
+      + (mPlan === 2 ? '<label class="m-field"><span class="lb">Amount</span><input value="45.00" inputmode="decimal"><span class="hint">There is no minimum.</span></label>' : '')
+      + '<button class="m-btn">' + ic('lock', 2) + 'Continue securely</button>'
+      + '<div class="m-note ok">' + ic('lock', 2) + '<span><b>Your card details never reach us.</b> The next screen is our payment provider on our own web address. We keep a reference, never a card number.</span></div>',
+    annot: {
+      h: 'The link, and why it looks like this',
+      p: ['A payment link in an arrears text is <b>indistinguishable from the documented smishing attack</b> — a message about money, urgency, and a link. So the link resolves to the supplier\'s own registered domain first and redirects from there: no third-party domain ever appears in a message.',
+          'Sessions are <b>single-use and expire in minutes</b>, carry an internal reference rather than a name, and the amount is re-read live on re-issue so a stale link can never take a figure that has since changed.'],
+      rules: [['Part payment never closes a case', 'It reduces a balance. A system that closes on part payment loses the arrangement, the affordability record and the care state with it.'],
+              ['Authorisation is not reconciliation', 'Authorising suppresses further chasing immediately, but only the ledger resolves the case. Two-stage, because a payment that later fails must not have already closed everything.']],
+    },
+  },
+
+  plan: {
+    tab: 'pay', back: 'home', title: 'What can you afford?', sub: 'Honest answers help. We are not checking up on you.',
+    body: () =>
+      '<div class="m-note">' + ic('care', 2) + '<span>This is not a test and there is no wrong answer. If what you can afford does not cover the arrears, that is <b>useful information about us, not about you</b> — it means the plan needs to change or you need different help.</span></div>'
+      + '<label class="m-field"><span class="lb">Money coming in each month, after tax</span><input value="1,480" inputmode="numeric"></label>'
+      + '<label class="m-field"><span class="lb">Rent or mortgage</span><input value="720" inputmode="numeric"></label>'
+      + '<label class="m-field"><span class="lb">Other essentials — food, travel, other bills</span><input value="610" inputmode="numeric"></label>'
+      + '<div class="m-card quiet"><div class="lbl">What that leaves</div><div class="m-figure">£150.00</div>'
+      + '<div class="m-sub">We would suggest <b>£38 a month</b> — about a quarter of it — over 5 months. Never everything that is left.</div></div>'
+      + '<button class="m-btn">Agree £38 a month</button>'
+      + '<button class="m-btn sec" data-go="support">This still does not work for me</button>',
+    annot: {
+      h: 'An affordability record, not a credit decision',
+      p: ['What the customer types is stored as a <b>versioned object with the source of every field</b> and an explicit basis — customer-stated, full income and expenditure, a standard statement, or advised by a third party — plus a review date. Four months later, "why did we agree this?" has an answer.',
+          'The suggestion takes <b>a share of what is left, never all of it</b>. A plan that consumes the whole surplus breaks on the first unexpected bill, and a broken plan costs more than a smaller one that holds.'],
+      rules: [['The second button is not a dead end', 'If the affordable amount will not clear the arrears, the honest next step is support — not a longer plan at the same unaffordable rate.'],
+              ['No automated decision about a person', 'The figures produce a suggestion for a human to agree, and the platform runs no propensity or likelihood-to-pay score at all. Nothing here decides anything about anybody on its own.']],
+    },
+  },
+
+  dd: {
+    tab: 'pay', back: 'home', title: 'Direct Debit', sub: 'Set up on your bank\'s terms, not ours',
+    body: () =>
+      '<div class="m-card"><div class="lbl">Current state</div><div style="font-size:14px;font-weight:600;margin-top:5px">Paused after a returned payment</div>'
+      + '<div class="m-sub">Returned on 4 September. We paused it instead of trying again.</div></div>'
+      + '<label class="m-field"><span class="lb">Monthly amount</span><input value="61.53" inputmode="decimal"><span class="hint">You can change this later without cancelling.</span></label>'
+      + '<label class="m-field"><span class="lb">Collection day</span><input value="28th" ><span class="hint">Pick a day just after you are paid.</span></label>'
+      + '<button class="m-btn">' + ic('lock', 2) + 'Continue to your bank details' + '</button>'
+      + '<div class="m-note ok">' + ic('shield', 2) + '<span><b>We will write to you 10 working days before anything is taken</b>, with the amount and the date. If we ever get that wrong, your bank must refund you immediately under the Direct Debit Guarantee — and we would be in the wrong, not you.</span></div>'
+      + '<div class="m-note info">' + ic('info', 2) + '<span>Your sort code and account number go straight to our payments provider. <b>There is no field in our system that could hold them.</b></span></div>',
+    annot: {
+      h: 'Advance notice is the load-bearing obligation',
+      p: ['The notice period is <b>not fixed by the scheme</b> — it is a blank the supplier fills in, and ten working days is the common default. Whatever is chosen becomes a promise the bank will enforce against you: get it wrong and the customer is entitled to an immediate refund, unbounded in time.',
+          'So the platform records <b>content, channel, recipient and timestamp</b> for every notice, and gates mandate activation or any amount change on a compliant notice having been sent. Without that evidence the guarantee claim is indefensible.'],
+      rules: [['Silence is success', 'A successful collection generates no message at all. The absence of a return is modelled as an explicit state with a deadline, never inferred as payment on the day.'],
+              ['No bank field exists', 'Not "we do not store it" as a policy — the schema has nowhere to put it. A policy can be forgotten; a missing column cannot.']],
+    },
+  },
+
+  support: {
+    tab: 'support', back: 'home', title: 'Your circumstances', sub: 'Any of this changes how we deal with you',
+    body: () =>
+      '<div class="m-note">' + ic('care', 2) + '<span>Telling us will <b>never make things worse</b> and never affects what you are charged. It changes how we contact you, what we can pause, and who we send to.</span></div>'
+      + mrow('buoy', 'Someone in the home relies on electricity', 'Medical equipment, or a health condition')
+      + mrow('care', 'Money is a serious worry right now', 'We can pause things while you get advice')
+      + mrow('msg', 'I would find it easier another way', 'Large print, Welsh, a different channel, or more time')
+      + mrow('key', 'Someone else should deal with this for me', 'A family member, carer, or a debt adviser')
+      + mrow('pause', 'I am getting debt advice', 'Your adviser can apply for breathing space')
+      + '<div class="m-note info">' + ic('shield', 2) + '<span>What you tell us here is kept because it is <b>necessary to supply you safely</b>, and it is not shared with credit reference agencies or debt collectors. You can see everything we hold and ask us to correct it.</span></div>',
+    annot: {
+      h: 'Vulnerability is an obligation, not a risk score',
+      p: ['Note the colour. Care states are <b>violet everywhere in this product, never red</b>, because red is the arrears signal and a person needing help is not a problem to be flagged. That single decision changes how the whole interface reads.',
+          'The wording avoids the word "vulnerable" entirely. People do not self-identify with it, so a screen that asks them to consent to the label collects less than a screen that asks about the <b>circumstance</b>.'],
+      rules: [['The care gate fails closed', 'If the register cannot be read, nothing is sent. The failure mode of a care check must be silence, not a message.'],
+              ['Third-party authority is first-class', 'An authorised adviser can act, and direct contact with the customer is suppressed separately from any marketing preference — three suppression scopes, never one flag.'],
+              ['Sensitive data earns its place', 'Health information is held because it is needed to supply someone safely, and it never travels to a credit reference agency or a collections agency.']],
+    },
+  },
+
+  messages: {
+    tab: 'messages', back: 'home', title: 'Messages', sub: 'The same conversation as the text you had',
+    body: () =>
+      '<div class="m-msg them"><div class="bubble">Hello Aaron. Your Direct Debit of £61.53 on 4 September was returned unpaid, so your balance is now £184.60. Nothing further happens automatically. You can see your options in the app.</div><div class="m-time">Thu 08:30 · also sent by text</div></div>'
+      + '<div class="m-msg me"><div class="bubble">Sorry, changed banks last month and forgot to move it over. Can I pay half now and half on payday</div><div class="m-time">Thu 10:12</div></div>'
+      + '<div class="m-msg them"><div class="bubble">No problem at all. I can set that up — £92.30 today and £92.30 on 27 September. Shall I send you a secure link for the first part?</div><div class="m-time">Thu 10:19 · Rhiannon</div></div>'
+      + '<div class="m-note info">' + ic('info', 2) + '<span>This is <b>one conversation across both channels.</b> Replying by text lands here; replying here reaches the same agent.</span></div>'
+      + '<button class="m-btn sec">' + ic('msg', 2) + 'Write a reply</button>',
+    annot: {
+      h: 'This screen is why the text messages can stay short',
+      p: ['An SMS arrives on a possibly shared device and a visible lock screen, so the body carries <b>only enough for the right person to recognise their own account</b> — and the substance lives here, behind authentication. That is a privacy decision before it is a design one.',
+          'It is also the failover mechanism that costs nothing. The conversation is keyed to <b>the case, not to a phone number and a sender</b>, so switching messaging provider changes a routing attribute on a message and leaves the thread, the audit trail and the suppression state untouched.'],
+      rules: [['One thread, both directions', 'A customer who replies by text and a customer who replies in the app reach the same agent and the same record. Two systems means two truths.'],
+              ['Delivered is not read', 'One provider\'s own documentation admits its statuses are tentative, and that a switched-off handset still reports delivered. Anything with a statutory deadline keeps a non-SMS channel in the evidence path.']],
+    },
+  },
+
+  dispute: {
+    tab: 'home', back: 'home', title: 'Query the amount', sub: 'Tell us what looks wrong',
+    body: () =>
+      '<div class="m-note ok">' + ic('pause', 2) + '<span><b>We stop chasing this amount as soon as you tell us.</b> Not when we finish looking into it — now. Nothing is added while we check.</span></div>'
+      + [['I did not live here then', 'A tenancy date or move-out date'],
+         ['The readings look wrong', 'A meter reading or a photo'],
+         ['I already paid this', 'A payment date or reference'],
+         ['Something else', 'Tell us in your own words']].map((o) => mrow('file', o[0], o[1])).join('')
+      + '<div class="m-note info">' + ic('scale', 2) + '<span>If we cannot agree, you can take it to the <b>energy ombudsman free of charge</b> after eight weeks, or sooner if we tell you we have gone as far as we can. We will remind you of this in writing.</span></div>',
+    annot: {
+      h: 'A dispute is a restriction, not a note on the file',
+      p: ['Contesting a balance triggers a <b>restriction on processing</b>: the amount may be stored, but it may not be used to chase. Outbound on that balance stops at the moment the customer says so, and the restriction cannot be lifted without a recorded confirmation that they were told it had been.',
+          'Most systems treat a dispute as a status field. Treating it as a <b>processing restriction</b> is what makes the outbound suspension automatic instead of dependent on an agent remembering.'],
+      rules: [['The clock starts at receipt', 'Complaint timers run from when the customer said it, on whatever channel, including a spoken remark. Two independent timers, because the deadlock point and the eight-week point are set by different rules.'],
+              ['Back-billing cannot be reopened', 'If a charge falls outside the protected window it cannot be presented as owed at all — and setting or raising a prepayment recovery rate counts as presenting it.']],
+    },
+  },
+};
+
+const M_TABS = [['home', 'Home', 'home'], ['pay', 'Pay', 'card'], ['messages', 'Messages', 'msg'], ['support', 'Support', 'buoy']];
+
+/* ---------- mobile render ---------- */
+function renderMobile() {
+  const s = SCREENS[mScreen];
+  $('#m-head').innerHTML = (s.back ? '<button class="back" data-go="' + s.back + '">' + ic('back', 2) + 'Back</button>' : '')
+    + '<h3>' + esc(s.title) + '</h3><p>' + esc(s.sub) + '</p>';
+  $('#m-body').innerHTML = s.body();
+  $('#m-tabs').innerHTML = M_TABS.map((t) => '<button data-go="' + t[0] + '" aria-selected="' + (s.tab === t[0]) + '">'
+    + ic(t[2], 1.8) + esc(t[1]) + '</button>').join('');
+  $('#m-screens').innerHTML = Object.keys(SCREENS).map((k) => '<button data-go="' + k + '" aria-selected="' + (k === mScreen) + '">'
+    + esc(SCREENS[k].title) + '</button>').join('');
+  const a = s.annot;
+  $('#m-annot').innerHTML = '<h3>' + esc(a.h) + '</h3>'
+    + '<div class="body" style="margin-top:10px">' + a.p.map((p) => '<p>' + p + '</p>').join('') + '</div>'
+    + '<div style="margin-top:16px"><div class="lbl" style="margin-bottom:9px">What this screen has to get right</div>'
+    + '<ul class="rule-list">' + a.rules.map((r) => '<li>' + ic('check', 2.2) + '<span><b>' + esc(r[0]) + '</b> — ' + esc(r[1]) + '</span></li>').join('') + '</ul></div>';
+}
+
+/* ---------- admin render ---------- */
+let adminSec = 'ops';
+function renderAdmin() {
+  const s = SECTIONS[adminSec];
+  $('#admin-title').textContent = s.title;
+  $('#admin-sub').textContent = s.sub || '';
+  $('#admin-body').innerHTML = s.body();
+  $$('#s-admin .nav button[data-sec]').forEach((b) => {
+    if (b.dataset.sec === adminSec) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+  });
+}
+
+/* ---------- surfaces ---------- */
+function showSurface(id) {
+  $$('.surface').forEach((s) => s.classList.toggle('on', s.id === id));
+  $$('.switch [role="tab"]').forEach((t) => t.setAttribute('aria-selected', String(t.getAttribute('aria-controls') === id)));
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+/* ---------- theme ---------- */
+function paintThemeBtn() {
+  const explicit = document.documentElement.getAttribute('data-theme');
+  const dark = explicit === 'dark' || (!explicit && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  $('#theme-btn').innerHTML = ic(dark ? 'sun' : 'moon', 1.8);
+}
+
+/* ---------- one delegated listener ---------- */
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('button');
+  if (!t) return;
+
+  if (t.matches('.switch [role="tab"]')) return showSurface(t.getAttribute('aria-controls'));
+
+  if (t.id === 'theme-btn') {
+    const explicit = document.documentElement.getAttribute('data-theme');
+    const dark = explicit === 'dark' || (!explicit && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+    return paintThemeBtn();
+  }
+  if (t.id === 'notes-btn') {
+    const on = t.getAttribute('aria-pressed') === 'true';
+    t.setAttribute('aria-pressed', String(!on));
+    document.body.dataset.notes = !on ? 'on' : 'off';
+    return;
+  }
+
+  /* queue */
+  if (t.dataset.id) { current = t.dataset.id; draft = ''; return renderConversation(); }
+  if (t.dataset.f) {
+    filter = t.dataset.f;
+    $$('#q-filters .chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.f === filter)));
+    renderQueue();
+    const list = visible();
+    if (list.length && !list.some((c) => c.id === current)) { current = list[0].id; renderConversation(); }
+    return;
+  }
+
+  /* composer */
+  if (t.dataset.t !== undefined) {
+    const c = CASES.find((x) => x.id === current);
+    const body = TEMPLATE_BODIES[c.tmpls[+t.dataset.t]] || '';
+    const ta = $('#ta');
+    /* Non-destructive: an insert never discards what the agent typed. */
+    ta.value = ta.value.trim() ? ta.value.replace(/\s*$/, ' ') + body : body;
+    draft = ta.value; ta.focus(); return updateSeg();
+  }
+  if (t.id === 'send') {
+    const c = CASES.find((x) => x.id === current);
+    const ta = $('#ta'); const text = ta.value.trim(); if (!text) return;
+    const sent = c.thread.filter((m) => m.k === 'out' && m.session).length;
+    if (sent >= 3) {
+      c.thread.push({ k: 'sys', tone: 'warn', i: 'ban', b: '**Held by the per-recipient governor.** This customer has reached the hourly ceiling across every sender and workflow. The operator would discard the overflow silently rather than reject it, so the message waits instead of being lost — and the governor fails closed, which is why it holds rather than letting it through.' });
+      draft = ''; return renderConversation();
+    }
+    c.thread.push({ k: 'out', b: text, at: 'Now', st: 'queued', seg: segment(text).segments, agent: 'Rhiannon V.', session: true });
+    draft = ''; renderConversation();
+    const steps = ['accepted', 'sent', 'delivered_operator', 'delivered_handset'];
+    steps.forEach((st, i) => setTimeout(() => {
+      const m = [...c.thread].reverse().find((x) => x.session && x.b === text);
+      /* Monotonic: only ever advance. A late lower-ranked event is discarded. */
+      if (m && STATUS[st].r > STATUS[m.st].r) { m.st = st; if (current === c.id) renderConversation(); }
+    }, 700 * (i + 1)));
+    return;
+  }
+
+  /* admin */
+  if (t.dataset.sec) { adminSec = t.dataset.sec; return renderAdmin(); }
+  if (t.id === 'fo-next') { failover = failover >= 4 ? 0 : failover + 1; return renderAdmin(); }
+  if (t.dataset.lint !== undefined) { lintBody = LINT_PRESETS[+t.dataset.lint][1]; return renderAdmin(); }
+  if (t.dataset.imp) { importFilter = t.dataset.imp; return renderAdmin(); }
+
+  /* mobile */
+  if (t.dataset.go) { mScreen = t.dataset.go; return renderMobile(); }
+  if (t.dataset.plan !== undefined) { mPlan = +t.dataset.plan; return renderMobile(); }
+});
+
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'ta') { draft = e.target.value; return updateSeg(); }
+  if (e.target.id === 'lint-ta') {
+    lintBody = e.target.value;
+    const sel = e.target.selectionStart;
+    renderAdmin();
+    const ta = $('#lint-ta'); if (ta) { ta.focus(); ta.setSelectionRange(sel, sel); }
+  }
+});
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paintThemeBtn);
+
+/* ---------- boot: the page opens in a real working state ---------- */
+renderQueue();
+renderConversation();
+renderAdmin();
+renderMobile();
+paintThemeBtn();
+document.body.dataset.notes = 'on';
+</script>
+</body>
+</html>
