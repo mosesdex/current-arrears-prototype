@@ -659,9 +659,13 @@ td.code { font-family: var(--mono); font-size: 11.5px; white-space: nowrap; }
   .panes { grid-template-columns: 1fr; }
   .pane.q-pane { max-height: 300px; }
   .rail { gap: 10px; padding: 0 10px; }
-  .mark span, .synthetic span { display: none; }
+  .mark span, .synthetic span, #notes-btn span { display: none; }
   .switch button span { display: none; }
   .switch button { padding: 5px 9px; }
+  /* Last resort: if the rail still cannot fit, it must stay reachable rather
+     than clip the theme toggle off the edge. */
+  .rail { overflow-x: auto; scrollbar-width: none; }
+  .rail::-webkit-scrollbar { display: none; }
 }
 @media (max-width: 420px) { .phone { width: 100%; height: 620px; border-radius: 30px; } .screen { border-radius: 22px; } }
 </style>
@@ -722,7 +726,7 @@ img { max-width: 100%; }
   </div>
   <div class="rail-end">
     <span class="synthetic"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-alert"/></svg><span>Synthetic data</span></span>
-    <button class="ghost" id="notes-btn" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-info"/></svg>Design notes</button>
+    <button class="ghost" id="notes-btn" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-info"/></svg><span>Design notes</span></button>
     <button class="ghost" id="theme-btn" aria-label="Switch theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-moon"/></svg></button>
   </div>
 </header>
